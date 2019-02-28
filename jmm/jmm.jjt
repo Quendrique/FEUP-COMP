@@ -34,7 +34,6 @@ SimpleNode Program(): {}
 
 void  ClassDeclaration(): {}
 {
-    "class" /*<IDENTIFIER> ["extends" <IDENTIFIER>] "{"
-    VarDeclaration()*/
+    /*"class" */<IDENTIFIER> 
 
 }

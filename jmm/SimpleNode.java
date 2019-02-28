@@ -69,16 +69,7 @@ class SimpleNode implements Node {
 
   public void dump(String prefix) {
  System.out.println(toString(prefix));
-switch(this.id) {
-case jmmTreeConstants.JJTADD:
-System.out.println("\t[ + ]");break;
-case jmmTreeConstants.JJTSUB:
-System.out.println("\t[ - ]");break;
- case jmmTreeConstants.JJTMUL:
-System.out.println("\t[ * ]");break;
- case jmmTreeConstants.JJTDIV:
-System.out.println("\t[ / ]");break;
-}
+
 if(children == null)
  System.out.println("\t[ "+this.val+" ]");
 if (children != null) {

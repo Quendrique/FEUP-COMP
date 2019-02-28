@@ -45,11 +45,11 @@ if (jjtc000) {
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      jj_consume_token(7);
+      jj_consume_token(IDENTIFIER);
     } finally {
 if (jjtc000) {
-        jjtree.closeNodeScope(jjtn000, true);
-      }
+                    jjtree.closeNodeScope(jjtn000, true);
+                  }
     }
   }
 
@@ -205,7 +205,7 @@ if (jjtc000) {
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[8];
+    boolean[] la1tokens = new boolean[7];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -219,7 +219,7 @@ if (jjtc000) {
         }
       }
     }
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 7; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

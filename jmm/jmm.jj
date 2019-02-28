@@ -73,15 +73,14 @@ void  ClassDeclaration(): {/*@bgen(jjtree) ClassDeclaration */
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
 {/*@bgen(jjtree) ClassDeclaration */
-    try {
+                try {
 /*@egen*/
-    "class"/*@bgen(jjtree)*/
-    } finally {
-      if (jjtc000) {
-        jjtree.closeNodeScope(jjtn000, true);
-      }
-    }
-/*@egen*/ /*<IDENTIFIER> ["extends" <IDENTIFIER>] "{"
-    VarDeclaration()*/
+    /*"class" */<IDENTIFIER>/*@bgen(jjtree)*/
+                } finally {
+                  if (jjtc000) {
+                    jjtree.closeNodeScope(jjtn000, true);
+                  }
+                }
+/*@egen*/ 
 
 }

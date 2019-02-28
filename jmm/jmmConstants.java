@@ -27,7 +27,6 @@ public interface jmmConstants {
     "<INTEGER>",
     "<IDENTIFIER>",
     "\"\\n\"",
-    "\"class\"",
   };
 
 }
