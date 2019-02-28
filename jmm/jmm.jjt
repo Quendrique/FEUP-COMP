@@ -1,0 +1,40 @@
+options {
+ LOOKAHEAD=1;
+}
+PARSER_BEGIN(jmm)
+public class jmm
+{
+ public static void main(String args[]) throws ParseException {
+ jmm myjmm = new jmm(System.in);
+ SimpleNode root = myjmm.Program();
+ root.dump("");
+
+ }
+    
+}
+PARSER_END(jmm)
+SKIP :
+{
+" " | "\r" | "\t"
+}
+
+
+TOKEN:
+{
+ < INTEGER: (["0"-"9"])+ >
+| < IDENTIFIER: (["A"-"Z","a"-"z"](["0"-"9","A"-"Z","a"-"z"])*)>
+| < LF: "\n" >
+}
+
+
+SimpleNode Program(): {}
+{
+ ClassDeclaration() <EOF> {return jjtThis;}
+}
+
+void  ClassDeclaration(): {}
+{
+    "class" /*<IDENTIFIER> ["extends" <IDENTIFIER>] "{"
+    VarDeclaration()*/
+
+}
