@@ -13,23 +13,61 @@ public interface JmmConstants {
   /** RegularExpression Id. */
   int EXTENDS = 6;
   /** RegularExpression Id. */
-  int OB = 7;
+  int PUBLIC = 7;
   /** RegularExpression Id. */
-  int CB = 8;
+  int STATIC = 8;
   /** RegularExpression Id. */
-  int OSQB = 9;
+  int VOID = 9;
   /** RegularExpression Id. */
-  int CSQB = 10;
+  int MAIN = 10;
   /** RegularExpression Id. */
-  int SC = 11;
+  int IF = 11;
   /** RegularExpression Id. */
-  int INT = 12;
+  int ELSE = 12;
   /** RegularExpression Id. */
-  int BOOLEAN = 13;
+  int WHILE = 13;
   /** RegularExpression Id. */
-  int INTEGER = 14;
+  int RETURN = 14;
   /** RegularExpression Id. */
-  int IDENTIFIER = 15;
+  int OB = 15;
+  /** RegularExpression Id. */
+  int CB = 16;
+  /** RegularExpression Id. */
+  int OSQB = 17;
+  /** RegularExpression Id. */
+  int CSQB = 18;
+  /** RegularExpression Id. */
+  int OPRNT = 19;
+  /** RegularExpression Id. */
+  int CPRNT = 20;
+  /** RegularExpression Id. */
+  int CM = 21;
+  /** RegularExpression Id. */
+  int SCM = 22;
+  /** RegularExpression Id. */
+  int EQLS = 23;
+  /** RegularExpression Id. */
+  int AND = 24;
+  /** RegularExpression Id. */
+  int LS = 25;
+  /** RegularExpression Id. */
+  int PLS = 26;
+  /** RegularExpression Id. */
+  int MNS = 27;
+  /** RegularExpression Id. */
+  int DVD = 28;
+  /** RegularExpression Id. */
+  int MLT = 29;
+  /** RegularExpression Id. */
+  int INT = 30;
+  /** RegularExpression Id. */
+  int BOOLEAN = 31;
+  /** RegularExpression Id. */
+  int STRING = 32;
+  /** RegularExpression Id. */
+  int INTEGER = 33;
+  /** RegularExpression Id. */
+  int IDENTIFIER = 34;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -43,13 +81,32 @@ public interface JmmConstants {
     "\"\\n\"",
     "\"class\"",
     "\"extends\"",
+    "\"public\"",
+    "\"static\"",
+    "\"void\"",
+    "\"main\"",
+    "\"if\"",
+    "\"else\"",
+    "\"while\"",
+    "\"return\"",
     "\"{\"",
     "\"}\"",
     "\"[\"",
     "\"]\"",
+    "\"(\"",
+    "\")\"",
+    "\",\"",
     "\";\"",
+    "\"=\"",
+    "\"&&\"",
+    "\"<\"",
+    "\"+\"",
+    "\"-\"",
+    "\"/\"",
+    "\"*\"",
     "\"int\"",
     "\"boolean\"",
+    "\"String\"",
     "<INTEGER>",
     "<IDENTIFIER>",
   };

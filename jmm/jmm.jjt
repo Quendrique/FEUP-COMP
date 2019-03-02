@@ -1,5 +1,5 @@
 options {
- LOOKAHEAD=2;
+ LOOKAHEAD=3;
 }
 PARSER_BEGIN(Jmm)
 import java.io.BufferedReader;
@@ -45,13 +45,32 @@ TOKEN:
 {
     < CLASS: "class">
     | < EXTENDS: "extends" >
+    | < PUBLIC: "public">
+    | < STATIC: "static">
+    | < VOID: "void">
+    | < MAIN: "main">
+    | < IF: "if">
+    | < ELSE: "else">
+    | < WHILE: "while">
+    | < RETURN: "return">
     | < OB: "{" >
     | < CB: "}" >
     | < OSQB: "[" >
     | < CSQB: "]" >
-    | < SC: ";" >
+    | < OPRNT: "(">
+    | < CPRNT: ")">
+    | < CM: ",">
+    | < SCM: ";" >
+    | < EQLS: "=">
+    | < AND: "&&">
+    | < LS: "<">
+    | < PLS: "+">
+    | < MNS: "-">
+    | < DVD: "/">
+    | < MLT: "*">
     | < INT: "int" >
     | < BOOLEAN: "boolean" >
+    | < STRING: "String">
     | < INTEGER: (["0"-"9"])+ >
     | < IDENTIFIER: (["A"-"Z","a"-"z"](["0"-"9","A"-"Z","a"-"z"])*)>
 }
@@ -65,26 +84,39 @@ SimpleNode Program(): {}
 void ClassDeclaration(): {}
 {
     <CLASS> <IDENTIFIER> [<EXTENDS> <IDENTIFIER>] <OB> 
-        (VarDeclaration())*  /*(MainDeclaration() | MethodDeclaration())**/
+        (VarDeclaration())*  (MainDeclaration())* /*| MethodDeclaration())**/
     <CB>
 }
 
 void VarDeclaration(): {}
 {
-    Type() <IDENTIFIER> <SC>
+    Type() <IDENTIFIER> <SCM>
 }
 
-//INCOMPLETE
-/*void MainDeclaration(): {}
+void MainDeclaration(): {}
 {
-    <IDENTIFIER>
+    <PUBLIC> <STATIC> <VOID> <MAIN> <OPRNT> <STRING> <OSQB> <CSQB> <IDENTIFIER> <CPRNT> <OB>
+        (VarDeclaration())*
+        (Statement())*
+    <CB>
 }
 
-//INCOMPLETE
 void MethodDeclaration(): {}
 {
-    <IDENTIFIER>
-}*/
+    <PUBLIC> Type() <IDENTIFIER> <OPRNT> 
+    [
+        Type() <IDENTIFIER> 
+        (
+            <CM> Type() <IDENTIFIER>
+        )*
+    ]
+    <CPRNT>
+    <OB>
+        (VarDeclaration())*
+        (Statement())*
+        <RETURN> Expression() <SCM>
+    <CB>
+}
 
 //LOOKAHEAD 2
 void Type(): {}
@@ -93,4 +125,31 @@ void Type(): {}
     | <BOOLEAN>
     | <INT>
     | <IDENTIFIER>
+}
+
+//LOOKAHEAD 2
+void Statement(): {}
+{
+    <OB>
+        (Statement())*
+    <CB>
+    |
+    <IF> <OPRNT> Expression() <CPRNT> Statement() <ELSE> Statement()
+    |
+    <WHILE> <OPRNT> Expression() <CPRNT> Statement()
+    |
+    Expression() <SCM>
+    |
+    <IDENTIFIER> <EQLS> Expression() <SCM>
+    |
+    <IDENTIFIER> <OSQB> Expression() <CSQB> <EQLS> Expression() <SCM>
+}
+
+//LOOKAHEAD 3
+void Expression(): {}
+{
+    /*Expression() (<AND> | <LS> | <PLS> | <MNS> | <DVD> | <MTP>) Expression()
+    |
+    */
+    <IDENTIFIER>
 }

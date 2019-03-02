@@ -4,14 +4,22 @@ public interface JmmTreeConstants
   public int JJTPROGRAM = 0;
   public int JJTCLASSDECLARATION = 1;
   public int JJTVARDECLARATION = 2;
-  public int JJTTYPE = 3;
+  public int JJTMAINDECLARATION = 3;
+  public int JJTMETHODDECLARATION = 4;
+  public int JJTTYPE = 5;
+  public int JJTSTATEMENT = 6;
+  public int JJTEXPRESSION = 7;
 
 
   public String[] jjtNodeName = {
     "Program",
     "ClassDeclaration",
     "VarDeclaration",
+    "MainDeclaration",
+    "MethodDeclaration",
     "Type",
+    "Statement",
+    "Expression",
   };
 }
-/* JavaCC - OriginalChecksum=206d786dfbc5b1096ea4f192ad6591ea (do not edit this line) */
+/* JavaCC - OriginalChecksum=5d28377aa99f72c1fd93003f7aeaee07 (do not edit this line) */
