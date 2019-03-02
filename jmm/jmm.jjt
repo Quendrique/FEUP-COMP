@@ -1,5 +1,5 @@
 options {
- LOOKAHEAD=1;
+ LOOKAHEAD=2;
 }
 PARSER_BEGIN(Jmm)
 import java.io.BufferedReader;
@@ -37,25 +37,59 @@ public class Jmm
 PARSER_END(Jmm)
 SKIP :
 {
-" " | "\r" | "\t"
+    " " | "\r" | "\t" | "\n"
 }
 
 
 TOKEN:
 {
- < INTEGER: (["0"-"9"])+ >
-| < IDENTIFIER: (["A"-"Z","a"-"z"](["0"-"9","A"-"Z","a"-"z"])*)>
-| < LF: "\n" >
+    < CLASS: "class">
+    | < EXTENDS: "extends" >
+    | < OB: "{" >
+    | < CB: "}" >
+    | < OSQB: "[" >
+    | < CSQB: "]" >
+    | < SC: ";" >
+    | < INT: "int" >
+    | < BOOLEAN: "boolean" >
+    | < INTEGER: (["0"-"9"])+ >
+    | < IDENTIFIER: (["A"-"Z","a"-"z"](["0"-"9","A"-"Z","a"-"z"])*)>
 }
 
 
 SimpleNode Program(): {}
 {
- ClassDeclaration() {return jjtThis;} <EOF>
+    ClassDeclaration() {return jjtThis;} <EOF>
 }
 
-void  ClassDeclaration(): {}
+void ClassDeclaration(): {}
 {
-    /*"class" */<IDENTIFIER> 
+    <CLASS> <IDENTIFIER> [<EXTENDS> <IDENTIFIER>] <OB> 
+        (VarDeclaration())*  /*(MainDeclaration() | MethodDeclaration())**/
+    <CB>
+}
 
+void VarDeclaration(): {}
+{
+    Type() <IDENTIFIER> <SC>
+}
+
+//INCOMPLETE
+/*void MainDeclaration(): {}
+{
+    <IDENTIFIER>
+}
+
+//INCOMPLETE
+void MethodDeclaration(): {}
+{
+    <IDENTIFIER>
+}*/
+
+void Type(): {}
+{
+    <INT> <OSQB> <CSQB>
+    | <BOOLEAN>
+    | <INT>
+    | <IDENTIFIER>
 }

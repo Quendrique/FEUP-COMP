@@ -3,11 +3,15 @@ public interface JmmTreeConstants
 {
   public int JJTPROGRAM = 0;
   public int JJTCLASSDECLARATION = 1;
+  public int JJTVARDECLARATION = 2;
+  public int JJTTYPE = 3;
 
 
   public String[] jjtNodeName = {
     "Program",
     "ClassDeclaration",
+    "VarDeclaration",
+    "Type",
   };
 }
-/* JavaCC - OriginalChecksum=2b40780b35e6759921ff2a81a6e5f2bf (do not edit this line) */
+/* JavaCC - OriginalChecksum=206d786dfbc5b1096ea4f192ad6591ea (do not edit this line) */
