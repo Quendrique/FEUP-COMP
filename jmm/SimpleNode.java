@@ -7,7 +7,7 @@ class SimpleNode implements Node {
   protected Node[] children;
   protected int id;
   protected Object value;
-  protected jmm parser;
+  protected Jmm parser;
 
   // added
   public int val;
@@ -17,7 +17,7 @@ class SimpleNode implements Node {
     id = i;
   }
 
-  public SimpleNode(jmm p, int i) {
+  public SimpleNode(Jmm p, int i) {
     this(i);
     parser = p;
   }
@@ -60,7 +60,7 @@ class SimpleNode implements Node {
      you need to do. */
 
   public String toString() {
-    return jmmTreeConstants.jjtNodeName[id];
+    return JmmTreeConstants.jjtNodeName[id];
   }
   public String toString(String prefix) { return prefix + toString(); }
 

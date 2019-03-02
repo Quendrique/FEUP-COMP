@@ -1,18 +1,40 @@
 options {
  LOOKAHEAD=1;
 }
-PARSER_BEGIN(jmm)
-public class jmm
+PARSER_BEGIN(Jmm)
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class Jmm
 {
  public static void main(String args[]) throws ParseException {
- jmm myjmm = new jmm(System.in);
- SimpleNode root = myjmm.Program();
- root.dump("");
+
+    final String FILENAME = args[0];
+
+    BufferedReader br = null;
+	FileReader fr = null;
+
+		try {
+
+			//br = new BufferedReader(new FileReader(FILENAME));
+			fr = new FileReader(FILENAME);
+			br = new BufferedReader(fr);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+
+    Jmm myJmm = new Jmm(br);
+    SimpleNode root = myJmm.Program();
+    root.dump("");
 
  }
     
 }
-PARSER_END(jmm)
+PARSER_END(Jmm)
 SKIP :
 {
 " " | "\r" | "\t"
@@ -29,7 +51,7 @@ TOKEN:
 
 SimpleNode Program(): {}
 {
- ClassDeclaration() <EOF> {return jjtThis;}
+ ClassDeclaration() {return jjtThis;} <EOF>
 }
 
 void  ClassDeclaration(): {}
