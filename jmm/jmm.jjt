@@ -86,6 +86,7 @@ void MethodDeclaration(): {}
     <IDENTIFIER>
 }*/
 
+//LOOKAHEAD 2
 void Type(): {}
 {
     <INT> <OSQB> <CSQB>
