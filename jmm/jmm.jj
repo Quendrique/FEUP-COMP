@@ -66,6 +66,7 @@ TOKEN:
     | < CM: ",">
     | < SCM: ";" >
     | < EQLS: "=">
+    | < NOT: "!">
     | < AND: "&&">
     | < LS: "<">
     | < PLS: "+">
@@ -76,7 +77,13 @@ TOKEN:
     | < BOOLEAN: "boolean" >
     | < STRING: "String">
     | < INTEGER: (["0"-"9"])+ >
+    | < TRUE: "true">
+    | < FALSE: "flase">
+    | < THIS: "this">
+    | < NEW: "new">
+    | < LENGTH: "length">
     | < IDENTIFIER: (["A"-"Z","a"-"z"](["0"-"9","A"-"Z","a"-"z"])*)>
+    | < INTEGERLITERAL: (["0"-"9"])*>
 }
 
 
@@ -326,9 +333,27 @@ void Expression(): {/*@bgen(jjtree) Expression */
 {/*@bgen(jjtree) Expression */
     try {
 /*@egen*/
-    /*Expression() (<AND> | <LS> | <PLS> | <MNS> | <DVD> | <MTP>) Expression()
+    /*NRExpression() (<AND> | <LS> | <PLS> | <MNS> | <DVD> | <MTP>) Expression()
     |
     */
+    <IDENTIFIER>/*@bgen(jjtree)*/
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+/*@egen*/
+}
+
+//#SayNoToLeftRecursion
+void NRExpression(): {/*@bgen(jjtree) NRExpression */
+  SimpleNode jjtn000 = new SimpleNode(JJTNREXPRESSION);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) NRExpression */
+    try {
+/*@egen*/
     <IDENTIFIER>/*@bgen(jjtree)*/
     } finally {
       if (jjtc000) {

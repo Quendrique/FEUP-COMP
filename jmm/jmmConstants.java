@@ -47,27 +47,41 @@ public interface JmmConstants {
   /** RegularExpression Id. */
   int EQLS = 23;
   /** RegularExpression Id. */
-  int AND = 24;
+  int NOT = 24;
   /** RegularExpression Id. */
-  int LS = 25;
+  int AND = 25;
   /** RegularExpression Id. */
-  int PLS = 26;
+  int LS = 26;
   /** RegularExpression Id. */
-  int MNS = 27;
+  int PLS = 27;
   /** RegularExpression Id. */
-  int DVD = 28;
+  int MNS = 28;
   /** RegularExpression Id. */
-  int MLT = 29;
+  int DVD = 29;
   /** RegularExpression Id. */
-  int INT = 30;
+  int MLT = 30;
   /** RegularExpression Id. */
-  int BOOLEAN = 31;
+  int INT = 31;
   /** RegularExpression Id. */
-  int STRING = 32;
+  int BOOLEAN = 32;
   /** RegularExpression Id. */
-  int INTEGER = 33;
+  int STRING = 33;
   /** RegularExpression Id. */
-  int IDENTIFIER = 34;
+  int INTEGER = 34;
+  /** RegularExpression Id. */
+  int TRUE = 35;
+  /** RegularExpression Id. */
+  int FALSE = 36;
+  /** RegularExpression Id. */
+  int THIS = 37;
+  /** RegularExpression Id. */
+  int NEW = 38;
+  /** RegularExpression Id. */
+  int LENGTH = 39;
+  /** RegularExpression Id. */
+  int IDENTIFIER = 40;
+  /** RegularExpression Id. */
+  int INTEGERLITERAL = 41;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -98,6 +112,7 @@ public interface JmmConstants {
     "\",\"",
     "\";\"",
     "\"=\"",
+    "\"!\"",
     "\"&&\"",
     "\"<\"",
     "\"+\"",
@@ -108,7 +123,13 @@ public interface JmmConstants {
     "\"boolean\"",
     "\"String\"",
     "<INTEGER>",
+    "\"true\"",
+    "\"flase\"",
+    "\"this\"",
+    "\"new\"",
+    "\"length\"",
     "<IDENTIFIER>",
+    "<INTEGERLITERAL>",
   };
 
 }

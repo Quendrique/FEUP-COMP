@@ -9,6 +9,7 @@ public interface JmmTreeConstants
   public int JJTTYPE = 5;
   public int JJTSTATEMENT = 6;
   public int JJTEXPRESSION = 7;
+  public int JJTNREXPRESSION = 8;
 
 
   public String[] jjtNodeName = {
@@ -20,6 +21,7 @@ public interface JmmTreeConstants
     "Type",
     "Statement",
     "Expression",
+    "NRExpression",
   };
 }
-/* JavaCC - OriginalChecksum=5d28377aa99f72c1fd93003f7aeaee07 (do not edit this line) */
+/* JavaCC - OriginalChecksum=72854205809ad0a4b6020ee76a5ed311 (do not edit this line) */

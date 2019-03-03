@@ -62,6 +62,7 @@ TOKEN:
     | < CM: ",">
     | < SCM: ";" >
     | < EQLS: "=">
+    | < NOT: "!">
     | < AND: "&&">
     | < LS: "<">
     | < PLS: "+">
@@ -72,7 +73,13 @@ TOKEN:
     | < BOOLEAN: "boolean" >
     | < STRING: "String">
     | < INTEGER: (["0"-"9"])+ >
+    | < TRUE: "true">
+    | < FALSE: "flase">
+    | < THIS: "this">
+    | < NEW: "new">
+    | < LENGTH: "length">
     | < IDENTIFIER: (["A"-"Z","a"-"z"](["0"-"9","A"-"Z","a"-"z"])*)>
+    | < INTEGERLITERAL: (["0"-"9"])*>
 }
 
 
@@ -148,8 +155,14 @@ void Statement(): {}
 //LOOKAHEAD 3
 void Expression(): {}
 {
-    /*Expression() (<AND> | <LS> | <PLS> | <MNS> | <DVD> | <MTP>) Expression()
+    /*NRExpression() (<AND> | <LS> | <PLS> | <MNS> | <DVD> | <MTP>) Expression()
     |
     */
+    <IDENTIFIER>
+}
+
+//#SayNoToLeftRecursion
+void NRExpression(): {}
+{
     <IDENTIFIER>
 }
