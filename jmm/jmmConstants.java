@@ -43,31 +43,31 @@ public interface JmmConstants {
   /** RegularExpression Id. */
   int CM = 21;
   /** RegularExpression Id. */
-  int SCM = 22;
+  int PNT = 22;
   /** RegularExpression Id. */
-  int EQLS = 23;
+  int SCM = 23;
   /** RegularExpression Id. */
-  int NOT = 24;
+  int EQLS = 24;
   /** RegularExpression Id. */
-  int AND = 25;
+  int NOT = 25;
   /** RegularExpression Id. */
-  int LS = 26;
+  int AND = 26;
   /** RegularExpression Id. */
-  int PLS = 27;
+  int LS = 27;
   /** RegularExpression Id. */
-  int MNS = 28;
+  int PLS = 28;
   /** RegularExpression Id. */
-  int DVD = 29;
+  int MNS = 29;
   /** RegularExpression Id. */
-  int MLT = 30;
+  int DVD = 30;
   /** RegularExpression Id. */
-  int INT = 31;
+  int MLT = 31;
   /** RegularExpression Id. */
-  int BOOLEAN = 32;
+  int INT = 32;
   /** RegularExpression Id. */
-  int STRING = 33;
+  int BOOLEAN = 33;
   /** RegularExpression Id. */
-  int INTEGER = 34;
+  int STRING = 34;
   /** RegularExpression Id. */
   int TRUE = 35;
   /** RegularExpression Id. */
@@ -82,9 +82,15 @@ public interface JmmConstants {
   int IDENTIFIER = 40;
   /** RegularExpression Id. */
   int INTEGERLITERAL = 41;
+  /** RegularExpression Id. */
+  int EMPTY = 42;
+  /** RegularExpression Id. */
+  int NON_EMPTY = 43;
 
   /** Lexical state. */
   int DEFAULT = 0;
+  /** Lexical state. */
+  int MATCH_NON_EMPTY = 1;
 
   /** Literal token values. */
   String[] tokenImage = {
@@ -110,6 +116,7 @@ public interface JmmConstants {
     "\"(\"",
     "\")\"",
     "\",\"",
+    "\".\"",
     "\";\"",
     "\"=\"",
     "\"!\"",
@@ -122,7 +129,6 @@ public interface JmmConstants {
     "\"int\"",
     "\"boolean\"",
     "\"String\"",
-    "<INTEGER>",
     "\"true\"",
     "\"flase\"",
     "\"this\"",
@@ -130,6 +136,8 @@ public interface JmmConstants {
     "\"length\"",
     "<IDENTIFIER>",
     "<INTEGERLITERAL>",
+    "\"\"",
+    "<NON_EMPTY>",
   };
 
 }

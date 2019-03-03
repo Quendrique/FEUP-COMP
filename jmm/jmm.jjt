@@ -1,5 +1,5 @@
 options {
- LOOKAHEAD=3;
+ LOOKAHEAD=2;
 }
 PARSER_BEGIN(Jmm)
 import java.io.BufferedReader;
@@ -60,6 +60,7 @@ TOKEN:
     | < OPRNT: "(">
     | < CPRNT: ")">
     | < CM: ",">
+    | < PNT: ".">
     | < SCM: ";" >
     | < EQLS: "=">
     | < NOT: "!">
@@ -72,14 +73,19 @@ TOKEN:
     | < INT: "int" >
     | < BOOLEAN: "boolean" >
     | < STRING: "String">
-    | < INTEGER: (["0"-"9"])+ >
     | < TRUE: "true">
     | < FALSE: "flase">
     | < THIS: "this">
     | < NEW: "new">
     | < LENGTH: "length">
     | < IDENTIFIER: (["A"-"Z","a"-"z"](["0"-"9","A"-"Z","a"-"z"])*)>
-    | < INTEGERLITERAL: (["0"-"9"])*>
+    | < INTEGERLITERAL: (["0"-"9"])+>
+    | < EMPTY : "" > : MATCH_NON_EMPTY
+}
+
+<MATCH_NON_EMPTY>
+TOKEN : {
+    < NON_EMPTY : ~[] >
 }
 
 
@@ -91,7 +97,10 @@ SimpleNode Program(): {}
 void ClassDeclaration(): {}
 {
     <CLASS> <IDENTIFIER> [<EXTENDS> <IDENTIFIER>] <OB> 
-        (VarDeclaration())*  (MainDeclaration())* /*| MethodDeclaration())**/
+        (VarDeclaration())*  
+        
+        
+        (MainDeclaration())*  (MethodDeclaration())*
     <CB>
 }
 
@@ -128,6 +137,7 @@ void MethodDeclaration(): {}
 //LOOKAHEAD 2
 void Type(): {}
 {
+
     <INT> <OSQB> <CSQB>
     | <BOOLEAN>
     | <INT>
@@ -137,6 +147,7 @@ void Type(): {}
 //LOOKAHEAD 2
 void Statement(): {}
 {
+
     <OB>
         (Statement())*
     <CB>
@@ -152,17 +163,39 @@ void Statement(): {}
     <IDENTIFIER> <OSQB> Expression() <CSQB> <EQLS> Expression() <SCM>
 }
 
-//LOOKAHEAD 3
+//LOOKAHEAD 2
 void Expression(): {}
 {
-    /*NRExpression() (<AND> | <LS> | <PLS> | <MNS> | <DVD> | <MTP>) Expression()
+
+    <INTEGERLITERAL> NRExpression()
     |
-    */
-    <IDENTIFIER>
+    <TRUE> NRExpression()
+    |
+    <FALSE> NRExpression()
+    |
+    <IDENTIFIER> NRExpression()
+    |
+    <THIS> NRExpression()
+    |
+    <NEW> <INT> <OSQB> Expression() <CSQB> NRExpression()
+    |
+    <NEW> <IDENTIFIER> <OPRNT> <CPRNT> NRExpression()
+    |
+    <NOT> Expression() NRExpression()
+    |
+    <OPRNT> Expression() <CPRNT> NRExpression()
 }
 
 //#SayNoToLeftRecursion
 void NRExpression(): {}
 {
-    <IDENTIFIER>
+    (<AND> | <LS> | <PLS> | <MNS> | <DVD> | <MLT>) Expression() NRExpression()
+    |
+    <OSQB> Expression() <CSQB> NRExpression()
+    |
+    <PNT> <LENGTH> NRExpression()
+    |
+    <PNT> <IDENTIFIER> <OPRNT> [Expression() (<CM> Expression())*] <CPRNT> NRExpression()
+    |
+    <EMPTY>
 }
