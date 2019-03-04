@@ -502,11 +502,10 @@ if (jjtc000) {
         }
         jj_consume_token(CPRNT);
         NRExpression();
-      } else if (jj_2_43(2)) {
-        jj_consume_token(EMPTY);
       } else {
-        jj_consume_token(-1);
-        throw new ParseException();
+jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+
       }
     } catch (Throwable jjte000) {
 if (jjtc000) {
@@ -865,14 +864,6 @@ if (jjtc000) {
     finally { jj_save(41, xla); }
   }
 
-  static private boolean jj_2_43(int xla)
- {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_43(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(42, xla); }
-  }
-
   static private boolean jj_3_29()
  {
     if (jj_scan_token(NOT)) return true;
@@ -978,6 +969,7 @@ if (jjtc000) {
   static private boolean jj_3_19()
  {
     if (jj_3R_16()) return true;
+    if (jj_scan_token(SCM)) return true;
     return false;
   }
 
@@ -1113,6 +1105,11 @@ if (jjtc000) {
   static private boolean jj_3_38()
  {
     if (jj_3R_16()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3_37()) { jj_scanpos = xsp; break; }
+    }
     return false;
   }
 
@@ -1199,9 +1196,8 @@ if (jjtc000) {
     return false;
   }
 
-  static private boolean jj_3_43()
+  static private boolean jj_3R_18()
  {
-    if (jj_scan_token(EMPTY)) return true;
     return false;
   }
 
@@ -1250,7 +1246,7 @@ if (jjtc000) {
     jj_scanpos = xsp;
     if (jj_3_42()) {
     jj_scanpos = xsp;
-    if (jj_3_43()) return true;
+    if (jj_3R_18()) return true;
     }
     }
     }
@@ -1314,7 +1310,7 @@ if (jjtc000) {
    private static void jj_la1_init_1() {
       jj_la1_1 = new int[] {};
    }
-  static final private JJCalls[] jj_2_rtns = new JJCalls[43];
+  static final private JJCalls[] jj_2_rtns = new JJCalls[42];
   static private boolean jj_rescan = false;
   static private int jj_gc = 0;
 
@@ -1562,7 +1558,7 @@ if (jjtc000) {
 
   static private void jj_rescan_token() {
     jj_rescan = true;
-    for (int i = 0; i < 43; i++) {
+    for (int i = 0; i < 42; i++) {
     try {
       JJCalls p = jj_2_rtns[i];
       do {
@@ -1611,7 +1607,6 @@ if (jjtc000) {
             case 39: jj_3_40(); break;
             case 40: jj_3_41(); break;
             case 41: jj_3_42(); break;
-            case 42: jj_3_43(); break;
           }
         }
         p = p.next;

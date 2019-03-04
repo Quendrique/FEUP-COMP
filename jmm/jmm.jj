@@ -400,8 +400,13 @@ void NRExpression(): {/*@bgen(jjtree) NRExpression */
     <PNT> <LENGTH> NRExpression()
     |
     <PNT> <IDENTIFIER> <OPRNT> [Expression() (<CM> Expression())*] <CPRNT> NRExpression()
-    |
-    <EMPTY>/*@bgen(jjtree)*/
+    |/*@bgen(jjtree)*/
+    {
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+    }
+/*@egen*/
+    {}/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
