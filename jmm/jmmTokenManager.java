@@ -20,6 +20,8 @@ private static final int jjStopStringLiteralDfa_0(int pos, long active0){
             jjmatchedKind = 40;
             return 1;
          }
+         if ((active0 & 0x20000000L) != 0L)
+            return 1;
          return -1;
       case 1:
          if ((active0 & 0xff000077e0L) != 0L)
@@ -102,7 +104,7 @@ static private int jjMoveStringLiteralDfa0_0(){
       case 44:
          return jjStopAtPos(0, 21);
       case 45:
-         return jjStopAtPos(0, 29);
+         return jjStartNfaWithStates_0(0, 29, 1);
       case 46:
          return jjStopAtPos(0, 22);
       case 47:
@@ -398,19 +400,32 @@ static private int jjMoveNfa_0(int startState, int curPos)
             switch(jjstateSet[--i])
             {
                case 0:
+                  if ((0x3ff000000000000L & l) != 0L)
+                  {
+                     if (kind > 41)
+                        kind = 41;
+                     { jjCheckNAdd(2); }
+                  }
+                  else if (curChar == 45)
+                  {
+                     if (kind > 40)
+                        kind = 40;
+                     { jjCheckNAdd(1); }
+                  }
+                  break;
+               case 1:
+                  if ((0x3ff200000000000L & l) == 0L)
+                     break;
+                  if (kind > 40)
+                     kind = 40;
+                  { jjCheckNAdd(1); }
+                  break;
                case 2:
                   if ((0x3ff000000000000L & l) == 0L)
                      break;
                   if (kind > 41)
                      kind = 41;
                   { jjCheckNAdd(2); }
-                  break;
-               case 1:
-                  if ((0x3ff000000000000L & l) == 0L)
-                     break;
-                  if (kind > 40)
-                     kind = 40;
-                  jjstateSet[jjnewStateCnt++] = 1;
                   break;
                default : break;
             }
@@ -425,7 +440,7 @@ static private int jjMoveNfa_0(int startState, int curPos)
             {
                case 0:
                case 1:
-                  if ((0x7fffffe07fffffeL & l) == 0L)
+                  if ((0x7fffffe87fffffeL & l) == 0L)
                      break;
                   if (kind > 40)
                      kind = 40;

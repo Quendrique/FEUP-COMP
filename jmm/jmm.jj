@@ -82,7 +82,7 @@ TOKEN:
     | < THIS: "this">
     | < NEW: "new">
     | < LENGTH: "length">
-    | < IDENTIFIER: (["A"-"Z","a"-"z"](["0"-"9","A"-"Z","a"-"z"])*)>
+    | < IDENTIFIER: (["A"-"Z","a"-"z","_","-"](["0"-"9","A"-"Z","a"-"z","_","-"])*)>
     | < INTEGERLITERAL: (["0"-"9"])+>
 }
 

@@ -8,7 +8,7 @@ class Test extends Telemoveis {
     int S2;
 
     public int partirTelemoveis(){
-        int telele;
+        
 
         return telele;
     }
