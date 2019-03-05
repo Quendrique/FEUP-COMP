@@ -96,7 +96,7 @@ void ClassDeclaration(): {}
         (VarDeclaration())*  
         
         
-        (MainDeclaration())*  (MethodDeclaration())*
+        (MainDeclaration() | MethodDeclaration())*
     <CB>
 }
 

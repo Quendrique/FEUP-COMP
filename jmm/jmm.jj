@@ -84,13 +84,9 @@ TOKEN:
     | < LENGTH: "length">
     | < IDENTIFIER: (["A"-"Z","a"-"z"](["0"-"9","A"-"Z","a"-"z"])*)>
     | < INTEGERLITERAL: (["0"-"9"])+>
-    | < EMPTY : "" > : MATCH_NON_EMPTY
 }
 
-<MATCH_NON_EMPTY>
-TOKEN : {
-    < NON_EMPTY : ~[] >
-}
+
 
 
 SimpleNode Program(): {/*@bgen(jjtree) Program */
@@ -136,7 +132,7 @@ void ClassDeclaration(): {/*@bgen(jjtree) ClassDeclaration */
         (VarDeclaration())*  
         
         
-        (MainDeclaration())*  (MethodDeclaration())*
+        (MainDeclaration() | MethodDeclaration())*
     <CB>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {

@@ -7,7 +7,11 @@ class Test extends Telemoveis {
     boolean eu;
     int S2;
 
-    
+    public int partirTelemoveis(){
+        int telele;
+
+        return telele;
+    }
 
     public static void main(String[] a){
         

@@ -82,15 +82,9 @@ public interface JmmConstants {
   int IDENTIFIER = 40;
   /** RegularExpression Id. */
   int INTEGERLITERAL = 41;
-  /** RegularExpression Id. */
-  int EMPTY = 42;
-  /** RegularExpression Id. */
-  int NON_EMPTY = 43;
 
   /** Lexical state. */
   int DEFAULT = 0;
-  /** Lexical state. */
-  int MATCH_NON_EMPTY = 1;
 
   /** Literal token values. */
   String[] tokenImage = {
@@ -136,8 +130,6 @@ public interface JmmConstants {
     "\"length\"",
     "<IDENTIFIER>",
     "<INTEGERLITERAL>",
-    "\"\"",
-    "<NON_EMPTY>",
   };
 
 }
