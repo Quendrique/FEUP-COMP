@@ -59,9 +59,9 @@ public interface JmmConstants {
   /** RegularExpression Id. */
   int MNS = 29;
   /** RegularExpression Id. */
-  int DVD = 30;
+  int SLSH = 30;
   /** RegularExpression Id. */
-  int MLT = 31;
+  int ASTRSK = 31;
   /** RegularExpression Id. */
   int INT = 32;
   /** RegularExpression Id. */

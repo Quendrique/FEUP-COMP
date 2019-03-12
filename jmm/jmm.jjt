@@ -68,8 +68,8 @@ TOKEN:
     | < LS: "<">
     | < PLS: "+">
     | < MNS: "-">
-    | < DVD: "/">
-    | < MLT: "*">
+    | < SLSH: "/">
+    | < ASTRSK: "*">
     | < INT: "int" >
     | < BOOLEAN: "boolean" >
     | < STRING: "String">
@@ -143,7 +143,6 @@ void Type(): {}
 //LOOKAHEAD 2
 void Statement(): {}
 {
-
     <OB>
         (Statement())*
     <CB>
@@ -185,7 +184,7 @@ void Expression(): {}
 //#SayNoToLeftRecursion
 void NRExpression(): {}
 {
-    (<AND> | <LS> | <PLS> | <MNS> | <DVD> | <MLT>) Expression() NRExpression()
+    (<AND> | <LS> | <PLS> | <MNS> | <SLSH> | <ASTRSK>) Expression() NRExpression()
     |
     <OSQB> Expression() <CSQB> NRExpression()
     |
@@ -194,4 +193,37 @@ void NRExpression(): {}
     <PNT> <IDENTIFIER> <OPRNT> [Expression() (<CM> Expression())*] <CPRNT> NRExpression()
     |
     {}
+}
+
+
+void Expr1() #void: {}
+{
+ Expr2(1)
+ [
+ ("+" Expr2(1) #Add(2)
+ | "-" Expr2(1) #Sub(2))
+ ]
+}
+void Expr2(int sign) #void: {} // 1: positive; -1: negative
+{
+ Expr3(sign)
+ ("*" Expr3(1) #Mul(2)
+ | "/" Expr3(1) #Div(2)
+)? // (…)? é equivalente a […]
+}
+void Expr3(int sign) #void: {Token t;}
+{
+ t=<INTEGERLITERAL>
+{
+jjtThis.val = sign * Integer.parseInt(t.image);
+} #Term
+ | "-" Expr3(-1)
+ | "(" Expr1() ")"
+}
+
+
+
+void Comment(): {}
+{
+    <SLSH> <SLSH> /*<COMCONT> <NL>*/
 }

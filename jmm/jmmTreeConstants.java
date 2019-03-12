@@ -10,6 +10,13 @@ public interface JmmTreeConstants
   public int JJTSTATEMENT = 6;
   public int JJTEXPRESSION = 7;
   public int JJTNREXPRESSION = 8;
+  public int JJTVOID = 9;
+  public int JJTADD = 10;
+  public int JJTSUB = 11;
+  public int JJTMUL = 12;
+  public int JJTDIV = 13;
+  public int JJTTERM = 14;
+  public int JJTCOMMENT = 15;
 
 
   public String[] jjtNodeName = {
@@ -22,6 +29,13 @@ public interface JmmTreeConstants
     "Statement",
     "Expression",
     "NRExpression",
+    "void",
+    "Add",
+    "Sub",
+    "Mul",
+    "Div",
+    "Term",
+    "Comment",
   };
 }
-/* JavaCC - OriginalChecksum=72854205809ad0a4b6020ee76a5ed311 (do not edit this line) */
+/* JavaCC - OriginalChecksum=198f904c9e545b90518d13778f7f3685 (do not edit this line) */
