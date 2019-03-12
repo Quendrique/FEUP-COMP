@@ -16,7 +16,6 @@ public interface JmmTreeConstants
   public int JJTMUL = 12;
   public int JJTDIV = 13;
   public int JJTTERM = 14;
-  public int JJTCOMMENT = 15;
 
 
   public String[] jjtNodeName = {
@@ -35,7 +34,6 @@ public interface JmmTreeConstants
     "Mul",
     "Div",
     "Term",
-    "Comment",
   };
 }
-/* JavaCC - OriginalChecksum=198f904c9e545b90518d13778f7f3685 (do not edit this line) */
+/* JavaCC - OriginalChecksum=65942ce7e30efd57e9f8479d4c5ac4fd (do not edit this line) */

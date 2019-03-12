@@ -41,7 +41,31 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants/*@egen*/
 PARSER_END(Jmm)
 SKIP :
 {
-    " " | "\r" | "\t" | "\n"
+    " " | "\r" | "\t" | "\n" 
+}
+
+SKIP :
+{
+  "/*" : multilinecomment
+}
+
+SKIP :
+{
+  "//" : singlelinecomment
+}
+
+< multilinecomment >
+SKIP :
+{
+  "*/" : DEFAULT
+| < ~[ ] >
+}
+
+< singlelinecomment >
+SKIP :
+{
+  < [ "\n", "\r" ] > : DEFAULT
+| < ~[ ] >
 }
 
 
@@ -574,23 +598,4 @@ jjtn001.val = sign * Integer.parseInt(t.image);
 /*@egen*/      
  | "-" Expr3(-1)
  | "(" Expr1() ")"
-}
-
-
-
-void Comment(): {/*@bgen(jjtree) Comment */
-  SimpleNode jjtn000 = new SimpleNode(JJTCOMMENT);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) Comment */
-    try {
-/*@egen*/
-    <SLSH> <SLSH>/*@bgen(jjtree)*/
-    } finally {
-      if (jjtc000) {
-        jjtree.closeNodeScope(jjtn000, true);
-      }
-    }
-/*@egen*/ /*<COMCONT> <NL>*/
 }

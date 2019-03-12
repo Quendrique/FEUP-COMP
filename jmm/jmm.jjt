@@ -37,7 +37,31 @@ public class Jmm
 PARSER_END(Jmm)
 SKIP :
 {
-    " " | "\r" | "\t" | "\n"
+    " " | "\r" | "\t" | "\n" 
+}
+
+SKIP :
+{
+  "/*" : multilinecomment
+}
+
+SKIP :
+{
+  "//" : singlelinecomment
+}
+
+< multilinecomment >
+SKIP :
+{
+  "*/" : DEFAULT
+| < ~[ ] >
+}
+
+< singlelinecomment >
+SKIP :
+{
+  < [ "\n", "\r" ] > : DEFAULT
+| < ~[ ] >
 }
 
 
@@ -223,7 +247,3 @@ jjtThis.val = sign * Integer.parseInt(t.image);
 
 
 
-void Comment(): {}
-{
-    <SLSH> <SLSH> /*<COMCONT> <NL>*/
-}

@@ -9,82 +9,86 @@ public interface JmmConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int CLASS = 5;
+  int CLASS = 11;
   /** RegularExpression Id. */
-  int EXTENDS = 6;
+  int EXTENDS = 12;
   /** RegularExpression Id. */
-  int PUBLIC = 7;
+  int PUBLIC = 13;
   /** RegularExpression Id. */
-  int STATIC = 8;
+  int STATIC = 14;
   /** RegularExpression Id. */
-  int VOID = 9;
+  int VOID = 15;
   /** RegularExpression Id. */
-  int MAIN = 10;
+  int MAIN = 16;
   /** RegularExpression Id. */
-  int IF = 11;
+  int IF = 17;
   /** RegularExpression Id. */
-  int ELSE = 12;
+  int ELSE = 18;
   /** RegularExpression Id. */
-  int WHILE = 13;
+  int WHILE = 19;
   /** RegularExpression Id. */
-  int RETURN = 14;
+  int RETURN = 20;
   /** RegularExpression Id. */
-  int OB = 15;
+  int OB = 21;
   /** RegularExpression Id. */
-  int CB = 16;
+  int CB = 22;
   /** RegularExpression Id. */
-  int OSQB = 17;
+  int OSQB = 23;
   /** RegularExpression Id. */
-  int CSQB = 18;
+  int CSQB = 24;
   /** RegularExpression Id. */
-  int OPRNT = 19;
+  int OPRNT = 25;
   /** RegularExpression Id. */
-  int CPRNT = 20;
+  int CPRNT = 26;
   /** RegularExpression Id. */
-  int CM = 21;
+  int CM = 27;
   /** RegularExpression Id. */
-  int PNT = 22;
+  int PNT = 28;
   /** RegularExpression Id. */
-  int SCM = 23;
+  int SCM = 29;
   /** RegularExpression Id. */
-  int EQLS = 24;
+  int EQLS = 30;
   /** RegularExpression Id. */
-  int NOT = 25;
+  int NOT = 31;
   /** RegularExpression Id. */
-  int AND = 26;
+  int AND = 32;
   /** RegularExpression Id. */
-  int LS = 27;
+  int LS = 33;
   /** RegularExpression Id. */
-  int PLS = 28;
+  int PLS = 34;
   /** RegularExpression Id. */
-  int MNS = 29;
+  int MNS = 35;
   /** RegularExpression Id. */
-  int SLSH = 30;
+  int SLSH = 36;
   /** RegularExpression Id. */
-  int ASTRSK = 31;
+  int ASTRSK = 37;
   /** RegularExpression Id. */
-  int INT = 32;
+  int INT = 38;
   /** RegularExpression Id. */
-  int BOOLEAN = 33;
+  int BOOLEAN = 39;
   /** RegularExpression Id. */
-  int STRING = 34;
+  int STRING = 40;
   /** RegularExpression Id. */
-  int TRUE = 35;
+  int TRUE = 41;
   /** RegularExpression Id. */
-  int FALSE = 36;
+  int FALSE = 42;
   /** RegularExpression Id. */
-  int THIS = 37;
+  int THIS = 43;
   /** RegularExpression Id. */
-  int NEW = 38;
+  int NEW = 44;
   /** RegularExpression Id. */
-  int LENGTH = 39;
+  int LENGTH = 45;
   /** RegularExpression Id. */
-  int IDENTIFIER = 40;
+  int IDENTIFIER = 46;
   /** RegularExpression Id. */
-  int INTEGERLITERAL = 41;
+  int INTEGERLITERAL = 47;
 
   /** Lexical state. */
   int DEFAULT = 0;
+  /** Lexical state. */
+  int multilinecomment = 1;
+  /** Lexical state. */
+  int singlelinecomment = 2;
 
   /** Literal token values. */
   String[] tokenImage = {
@@ -93,6 +97,12 @@ public interface JmmConstants {
     "\"\\r\"",
     "\"\\t\"",
     "\"\\n\"",
+    "\"/*\"",
+    "\"//\"",
+    "\"*/\"",
+    "<token of kind 8>",
+    "<token of kind 9>",
+    "<token of kind 10>",
     "\"class\"",
     "\"extends\"",
     "\"public\"",
