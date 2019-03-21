@@ -208,7 +208,8 @@ void Expression(): {}
 
 }
 
-void Lt(): {
+void Lt(): {}
+{
 
     Lt() <LS> AddSub()
     |
@@ -216,39 +217,30 @@ void Lt(): {
 
 }
 
-void AddSub() {
+void AddSub(): {}
+{
 
-    AddSub() Op1() MultDiv()
+    AddSub() (<PLS> | <MNS>) MultDiv()
     |
     MultDiv()
 
 }
 
-void MultDiv() {
+void MultDiv(): {}
+{
 
-    MultDiv() Op2() IntegerLiteral()
+    MultDiv() (<ASTRSK> | <SLSH>) IntegerLiteral()
     |
     IntegerLiteral()
 
 }
 
-void MultDiv() {
-    
-}
 
-void Op1() {
-    <PLS> | <MNS>
-}
-
-void Op2() {
-    <ASTRSK> | <SLSH>
-}
-
-void ExpressionNR() {
-
+void ExpressionNR(): {}
+{
     <AND> Lt() ExpressionNR()
     |
-    <OSQB> Expression <CSQB> ExpressionNR()
+    <OSQB> Expression() <CSQB> ExpressionNR()
     |
     <PNT> <LENGTH> ExpressionNR()
     |
