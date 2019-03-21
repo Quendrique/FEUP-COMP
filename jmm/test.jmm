@@ -1,6 +1,7 @@
 class Test{
-	public int main(){
-		int test = 2+2*2;
+	public int test(){
+		int test;
+		test = 2+2*2;
 		return test;
 	}
 }
