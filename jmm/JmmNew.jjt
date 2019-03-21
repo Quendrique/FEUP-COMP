@@ -208,34 +208,6 @@ void Expression(): {}
 
 }
 
-void Lt(): {}
-{
-
-    Lt() <LS> AddSub()
-    |
-    AddSub()
-
-}
-
-void AddSub(): {}
-{
-
-    AddSub() (<PLS> | <MNS>) MultDiv()
-    |
-    MultDiv()
-
-}
-
-void MultDiv(): {}
-{
-
-    MultDiv() (<ASTRSK> | <SLSH>) IntegerLiteral()
-    |
-    IntegerLiteral()
-
-}
-
-
 void ExpressionNR(): {}
 {
     <AND> Lt() ExpressionNR()
@@ -244,7 +216,7 @@ void ExpressionNR(): {}
     |
     <PNT> <LENGTH> ExpressionNR()
     |
-    <PNT> Identifier() <OPRNT> (
+    <PNT> <IDENTIFIER> <OPRNT> (
         Expression()
         (<CM> Expression())*
     )*
@@ -253,4 +225,45 @@ void ExpressionNR(): {}
     {}
 
 }
+
+void Lt(): {}
+{
+
+  AddSub() LtNR()
+
+}
+
+void LtNR(): {}
+{
+  <LS> AddSub() LtNR()
+  |
+  {}
+} 
+
+void AddSub(): {}
+{
+  MultDiv() AddSubNR()
+}
+
+void AddSubNR(): {}
+{
+  (<PLS> | <MNS>) MultDiv() AddSubNR()
+  |
+  {}
+}
+
+
+void MultDiv(): {}
+{
+  <INTEGERLITERAL> MultDivNR()
+}
+
+void MultDivNR(): {}
+{
+  (<ASTRSK> | <SLSH>) <INTEGERLITERAL> MultDivNR()
+  |
+  {}
+}
+
+
 
