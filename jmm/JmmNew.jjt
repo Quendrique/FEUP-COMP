@@ -1,19 +1,19 @@
 options {
  LOOKAHEAD=2;
 }
-PARSER_BEGIN(Jmm)
+PARSER_BEGIN(JmmNew)
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class Jmm
+public class JmmNew
 {
  public static void main(String args[]) throws ParseException {
 
     final String FILENAME = args[0];
 
     BufferedReader br = null;
-	FileReader fr = null;
+	  FileReader fr = null;
 
 		try {
 
@@ -34,7 +34,7 @@ public class Jmm
  }
     
 }
-PARSER_END(Jmm)
+PARSER_END(JmmNew)
 SKIP :
 {
     " " | "\r" | "\t" | "\n" 

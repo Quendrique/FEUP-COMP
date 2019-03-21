@@ -1,22 +1,6 @@
-class Test extends Telemoveis {
-    int quem;
-    int mandou;
-    boolean a;
-    int flecha;
-    int fui;
-    boolean eu;
-    int S2;
-
-    public int partirTelemoveis(){
-        
-
-        return telele;
-    }
-
-    public static void main(String[] a){
-        
-        
-
-
-    }
+class Test{
+	public int main(){
+		int test = 2+2*2;
+		return test;
+	}
 }
