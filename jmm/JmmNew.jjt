@@ -1,5 +1,6 @@
 options {
  LOOKAHEAD=2;
+ MULTI=true;
 }
 PARSER_BEGIN(JmmNew)
 import java.io.BufferedReader;
@@ -24,8 +25,6 @@ public class JmmNew
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-
 
     Jmm myJmm = new Jmm(br);
     SimpleNode root = myJmm.Program();
@@ -173,13 +172,18 @@ void Statement(): {}
     |
     <IF> <OPRNT> Expression() <CPRNT> Statement() <ELSE> Statement()
     |
-    <WHILE> <OPRNT> Expression() <CPRNT> Statement()
+    <WHILE> While()
     |
     Expression() <SCM>
     |
     <IDENTIFIER> <EQLS> Expression() <SCM>
     |
     <IDENTIFIER> <OSQB> Expression() <CSQB> <EQLS> Expression() <SCM>
+}
+
+void While(): {}
+{
+  <OPRNT> Expression() <CPRNT> Statement()
 }
 
 //LOOKAHEAD 2
@@ -251,7 +255,6 @@ void AddSubNR(): {}
   |
   {}
 }
-
 
 void MultDiv(): {}
 {
