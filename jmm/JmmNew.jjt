@@ -26,8 +26,8 @@ public class JmmNew
 			e.printStackTrace();
 		}
 
-    Jmm myJmm = new Jmm(br);
-    SimpleNode root = myJmm.Program();
+    JmmNew myJmmNew = new JmmNew(br);
+    SimpleNode root = myJmmNew.Program();
     root.dump("");
 
  }
@@ -163,7 +163,7 @@ void Type(): {}
     | <IDENTIFIER>
 }
 
-//LOOKAHEAD 2
+//LOOKAHEAD 1
 void Statement(): {}
 {
     <OB>
@@ -172,18 +172,13 @@ void Statement(): {}
     |
     <IF> <OPRNT> Expression() <CPRNT> Statement() <ELSE> Statement()
     |
-    <WHILE> While()
+    <WHILE> <OPRNT> Expression() <CPRNT> Statement()
     |
     Expression() <SCM>
     |
     <IDENTIFIER> <EQLS> Expression() <SCM>
     |
     <IDENTIFIER> <OSQB> Expression() <CSQB> <EQLS> Expression() <SCM>
-}
-
-void While(): {}
-{
-  <OPRNT> Expression() <CPRNT> Statement()
 }
 
 //LOOKAHEAD 2
