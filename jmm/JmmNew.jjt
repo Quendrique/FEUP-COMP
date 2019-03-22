@@ -239,26 +239,31 @@ void LtNR(): {}
   {}
 } 
 
-void AddSub(): {}
+void AddSub() #void: {}
 {
   MultDiv() AddSubNR()
 }
 
-void AddSubNR(): {}
+void AddSubNR() #void: {}
 {
-  (<PLS> | <MNS>) MultDiv() AddSubNR()
+  <PLS>  MultDiv() AddSubNR() #Add(2)
+  | 
+  <MNS>  MultDiv() AddSubNR() #Sub(2)
   |
   {}
 }
 
-void MultDiv(): {}
+void MultDiv() : {Token t;}
 {
-  <INTEGERLITERAL> MultDivNR()
+  t= <INTEGERLITERAL> { jjtThis.setVal(Integer.parseInt(t.image));}
+  MultDivNR()
 }
 
-void MultDivNR(): {}
+void MultDivNR() : {Token t;}
 {
-  (<ASTRSK> | <SLSH>) <INTEGERLITERAL> MultDivNR()
+  <ASTRSK> t= <INTEGERLITERAL> { jjtThis.setVal(Integer.parseInt(t.image));} MultDivNR() 
+  | 
+  <SLSH> t= <INTEGERLITERAL> { jjtThis.setVal(Integer.parseInt(t.image));} MultDivNR() 
   |
   {}
 }
