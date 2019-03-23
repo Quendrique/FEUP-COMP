@@ -1,0 +1,9 @@
+class Test{
+	public int test(){
+		int test;
+		while( i p 10){
+			test=2;
+		}
+		return 1;
+	}
+}

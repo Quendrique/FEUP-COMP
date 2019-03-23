@@ -172,7 +172,16 @@ void Statement(): {}
     |
     <IF> <OPRNT> Expression() <CPRNT> Statement() <ELSE> Statement()
     |
-    <WHILE> <OPRNT> Expression() <CPRNT> Statement()
+    <WHILE> <OPRNT>
+    try{Expression() <CPRNT>} 
+    catch(ParseException e){
+      System.out.println(e.getMessage());
+      Token t;
+      do {
+        t = getNextToken();
+      } while (t.kind != CPRNT);
+    }
+    Statement() 
     |
     Expression() <SCM>
     |
