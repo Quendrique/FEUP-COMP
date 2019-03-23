@@ -123,9 +123,9 @@ void ClassDeclaration(): {}
     <CB>
 }
 
-void VarDeclaration(): {}
+void VarDeclaration(): {Token t;}
 {
-    Type() <IDENTIFIER> <SCM>
+    Type() t=<IDENTIFIER> {jjtThis.setIdentifier(t.image);} <SCM>
 }
 
 void MainDeclaration(): {}
@@ -154,13 +154,12 @@ void MethodDeclaration(): {}
 }
 
 //LOOKAHEAD 2
-void Type(): {}
+void Type(): {Token t;}
 {
-
-    <INT> <OSQB> <CSQB>
-    | <BOOLEAN>
-    | <INT>
-    | <IDENTIFIER>
+    t=<INT> {jjtThis.setType(t.image);}  <OSQB> <CSQB>
+    | t=<BOOLEAN> {jjtThis.setType(t.image);} 
+    | t=<INT> {jjtThis.setType(t.image);} 
+    | t=<IDENTIFIER> {jjtThis.setType(t.image);} 
 }
 
 //LOOKAHEAD 1
