@@ -73,17 +73,6 @@ class SimpleNode implements Node {
 
   public void dump(String prefix) {
     System.out.println(toString(prefix));
-    switch(this.id) {
-      case JmmNewTreeConstants.JJTADD:
-        System.out.println("\t[ + ]");break;
-      case JmmNewTreeConstants.JJTSUB:
-        System.out.println("\t[ - ]");break;
-      case JmmNewTreeConstants.JJTMULTDIV:
-        System.out.println("\t" + this.val);break;
-        case JmmNewTreeConstants.JJTMULTDIVNR:
-        if(this.val != null) 
-          System.out.println("\t" + this.val);break;
-    }
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         SimpleNode n = (SimpleNode)children[i];

@@ -5,8 +5,6 @@
 ### Java ###
 # Compiled class file
 *.class
-*.java
-!SimpleNode.java
 
 # Log file
 *.log
