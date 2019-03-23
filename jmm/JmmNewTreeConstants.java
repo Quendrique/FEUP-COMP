@@ -9,14 +9,11 @@ public interface JmmNewTreeConstants
   public int JJTTYPE = 5;
   public int JJTSTATEMENT = 6;
   public int JJTEXPRESSION = 7;
-  public int JJTEXPRESSIONNR = 8;
-  public int JJTLT = 9;
-  public int JJTLTNR = 10;
-  public int JJTVOID = 11;
-  public int JJTADD = 12;
-  public int JJTSUB = 13;
-  public int JJTMULTDIV = 14;
-  public int JJTMULTDIVNR = 15;
+  public int JJTVOID = 8;
+  public int JJTASTIDENTIFIER = 9;
+  public int JJTASTINTEGERLITERAL = 10;
+  public int JJTASTTRUE = 11;
+  public int JJTASTFALSE = 12;
 
 
   public String[] jjtNodeName = {
@@ -28,14 +25,11 @@ public interface JmmNewTreeConstants
     "Type",
     "Statement",
     "Expression",
-    "ExpressionNR",
-    "Lt",
-    "LtNR",
     "void",
-    "Add",
-    "Sub",
-    "MultDiv",
-    "MultDivNR",
+    "ASTIdentifier",
+    "ASTIntegerLiteral",
+    "ASTTrue",
+    "ASTFalse",
   };
 }
-/* JavaCC - OriginalChecksum=2526e6dd5b7fd769392bf05a6dbcafd4 (do not edit this line) */
+/* JavaCC - OriginalChecksum=1a2d6e9b414b6969889230290596827e (do not edit this line) */

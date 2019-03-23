@@ -14,17 +14,15 @@ public class JmmNew
     final String FILENAME = args[0];
 
     BufferedReader br = null;
-	  FileReader fr = null;
+    FileReader fr = null;
 
-		try {
+    try {
+        fr = new FileReader(FILENAME);
+        br = new BufferedReader(fr);
 
-			//br = new BufferedReader(new FileReader(FILENAME));
-			fr = new FileReader(FILENAME);
-			br = new BufferedReader(fr);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
 
     JmmNew myJmmNew = new JmmNew(br);
     SimpleNode root = myJmmNew.Program();
@@ -101,7 +99,7 @@ TOKEN:
     | < THIS: "this">
     | < NEW: "new">
     | < LENGTH: "length">
-    | < IDENTIFIER: (["A"-"Z","a"-"z","_","-"](["0"-"9","A"-"Z","a"-"z","_","-"])*)>
+    | < IDENTIFIER: (["A"-"Z","a"-"z","_"](["0"-"9","A"-"Z","a"-"z","_","-"])*)>
     | < INTEGERLITERAL: (["0"-"9"])+>
 }
 
@@ -156,10 +154,13 @@ void MethodDeclaration(): {}
 //LOOKAHEAD 2
 void Type(): {Token t;}
 {
-    t=<INT> {jjtThis.setType(t.image);}  <OSQB> <CSQB>
-    | t=<BOOLEAN> {jjtThis.setType(t.image);} 
-    | t=<INT> {jjtThis.setType(t.image);} 
-    | t=<IDENTIFIER> {jjtThis.setType(t.image);} 
+    (
+        t=<INT> <OSQB> <CSQB>
+        | t=<BOOLEAN>  
+        | t=<INT> 
+        | t=<IDENTIFIER>  
+    )
+    {jjtThis.setType(t.image);}
 }
 
 //LOOKAHEAD 1
@@ -172,8 +173,10 @@ void Statement(): {}
     <IF> <OPRNT> Expression() <CPRNT> Statement() <ELSE> Statement()
     |
     <WHILE> <OPRNT>
-    try{Expression() <CPRNT>} 
-    catch(ParseException e){
+    try {
+        Expression() <CPRNT>
+    } 
+    catch(ParseException e) {
       System.out.println(e.getMessage());
       Token t;
       do {
@@ -193,7 +196,7 @@ void Statement(): {}
 void Expression(): {}
 {
 
-    Lt() ExpressionNR()
+    And() ExpressionNR()
     |
     <INTEGERLITERAL> ExpressionNR()
     |
@@ -215,9 +218,9 @@ void Expression(): {}
 
 }
 
-void ExpressionNR(): {}
+void ExpressionNR() #void: {}
 {
-    <AND> Lt() ExpressionNR()
+    And() ExpressionNR()
     |
     <OSQB> Expression() <CSQB> ExpressionNR()
     |
@@ -233,48 +236,36 @@ void ExpressionNR(): {}
 
 }
 
-void Lt(): {}
+void And() #void: {}
 {
-
-  AddSub() LtNR()
-
+  Lt() (<AND> Lt() )*
 }
 
-void LtNR(): {}
+void Lt() #void: {}
 {
-  <LS> AddSub() LtNR()
-  |
-  {}
-} 
+
+  AddSub() (<LS> AddSub())*
+
+}
 
 void AddSub() #void: {}
 {
-  MultDiv() AddSubNR()
+  MultDiv() ((<PLS> | <MNS>) MultDiv() )*
 }
 
-void AddSubNR() #void: {}
+void MultDiv() #void: {Token t;}
 {
-  <PLS>  MultDiv() AddSubNR() #Add(2)
-  | 
-  <MNS>  MultDiv() AddSubNR() #Sub(2)
-  |
-  {}
+  Literal() ((<ASTRSK> | <SLSH>) Literal() )*
 }
 
-void MultDiv() : {Token t;}
+void Literal() #void: {Token t;}
 {
-  t= <INTEGERLITERAL> { jjtThis.setVal(Integer.parseInt(t.image));}
-  MultDivNR()
+  t = <IDENTIFIER> #ASTIdentifier
+  | <INTEGERLITERAL> #ASTIntegerLiteral
+  | <TRUE> #ASTTrue 
+  | <FALSE> #ASTFalse
 }
 
-void MultDivNR() : {Token t;}
-{
-  <ASTRSK> t= <INTEGERLITERAL> { jjtThis.setVal(Integer.parseInt(t.image));} MultDivNR() 
-  | 
-  <SLSH> t= <INTEGERLITERAL> { jjtThis.setVal(Integer.parseInt(t.image));} MultDivNR() 
-  |
-  {}
-}
 
 
 
