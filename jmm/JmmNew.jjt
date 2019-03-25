@@ -138,9 +138,9 @@ void MainDeclaration(): {}
     <CB>
 }
 
-void MethodDeclaration(): {}
+void MethodDeclaration(): {Token t;}
 {
-    <PUBLIC> Type() <IDENTIFIER> <OPRNT> 
+    <PUBLIC> Type() t=<IDENTIFIER> <OPRNT> 
     (
         MethodArgument()
         (
@@ -153,6 +153,7 @@ void MethodDeclaration(): {}
         (Statement())*
         <RETURN> Expression() <SCM>
     <CB>
+    {jjtThis.setName(t.image);}
 }
 
 void MethodArgument(): {Token t;}
