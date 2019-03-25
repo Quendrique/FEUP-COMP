@@ -114,14 +114,15 @@ SimpleNode Program(): {}
     ClassDeclaration() {return jjtThis;} <EOF>
 }
 
-void ClassDeclaration(): {}
+void ClassDeclaration(): {Token t;}
 {
-    <CLASS> <IDENTIFIER> (<EXTENDS> <IDENTIFIER>)? <OB> 
+    <CLASS> t=<IDENTIFIER> (<EXTENDS> <IDENTIFIER>)? <OB> 
         (VarDeclaration())*  
         
         
         (MainDeclaration() | MethodDeclaration())*
     <CB>
+    {jjtThis.setName(t.image);}
 }
 
 void VarDeclaration(): {Token t;}

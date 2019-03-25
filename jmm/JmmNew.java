@@ -67,12 +67,12 @@ if (jjtc000) {
   static final public void ClassDeclaration() throws ParseException {
     trace_call("ClassDeclaration");
     try {/*@bgen(jjtree) ClassDeclaration */
-  ASTClassDeclaration jjtn000 = new ASTClassDeclaration(JJTCLASSDECLARATION);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
+                          ASTClassDeclaration jjtn000 = new ASTClassDeclaration(JJTCLASSDECLARATION);
+                          boolean jjtc000 = true;
+                          jjtree.openNodeScope(jjtn000);Token t;
       try {
         jj_consume_token(CLASS);
-        jj_consume_token(IDENTIFIER);
+        t = jj_consume_token(IDENTIFIER);
         if (jj_2_1(2)) {
           jj_consume_token(EXTENDS);
           jj_consume_token(IDENTIFIER);
@@ -106,6 +106,9 @@ if (jjtc000) {
           }
         }
         jj_consume_token(CB);
+jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+jjtn000.setName(t.image);
       } catch (Throwable jjte000) {
 if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -1525,12 +1528,6 @@ if (jjtc004) {
     return false;
   }
 
-  static private boolean jj_3_5()
- {
-    if (jj_3R_18()) return true;
-    return false;
-  }
-
   static private boolean jj_3_8()
  {
     if (jj_3R_20()) return true;
@@ -1547,6 +1544,12 @@ if (jjtc004) {
  {
     if (jj_scan_token(TRUE)) return true;
     if (jj_3R_27()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_5()
+ {
+    if (jj_3R_18()) return true;
     return false;
   }
 
@@ -1608,6 +1611,13 @@ if (jjtc004) {
     return false;
   }
 
+  static private boolean jj_3_1()
+ {
+    if (jj_scan_token(EXTENDS)) return true;
+    if (jj_scan_token(IDENTIFIER)) return true;
+    return false;
+  }
+
   static private boolean jj_3R_25()
  {
     if (jj_3R_26()) return true;
@@ -1616,13 +1626,6 @@ if (jjtc004) {
       xsp = jj_scanpos;
       if (jj_3_28()) { jj_scanpos = xsp; break; }
     }
-    return false;
-  }
-
-  static private boolean jj_3_1()
- {
-    if (jj_scan_token(EXTENDS)) return true;
-    if (jj_scan_token(IDENTIFIER)) return true;
     return false;
   }
 
