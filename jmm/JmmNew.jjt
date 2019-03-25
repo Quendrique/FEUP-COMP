@@ -132,7 +132,7 @@ void VarDeclaration(): {Token t;}
 void MainDeclaration(): {}
 {
     <PUBLIC> <STATIC> <VOID> <MAIN> <OPRNT> <STRING> <OSQB> <CSQB> <IDENTIFIER> <CPRNT> <OB>
-        (VarDeclaration())*
+        (VarDeclaration() #Parameter)*
         (Statement())*
     <CB>
 }
@@ -235,13 +235,13 @@ void MultDiv() : {}
 
 void Literal() : {}
 {
-  <INTEGERLITERAL> LiteralNR() #ASTIdentifier
+  <INTEGERLITERAL> LiteralNR() #Identifier
   |
-  <TRUE> LiteralNR() #ASTTrue
+  <TRUE> LiteralNR() #True
   |
-  <FALSE> LiteralNR() #ASTFalse
+  <FALSE> LiteralNR() #False
   |
-  <IDENTIFIER> LiteralNR() #ASTIdentifier
+  <IDENTIFIER> LiteralNR() #Identifier
   |
   <THIS> LiteralNR()
   |
@@ -261,8 +261,8 @@ void LiteralNR() : {}
   <PNT> <LENGTH> LiteralNR()
   |
   <PNT> <IDENTIFIER> <OPRNT> (
-      Literal()
-      (<CM> Literal())*
+      And()
+      (<CM> And())*
   )*
   <CPRNT> LiteralNR()
   |
