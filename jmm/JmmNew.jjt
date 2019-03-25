@@ -8,8 +8,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class JmmNew
-{
+public class JmmNew{
+
+  static int errorCount=0;
+
  public static void main(String args[]) throws ParseException {
 
     final String FILENAME = args[0];
@@ -173,24 +175,36 @@ void Statement(): {}
     |
     <IF> <OPRNT> Expression() <CPRNT> Statement() <ELSE> Statement()
     |
-    <WHILE> <OPRNT>
-    try {
-        Expression() <CPRNT>
-    } 
-    catch(ParseException e) {
-      System.out.println(e.getMessage());
-      Token t;
-      do {
-        t = getNextToken();
-      } while (t.kind != CPRNT);
-    }
-    Statement() 
+    While()
     |
     Expression() <SCM>
     |
     <IDENTIFIER> <EQLS> Expression() <SCM>
     |
     <IDENTIFIER> <OSQB> Expression() <CSQB> <EQLS> Expression() <SCM>
+}
+
+void While(): {}
+{
+  <WHILE> <OPRNT>
+    try {
+        Expression() <CPRNT>
+    } 
+    catch(ParseException e) {
+      System.out.println(e.getMessage());
+      JmmNew.errorCount++;
+      Token t;
+
+      if(JmmNew.errorCount>10){
+          System.out.println(JmmNew.errorCount + " erros: exiting program");
+          System.exit(1);
+        }
+
+      do {
+        t = getNextToken();
+      } while (t.kind != CPRNT);
+    }
+    Statement() 
 }
 
 //LOOKAHEAD 2
