@@ -171,7 +171,7 @@ void Type(): {Token t;}
     {jjtThis.setType(t.image);}
 }
 
-//LOOKAHEAD 1
+//LOOKAHEAD 2
 void Statement(): {}
 {
     <OB>
@@ -182,11 +182,11 @@ void Statement(): {}
     |
     While()
     |
-    Expression() <SCM>
-    |
     <IDENTIFIER> <EQLS> Expression() <SCM>
     |
     <IDENTIFIER> <OSQB> Expression() <CSQB> <EQLS> Expression() <SCM>
+    |
+    Expression() <SCM>
 }
 
 void While(): {}
