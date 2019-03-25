@@ -5,22 +5,21 @@ public interface JmmNewTreeConstants
   public int JJTCLASSDECLARATION = 1;
   public int JJTVARDECLARATION = 2;
   public int JJTMAINDECLARATION = 3;
-  public int JJTPARAMETER = 4;
-  public int JJTMETHODDECLARATION = 5;
-  public int JJTMETHODARGUMENT = 6;
-  public int JJTIDENTIFIER = 7;
-  public int JJTTYPE = 8;
-  public int JJTSTATEMENT = 9;
-  public int JJTWHILE = 10;
-  public int JJTEXPRESSION = 11;
-  public int JJTVOID = 12;
+  public int JJTMETHODDECLARATION = 4;
+  public int JJTMETHODARGUMENTS = 5;
+  public int JJTRETURN = 6;
+  public int JJTMETHODARGUMENT = 7;
+  public int JJTIDENTIFIER = 8;
+  public int JJTTYPE = 9;
+  public int JJTSTATEMENT = 10;
+  public int JJTVOID = 11;
+  public int JJTEXPRESSION = 12;
   public int JJTAND = 13;
-  public int JJTLT = 14;
+  public int JJTLESSTHAN = 14;
   public int JJTADDSUB = 15;
   public int JJTMULTDIV = 16;
   public int JJTINTEGERLITERAL = 17;
-  public int JJTTRUE = 18;
-  public int JJTFALSE = 19;
+  public int JJTCALL = 18;
 
 
   public String[] jjtNodeName = {
@@ -28,22 +27,21 @@ public interface JmmNewTreeConstants
     "ClassDeclaration",
     "VarDeclaration",
     "MainDeclaration",
-    "Parameter",
     "MethodDeclaration",
+    "MethodArguments",
+    "Return",
     "MethodArgument",
     "Identifier",
     "Type",
     "Statement",
-    "While",
-    "Expression",
     "void",
+    "Expression",
     "And",
-    "Lt",
+    "LessThan",
     "AddSub",
     "MultDiv",
     "IntegerLiteral",
-    "True",
-    "False",
+    "Call",
   };
 }
-/* JavaCC - OriginalChecksum=4a8f5abd9479ebcef97c2f3e81fa6950 (do not edit this line) */
+/* JavaCC - OriginalChecksum=5c0afa9d2561361611a10d5cfb4d1b27 (do not edit this line) */

@@ -1,7 +1,7 @@
 options {
  LOOKAHEAD=2;
  MULTI=true;
- DEBUG_PARSER=true;
+ DEBUG_PARSER=false;
 }
 PARSER_BEGIN(JmmNew)
 import java.io.BufferedReader;
@@ -106,9 +106,6 @@ TOKEN:
     | < INTEGERLITERAL: (["0"-"9"])+>
 }
 
-
-
-
 SimpleNode Program(): {}
 {
     ClassDeclaration() {return jjtThis;} <EOF>
@@ -130,28 +127,31 @@ void VarDeclaration(): {Token t;}
     Type() t=<IDENTIFIER> {jjtThis.setIdentifier(t.image);} <SCM>
 }
 
-void MainDeclaration(): {}
+void MainDeclaration(): {Token t;}
 {
-    <PUBLIC> <STATIC> <VOID> <MAIN> <OPRNT> <STRING> <OSQB> <CSQB> <IDENTIFIER> <CPRNT> <OB>
-        (VarDeclaration() #Parameter)*
+    <PUBLIC> <STATIC> <VOID> <MAIN> <OPRNT> <STRING> <OSQB> <CSQB> t = <IDENTIFIER> <CPRNT> <OB>
+        (VarDeclaration())*
         (Statement())*
     <CB>
+    {jjtThis.setIdentifier(t.image);}
 }
 
 void MethodDeclaration(): {Token t;}
 {
     <PUBLIC> Type() t=<IDENTIFIER> <OPRNT> 
     (
-        MethodArgument()
         (
-          <CM> MethodArgument()
-        )* 
+            MethodArgument()
+            (
+            <CM> MethodArgument()
+            )* 
+        ) #MethodArguments
     )* 
     <CPRNT>
     <OB>
         (VarDeclaration())*
         (Statement())*
-        <RETURN> Expression() <SCM>
+        <RETURN> Expression() <SCM> #Return(1)
     <CB>
     {jjtThis.setName(t.image);}
 }
@@ -180,19 +180,19 @@ void Statement(): {Token t;}
         (Statement())*
     <CB>
     |
-    t=<IF> <OPRNT> Expression() <CPRNT> Statement() <ELSE> Statement() {jjtThis.setType(t.image);}
+    <IF> <OPRNT> Expression() <CPRNT> Statement() <ELSE> Statement() 
     |
     While()
     |
-    <IDENTIFIER> <EQLS> Expression() <SCM>
+    t=<IDENTIFIER> {jjtThis.setIdentifier(t.image);} #Identifier <EQLS> Expression() <SCM>
     |
-    <IDENTIFIER> <OSQB> Expression() <CSQB> <EQLS> Expression() <SCM>
+    t=<IDENTIFIER> {jjtThis.setIdentifier(t.image);} #Identifier <OSQB> Expression() <CSQB> <EQLS> Expression() <SCM>
     |
     Expression() <SCM>
     
 }
 
-void While(): {}
+void While() #void: {}
 {
   <WHILE> <OPRNT>
     try {
@@ -228,50 +228,50 @@ void And() #void: {}
 
 void Lt() #void: {}
 {
-  AddSub() (<LS> AddSub() #Lt(2))*
+  AddSub() (<LS> AddSub() #LessThan(2))*
 }
 
-void AddSub() #void: {}
+void AddSub() #void: {Token t;}
 {
-  MultDiv() ((<PLS> | <MNS> ) MultDiv() #AddSub(2))*
+  MultDiv() (( t=<PLS>  | t=<MNS> ) MultDiv() {jjtThis.setOp(t.image);} #AddSub(2))* 
 }
 
-void MultDiv() #void: {}
+void MultDiv() #void: {Token t;}
 {
-  Literal() ((<ASTRSK> | <SLSH> ) Literal() #MultDiv(2))*
+  Literal() (( t=<ASTRSK> | t=<SLSH> ) Literal() {jjtThis.setOp(t.image);} #MultDiv(2))*
 }
 
 void Literal() #void: {Token t;}
 {
   t = <INTEGERLITERAL> LiteralNR() {jjtThis.setValue(Integer.parseInt(t.image));} #IntegerLiteral
   |
-  <TRUE> LiteralNR() #True
+  <TRUE> LiteralNR() 
   |
-  <FALSE> LiteralNR() #False
+  <FALSE> LiteralNR() 
   |
-  t = <IDENTIFIER> LiteralNR() {jjtThis.setIdentifier(t.image);} #Identifier
+  t = <IDENTIFIER> {jjtThis.setIdentifier(t.image);} #Identifier LiteralNR()
   |
   <THIS> LiteralNR()
   |
-  <NEW> <INT> <OSQB> And() <CSQB> LiteralNR()
+  <NEW> <INT> <OSQB> Expression() <CSQB> LiteralNR()
   |
   <NEW> <IDENTIFIER> <OPRNT> <CPRNT> LiteralNR()
   |
-  <NOT> And() LiteralNR()
+  <NOT> Expression() LiteralNR()
   |
-  <OPRNT> And() <CPRNT> LiteralNR()
+  <OPRNT> Expression() <CPRNT> LiteralNR()
 }
 
-void LiteralNR() #void: {}
+void LiteralNR() #void: {Token t;}
 {
   <OSQB> Literal() <CSQB> LiteralNR()
   |
   <PNT> <LENGTH> LiteralNR()
   |
-  <PNT> <IDENTIFIER> <OPRNT> (
-      And()
-      (<CM> And())*
-  )*
+  <PNT> t=<IDENTIFIER> <OPRNT> (
+      Expression()
+      (<CM> Expression())*
+  )* {jjtThis.setValue(t.image);} #Call 
   <CPRNT> LiteralNR()
   |
   {}
