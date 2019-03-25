@@ -116,7 +116,7 @@ SimpleNode Program(): {}
 
 void ClassDeclaration(): {}
 {
-    <CLASS> <IDENTIFIER> [<EXTENDS> <IDENTIFIER>] <OB> 
+    <CLASS> <IDENTIFIER> (<EXTENDS> <IDENTIFIER>)? <OB> 
         (VarDeclaration())*  
         
         
@@ -140,18 +140,23 @@ void MainDeclaration(): {}
 void MethodDeclaration(): {}
 {
     <PUBLIC> Type() <IDENTIFIER> <OPRNT> 
-    [
-        Type() <IDENTIFIER> 
+    (
+        MethodArgument()
         (
-            <CM> Type() <IDENTIFIER>
-        )*
-    ]
+          <CM> MethodArgument()
+        )* 
+    )* 
     <CPRNT>
     <OB>
         (VarDeclaration())*
         (Statement())*
         <RETURN> Expression() <SCM>
     <CB>
+}
+
+void MethodArgument(): {Token t;}
+{
+  Type() t = <IDENTIFIER> {jjtThis.setIdentifier(t.image);} #Identifier
 }
 
 //LOOKAHEAD 2
@@ -213,48 +218,48 @@ void Expression() : {}
   And()
 }
 
-void And() : {}
+void And() #void: {}
 {
-  Lt() (<AND> Lt() )*
+  Lt() (<AND> Lt() #And(2))*
 }
 
-void Lt() : {}
+void Lt() #void: {}
 {
-  AddSub() (<LS> AddSub())*
+  AddSub() (<LS> AddSub() #Lt(2))*
 }
 
-void AddSub() : {}
+void AddSub() #void: {}
 {
-  MultDiv() ((<PLS> | <MNS>) MultDiv() )*
+  MultDiv() ((<PLS> | <MNS> ) MultDiv() #AddSub(2))*
 }
 
-void MultDiv() : {}
+void MultDiv() #void: {}
 {
-  Literal() ((<ASTRSK> | <SLSH>) Literal() )*
+  Literal() ((<ASTRSK> | <SLSH> ) Literal() #MultDiv(2))*
 }
 
-void Literal() : {}
+void Literal() #void: {Token t;}
 {
-  <INTEGERLITERAL> LiteralNR() #Identifier
+  t = <INTEGERLITERAL> LiteralNR() {jjtThis.setValue(Integer.parseInt(t.image));} #IntegerLiteral
   |
   <TRUE> LiteralNR() #True
   |
   <FALSE> LiteralNR() #False
   |
-  <IDENTIFIER> LiteralNR() #Identifier
+  t = <IDENTIFIER> LiteralNR() {jjtThis.setIdentifier(t.image);} #Identifier
   |
   <THIS> LiteralNR()
   |
-  <NEW> <INT> <OSQB> Literal() <CSQB> LiteralNR()
+  <NEW> <INT> <OSQB> And() <CSQB> LiteralNR()
   |
   <NEW> <IDENTIFIER> <OPRNT> <CPRNT> LiteralNR()
   |
-  <NOT> Literal() LiteralNR()
+  <NOT> And() LiteralNR()
   |
-  <OPRNT> Literal() <CPRNT> LiteralNR()
+  <OPRNT> And() <CPRNT> LiteralNR()
 }
 
-void LiteralNR() : {}
+void LiteralNR() #void: {}
 {
   <OSQB> Literal() <CSQB> LiteralNR()
   |
@@ -268,6 +273,3 @@ void LiteralNR() : {}
   |
   {}
 }
-
-
-

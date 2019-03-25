@@ -7,19 +7,20 @@ public interface JmmNewTreeConstants
   public int JJTMAINDECLARATION = 3;
   public int JJTPARAMETER = 4;
   public int JJTMETHODDECLARATION = 5;
-  public int JJTTYPE = 6;
-  public int JJTSTATEMENT = 7;
-  public int JJTWHILE = 8;
-  public int JJTEXPRESSION = 9;
-  public int JJTAND = 10;
-  public int JJTLT = 11;
-  public int JJTADDSUB = 12;
-  public int JJTMULTDIV = 13;
-  public int JJTLITERAL = 14;
-  public int JJTIDENTIFIER = 15;
-  public int JJTTRUE = 16;
-  public int JJTFALSE = 17;
-  public int JJTLITERALNR = 18;
+  public int JJTMETHODARGUMENT = 6;
+  public int JJTIDENTIFIER = 7;
+  public int JJTTYPE = 8;
+  public int JJTSTATEMENT = 9;
+  public int JJTWHILE = 10;
+  public int JJTEXPRESSION = 11;
+  public int JJTVOID = 12;
+  public int JJTAND = 13;
+  public int JJTLT = 14;
+  public int JJTADDSUB = 15;
+  public int JJTMULTDIV = 16;
+  public int JJTINTEGERLITERAL = 17;
+  public int JJTTRUE = 18;
+  public int JJTFALSE = 19;
 
 
   public String[] jjtNodeName = {
@@ -29,19 +30,20 @@ public interface JmmNewTreeConstants
     "MainDeclaration",
     "Parameter",
     "MethodDeclaration",
+    "MethodArgument",
+    "Identifier",
     "Type",
     "Statement",
     "While",
     "Expression",
+    "void",
     "And",
     "Lt",
     "AddSub",
     "MultDiv",
-    "Literal",
-    "Identifier",
+    "IntegerLiteral",
     "True",
     "False",
-    "LiteralNR",
   };
 }
-/* JavaCC - OriginalChecksum=35c7ba60d74a29fff9e0a0080ec31d18 (do not edit this line) */
+/* JavaCC - OriginalChecksum=049336f687142e52bfd5c0ea9c7ec1fa (do not edit this line) */
