@@ -174,13 +174,13 @@ void Type(): {Token t;}
 }
 
 //LOOKAHEAD 2
-void Statement(): {}
+void Statement(): {Token t;}
 {
     <OB>
         (Statement())*
     <CB>
     |
-    <IF> <OPRNT> Expression() <CPRNT> Statement() <ELSE> Statement()
+    t=<IF> <OPRNT> Expression() <CPRNT> Statement() <ELSE> Statement() {jjtThis.setType(t.image);}
     |
     While()
     |
@@ -189,6 +189,7 @@ void Statement(): {}
     <IDENTIFIER> <OSQB> Expression() <CSQB> <EQLS> Expression() <SCM>
     |
     Expression() <SCM>
+    
 }
 
 void While(): {}

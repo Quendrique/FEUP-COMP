@@ -2,12 +2,36 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 public
 class ASTStatement extends SimpleNode {
+
+  protected String type;
+
   public ASTStatement(int id) {
     super(id);
   }
 
   public ASTStatement(JmmNew p, int id) {
     super(p, id);
+  }
+
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public String getType() {
+    return this.type;
+  }
+
+  public void dump(String prefix) {
+    System.out.println(toString(prefix) + ": " + this.type);
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        SimpleNode n = (SimpleNode)children[i];
+        if (n != null) {
+          n.dump(prefix + " ");
+        }
+      }
+    }
   }
 
 }
