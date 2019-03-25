@@ -1,6 +1,7 @@
 options {
  LOOKAHEAD=2;
  MULTI=true;
+ DEBUG_PARSER=true;
 }
 PARSER_BEGIN(JmmNew)
 import java.io.BufferedReader;
@@ -99,7 +100,7 @@ TOKEN:
     | < THIS: "this">
     | < NEW: "new">
     | < LENGTH: "length">
-    | < IDENTIFIER: (["A"-"Z","a"-"z","_"](["0"-"9","A"-"Z","a"-"z","_","-"])*)>
+    | < IDENTIFIER: (["A"-"Z","a"-"z","_"](["0"-"9","A"-"Z","a"-"z","_"])*)>
     | < INTEGERLITERAL: (["0"-"9"])+>
 }
 
@@ -193,79 +194,66 @@ void Statement(): {}
 }
 
 //LOOKAHEAD 2
-void Expression(): {}
+void Expression() : {}
 {
-
-    And() ExpressionNR()
-    |
-    <INTEGERLITERAL> ExpressionNR()
-    |
-    <TRUE> ExpressionNR()
-    |
-    <FALSE> ExpressionNR()
-    |
-    <IDENTIFIER> ExpressionNR()
-    |
-    <THIS> ExpressionNR()
-    |
-    <NEW> <INT> <OSQB> Expression() <CSQB> ExpressionNR()
-    |
-    <NEW> <IDENTIFIER> <OPRNT> <CPRNT> ExpressionNR()
-    |
-    <NOT> Expression() ExpressionNR()
-    |
-    <OPRNT> Expression() <CPRNT> ExpressionNR()
-
+  And()
 }
 
-void ExpressionNR() #void: {}
-{
-    And() ExpressionNR()
-    |
-    <OSQB> Expression() <CSQB> ExpressionNR()
-    |
-    <PNT> <LENGTH> ExpressionNR()
-    |
-    <PNT> <IDENTIFIER> <OPRNT> (
-        Expression()
-        (<CM> Expression())*
-    )*
-    <CPRNT> ExpressionNR()
-    |
-    {}
-
-}
-
-void And() #void: {}
+void And() : {}
 {
   Lt() (<AND> Lt() )*
 }
 
-void Lt() #void: {}
+void Lt() : {}
 {
-
   AddSub() (<LS> AddSub())*
-
 }
 
-void AddSub() #void: {}
+void AddSub() : {}
 {
   MultDiv() ((<PLS> | <MNS>) MultDiv() )*
 }
 
-void MultDiv() #void: {Token t;}
+void MultDiv() : {}
 {
   Literal() ((<ASTRSK> | <SLSH>) Literal() )*
 }
 
-void Literal() #void: {Token t;}
+void Literal() : {}
 {
-  t = <IDENTIFIER> #ASTIdentifier
-  | <INTEGERLITERAL> #ASTIntegerLiteral
-  | <TRUE> #ASTTrue 
-  | <FALSE> #ASTFalse
+  <INTEGERLITERAL> LiteralNR() #ASTIdentifier
+  |
+  <TRUE> LiteralNR() #ASTTrue
+  |
+  <FALSE> LiteralNR() #ASTFalse
+  |
+  <IDENTIFIER> LiteralNR() #ASTIdentifier
+  |
+  <THIS> LiteralNR()
+  |
+  <NEW> <INT> <OSQB> Literal() <CSQB> LiteralNR()
+  |
+  <NEW> <IDENTIFIER> <OPRNT> <CPRNT> LiteralNR()
+  |
+  <NOT> Literal() LiteralNR()
+  |
+  <OPRNT> Literal() <CPRNT> LiteralNR()
 }
 
+void LiteralNR() : {}
+{
+  <OSQB> Literal() <CSQB> LiteralNR()
+  |
+  <PNT> <LENGTH> LiteralNR()
+  |
+  <PNT> <IDENTIFIER> <OPRNT> (
+      Literal()
+      (<CM> Literal())*
+  )*
+  <CPRNT> LiteralNR()
+  |
+  {}
+}
 
 
 
