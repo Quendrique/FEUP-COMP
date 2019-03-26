@@ -268,11 +268,14 @@ void LiteralNR() #void: {Token t;}
   |
   <PNT> <LENGTH> LiteralNR()
   |
-  <PNT> t=<IDENTIFIER> <OPRNT> (
-      Expression()
-      (<CM> Expression())*
-  )* {jjtThis.setValue(t.image);} #Call 
+  <PNT> t=<IDENTIFIER> {jjtThis.setValue(t.image);} #Call <OPRNT> 
+  (Args())* 
   <CPRNT> LiteralNR()
   |
   {}
+}
+
+void Args() : {}
+{
+    Expression() (<CM> Expression())*
 }

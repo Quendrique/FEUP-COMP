@@ -20,6 +20,7 @@ public interface JmmNewTreeConstants
   public int JJTMULTDIV = 16;
   public int JJTINTEGERLITERAL = 17;
   public int JJTCALL = 18;
+  public int JJTARGS = 19;
 
 
   public String[] jjtNodeName = {
@@ -42,6 +43,7 @@ public interface JmmNewTreeConstants
     "MultDiv",
     "IntegerLiteral",
     "Call",
+    "Args",
   };
 }
-/* JavaCC - OriginalChecksum=5c0afa9d2561361611a10d5cfb4d1b27 (do not edit this line) */
+/* JavaCC - OriginalChecksum=4556b874d50d8c1e79611340124d5a7a (do not edit this line) */
