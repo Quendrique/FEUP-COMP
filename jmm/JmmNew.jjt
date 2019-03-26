@@ -226,7 +226,7 @@ void While() #void: {}
 }
 
 //LOOKAHEAD 2
-void Expression() : {}
+void Expression() #void: {}
 {
   And()
 }
@@ -278,11 +278,16 @@ void LiteralNR() #void: {Token t;}
   |
   <PNT> <LENGTH> LiteralNR()
   |
-  <PNT> t=<IDENTIFIER> {jjtThis.setValue(t.image);} #Call <OPRNT> 
-  (Args())* 
-  <CPRNT> LiteralNR()
+  LOOKAHEAD(<PNT> <IDENTIFIER>) Call()
   |
   {}
+}
+
+void Call(): {Token t;}
+{
+    <PNT> t=<IDENTIFIER> {jjtThis.setValue(t.image);} <OPRNT> 
+    (Args())* 
+    <CPRNT> LiteralNR()
 }
 
 void Args() : {}

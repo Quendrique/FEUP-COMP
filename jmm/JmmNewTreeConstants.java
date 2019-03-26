@@ -17,14 +17,13 @@ public interface JmmNewTreeConstants
   public int JJTASSIGNSTATEMENT = 13;
   public int JJTARRAYASSIGNSTATEMENT = 14;
   public int JJTARRAYINDEX = 15;
-  public int JJTEXPRESSION = 16;
-  public int JJTAND = 17;
-  public int JJTLESSTHAN = 18;
-  public int JJTADDSUB = 19;
-  public int JJTMULTDIV = 20;
-  public int JJTINTEGERLITERAL = 21;
-  public int JJTCALL = 22;
-  public int JJTARGS = 23;
+  public int JJTAND = 16;
+  public int JJTLESSTHAN = 17;
+  public int JJTADDSUB = 18;
+  public int JJTMULTDIV = 19;
+  public int JJTINTEGERLITERAL = 20;
+  public int JJTCALL = 21;
+  public int JJTARGS = 22;
 
 
   public String[] jjtNodeName = {
@@ -44,7 +43,6 @@ public interface JmmNewTreeConstants
     "AssignStatement",
     "ArrayAssignStatement",
     "ArrayIndex",
-    "Expression",
     "And",
     "LessThan",
     "AddSub",
@@ -54,4 +52,4 @@ public interface JmmNewTreeConstants
     "Args",
   };
 }
-/* JavaCC - OriginalChecksum=79ec3a2fab5fce4c33ab653bf6b3d785 (do not edit this line) */
+/* JavaCC - OriginalChecksum=c810732c31d7f72a3c89f6cbc2f24fa4 (do not edit this line) */
