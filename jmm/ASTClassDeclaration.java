@@ -4,6 +4,7 @@ public
 class ASTClassDeclaration extends SimpleNode {
 
   protected String name;
+  protected String extendsIdent;
 
   public ASTClassDeclaration(int id) {
     super(id);
@@ -21,8 +22,16 @@ class ASTClassDeclaration extends SimpleNode {
     this.name = name;
   }
 
+  public String getExtends() {
+    return this.extendsIdent;
+  }
+
+  public void setExtends(String extendsIdent) {
+    this.extendsIdent = extendsIdent;
+  }
+
   public void dump(String prefix) {
-    System.out.println(toString(prefix) + ": " + this.name);
+    System.out.println(toString(prefix) + ": " + this.name + ((this.extendsIdent != null) ? " (extends " + this.extendsIdent + ")" : ""));
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         SimpleNode n = (SimpleNode)children[i];

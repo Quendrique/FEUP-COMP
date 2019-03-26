@@ -11,16 +11,20 @@ public interface JmmNewTreeConstants
   public int JJTMETHODARGUMENT = 7;
   public int JJTIDENTIFIER = 8;
   public int JJTTYPE = 9;
-  public int JJTSTATEMENT = 10;
-  public int JJTVOID = 11;
-  public int JJTEXPRESSION = 12;
-  public int JJTAND = 13;
-  public int JJTLESSTHAN = 14;
-  public int JJTADDSUB = 15;
-  public int JJTMULTDIV = 16;
-  public int JJTINTEGERLITERAL = 17;
-  public int JJTCALL = 18;
-  public int JJTARGS = 19;
+  public int JJTVOID = 10;
+  public int JJTIFSTATEMENT = 11;
+  public int JJTWHILESTATEMENT = 12;
+  public int JJTASSIGNSTATEMENT = 13;
+  public int JJTARRAYASSIGNSTATEMENT = 14;
+  public int JJTARRAYINDEX = 15;
+  public int JJTEXPRESSION = 16;
+  public int JJTAND = 17;
+  public int JJTLESSTHAN = 18;
+  public int JJTADDSUB = 19;
+  public int JJTMULTDIV = 20;
+  public int JJTINTEGERLITERAL = 21;
+  public int JJTCALL = 22;
+  public int JJTARGS = 23;
 
 
   public String[] jjtNodeName = {
@@ -34,8 +38,12 @@ public interface JmmNewTreeConstants
     "MethodArgument",
     "Identifier",
     "Type",
-    "Statement",
     "void",
+    "IfStatement",
+    "WhileStatement",
+    "AssignStatement",
+    "ArrayAssignStatement",
+    "ArrayIndex",
     "Expression",
     "And",
     "LessThan",
@@ -46,4 +54,4 @@ public interface JmmNewTreeConstants
     "Args",
   };
 }
-/* JavaCC - OriginalChecksum=4556b874d50d8c1e79611340124d5a7a (do not edit this line) */
+/* JavaCC - OriginalChecksum=79ec3a2fab5fce4c33ab653bf6b3d785 (do not edit this line) */

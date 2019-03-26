@@ -1,17 +1,8 @@
-class Fac {
-	public int ComputeFac(int num, int asd){
-		int num_aux ;
-		if (num < 1)
-			num_aux = 1;
-		else
-			num_aux = num * (this.ComputeFac(num-1));
-		a[0]=b;
-		while (i + - 10) {
-			
-		}
-		return num_aux;
-	}
+class Fac extends Test {
 	public static void main(String[] a){
+		while (1 - - -) {
+			a[0] = 1;
+		}
 		io.println(new Fac().ComputeFac(10)); //hmm
 	}
 }

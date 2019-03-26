@@ -111,15 +111,15 @@ SimpleNode Program(): {}
     ClassDeclaration() {return jjtThis;} <EOF>
 }
 
-void ClassDeclaration(): {Token t;}
+void ClassDeclaration(): {Token t1, t2;}
 {
-    <CLASS> t=<IDENTIFIER> (<EXTENDS> <IDENTIFIER>)? <OB> 
+    <CLASS> t1=<IDENTIFIER> (<EXTENDS> t2=<IDENTIFIER> {jjtThis.setExtends(t2.image);})? <OB> 
         (VarDeclaration())*  
         
         
         (MainDeclaration() | MethodDeclaration())*
     <CB>
-    {jjtThis.setName(t.image);}
+    {jjtThis.setName(t1.image);}
 }
 
 void VarDeclaration(): {Token t;}
@@ -174,22 +174,32 @@ void Type(): {Token t;}
 }
 
 //LOOKAHEAD 2
-void Statement(): {Token t;}
+void Statement() #void: {}
 {
     <OB>
         (Statement())*
     <CB>
     |
-    <IF> <OPRNT> Expression() <CPRNT> Statement() <ELSE> Statement() 
+    <IF> <OPRNT> Expression() <CPRNT> Statement() <ELSE> Statement() #IfStatement 
     |
-    While()
+    While() #WhileStatement
     |
-    t=<IDENTIFIER> {jjtThis.setIdentifier(t.image);} #Identifier <EQLS> Expression() <SCM>
+    AssignStatement()
     |
-    t=<IDENTIFIER> {jjtThis.setIdentifier(t.image);} #Identifier <OSQB> Expression() <CSQB> <EQLS> Expression() <SCM>
+    ArrayAssignStatement()
     |
     Expression() <SCM>
     
+}
+
+void AssignStatement(): {Token t;}
+{
+    t=<IDENTIFIER> {jjtThis.setIdentifier(t.image);} <EQLS> Expression() <SCM>
+}
+
+void ArrayAssignStatement(): {Token t;}
+{
+    t=<IDENTIFIER> {jjtThis.setIdentifier(t.image);} <OSQB> Expression() #ArrayIndex <CSQB> <EQLS> Expression() <SCM>
 }
 
 void While() #void: {}
@@ -204,7 +214,7 @@ void While() #void: {}
       Token t;
 
       if(JmmNew.errorCount>10){
-          System.out.println(JmmNew.errorCount + " erros: exiting program");
+          System.out.println(JmmNew.errorCount + " errors: exiting program");
           System.exit(1);
         }
 
