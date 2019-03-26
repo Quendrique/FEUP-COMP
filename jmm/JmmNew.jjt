@@ -261,28 +261,18 @@ void Literal() #void: {Token t;}
 	
   t = <INTEGERLITERAL> LiteralNR() {jjtThis.setValue(Integer.parseInt(t.image));} #IntegerLiteral
 	|
-	
   <TRUE> LiteralNR() 
 	|
-	
   <FALSE> LiteralNR() 
 	|
-	
   t = <IDENTIFIER> {jjtThis.setIdentifier(t.image);} #Identifier LiteralNR()
 	|
-	
   <THIS> LiteralNR()
 	|
-	LOOKAHEAD(2)
-  <NEW> <INT> <OSQB> Expression() <CSQB> LiteralNR()
+  <NEW> New()
 	|
-	
-  <NEW> <IDENTIFIER> <OPRNT> <CPRNT> LiteralNR()
-	|
-	
   <NOT> Expression() LiteralNR()
 	|
-	
   <OPRNT> Expression() <CPRNT> LiteralNR()
 }
 
@@ -290,17 +280,28 @@ void LiteralNR() #void: {Token t;}
 {
   <OSQB> Literal() <CSQB> LiteralNR()
 	|
-	LOOKAHEAD(2)
-  <PNT> <LENGTH> LiteralNR()
-  |
-  Call()
+	<PNT> MethodOrLength()
   |
   {}
 }
 
+void MethodOrLength() #void: {}
+{
+	<LENGTH> LiteralNR()
+	|
+	Call()
+}
+
+void New() #void: {}
+{
+	<INT> <OSQB> Expression() <CSQB> LiteralNR()
+	|
+	<IDENTIFIER> <OPRNT> <CPRNT> LiteralNR()
+}
+
 void Call(): {Token t;}
 {
-    <PNT> t=<IDENTIFIER> {jjtThis.setValue(t.image);} <OPRNT> 
+    t=<IDENTIFIER> {jjtThis.setValue(t.image);} <OPRNT> 
     (Args())* 
     <CPRNT> LiteralNR()
 }
