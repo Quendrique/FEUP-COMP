@@ -1,5 +1,5 @@
 options {
- LOOKAHEAD=2;
+ LOOKAHEAD=1;
  MULTI=true;
  DEBUG_PARSER=false;
 }
@@ -117,7 +117,7 @@ void ClassDeclaration(): {Token t1, t2;}
         (VarDeclaration())*  
         
         
-        (MainDeclaration() | MethodDeclaration())*
+         ( LOOKAHEAD(2) MainDeclaration() | MethodDeclaration())*
     <CB>
     {jjtThis.setName(t1.image);}
 }
@@ -130,7 +130,7 @@ void VarDeclaration(): {Token t;}
 void MainDeclaration(): {Token t;}
 {
     <PUBLIC> <STATIC> <VOID> <MAIN> <OPRNT> <STRING> <OSQB> <CSQB> t = <IDENTIFIER> <CPRNT> <OB>
-        (VarDeclaration())*
+        (LOOKAHEAD(2) VarDeclaration())*
         (Statement())*
     <CB>
     {jjtThis.setIdentifier(t.image);}
@@ -149,7 +149,7 @@ void MethodDeclaration(): {Token t;}
     )* 
     <CPRNT>
     <OB>
-        (VarDeclaration())*
+        (LOOKAHEAD(2) VarDeclaration())*
         (Statement())*
         <RETURN> Expression() <SCM> #Return(1)
     <CB>
@@ -165,6 +165,7 @@ void MethodArgument(): {Token t;}
 void Type(): {Token t;}
 {
     (
+        LOOKAHEAD(2) 
         t=<INT> <OSQB> <CSQB>
         | t=<BOOLEAN>  
         | t=<INT> 
@@ -184,11 +185,15 @@ void Statement() #void: {}
     |
     While() #WhileStatement
     |
-    AssignStatement()
-    |
-    ArrayAssignStatement()
-    |
-    Expression() <SCM>
+    ( 
+        LOOKAHEAD(2)
+        AssignStatement()
+        |
+        LOOKAHEAD(3)
+        ArrayAssignStatement()
+        |
+        Expression() <SCM>
+    )
     
 }
 
@@ -233,52 +238,62 @@ void Expression() #void: {}
 
 void And() #void: {}
 {
-  Lt() (<AND> Lt() #And(2))*
+  Lt() (LOOKAHEAD(2) <AND> Lt() #And(2))*
 }
 
 void Lt() #void: {}
 {
-  AddSub() (<LS> AddSub() #LessThan(2))*
+  AddSub() (LOOKAHEAD(2) <LS> AddSub() #LessThan(2))*
 }
 
 void AddSub() #void: {Token t;}
 {
-  MultDiv() (( t=<PLS>  | t=<MNS> ) MultDiv() {jjtThis.setOp(t.image);} #AddSub(2))* 
+  MultDiv() (LOOKAHEAD(2) ( t=<PLS>  | t=<MNS> ) MultDiv() {jjtThis.setOp(t.image);} #AddSub(2))* 
 }
 
 void MultDiv() #void: {Token t;}
 {
-  Literal() (( t=<ASTRSK> | t=<SLSH> ) Literal() {jjtThis.setOp(t.image);} #MultDiv(2))*
+  Literal() (LOOKAHEAD(2) ( t=<ASTRSK> | t=<SLSH> ) Literal() {jjtThis.setOp(t.image);} #MultDiv(2))*
 }
 
 void Literal() #void: {Token t;}
 {
+	
   t = <INTEGERLITERAL> LiteralNR() {jjtThis.setValue(Integer.parseInt(t.image));} #IntegerLiteral
-  |
+	|
+	
   <TRUE> LiteralNR() 
-  |
+	|
+	
   <FALSE> LiteralNR() 
-  |
+	|
+	
   t = <IDENTIFIER> {jjtThis.setIdentifier(t.image);} #Identifier LiteralNR()
-  |
+	|
+	
   <THIS> LiteralNR()
-  |
+	|
+	LOOKAHEAD(2)
   <NEW> <INT> <OSQB> Expression() <CSQB> LiteralNR()
-  |
+	|
+	
   <NEW> <IDENTIFIER> <OPRNT> <CPRNT> LiteralNR()
-  |
+	|
+	
   <NOT> Expression() LiteralNR()
-  |
+	|
+	
   <OPRNT> Expression() <CPRNT> LiteralNR()
 }
 
 void LiteralNR() #void: {Token t;}
 {
   <OSQB> Literal() <CSQB> LiteralNR()
-  |
+	|
+	LOOKAHEAD(2)
   <PNT> <LENGTH> LiteralNR()
   |
-  LOOKAHEAD(<PNT> <IDENTIFIER>) Call()
+  Call()
   |
   {}
 }
