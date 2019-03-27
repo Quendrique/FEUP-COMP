@@ -189,7 +189,7 @@ void Statement() #void: {}
         LOOKAHEAD(2)
         AssignStatement()
         |
-        LOOKAHEAD(3)
+        LOOKAHEAD(2)
         ArrayAssignStatement()
         |
         Expression() <SCM>
