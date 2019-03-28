@@ -1,7 +1,7 @@
 options {
  LOOKAHEAD=1;
  MULTI=true;
- DEBUG_PARSER=false;
+ DEBUG_PARSER=true;
 }
 PARSER_BEGIN(JmmNew)
 import java.io.BufferedReader;
@@ -265,8 +265,8 @@ void Literal() #void: {Token t;}
 	|
   <FALSE> LiteralNR() 
 	|
-  t = <IDENTIFIER> {jjtThis.setIdentifier(t.image);} #Identifier LiteralNR()
-	|
+  (t = <IDENTIFIER> {jjtThis.setIdentifier(t.image);} LiteralNR()) #Identifier
+  |
   <THIS> LiteralNR()
 	|
   <NEW> New()
@@ -292,11 +292,11 @@ void MethodOrLength() #void: {}
 	Call()
 }
 
-void New() #void: {}
+void New() : {Token t;}
 {
 	<INT> <OSQB> Expression() <CSQB> LiteralNR()
 	|
-	<IDENTIFIER> <OPRNT> <CPRNT> LiteralNR()
+	t=<IDENTIFIER> <OPRNT> <CPRNT> LiteralNR() {jjtThis.identifier=t.image;}
 }
 
 void Call(): {Token t;}
