@@ -3,7 +3,7 @@
 public
 class ASTVarDeclaration extends SimpleNode {
 
-  protected String type;
+  public String type;
   protected String identifier;
   
   public ASTVarDeclaration(int id) {
@@ -22,16 +22,8 @@ class ASTVarDeclaration extends SimpleNode {
     return this.identifier;
   }
 
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public String getType() {
-    return this.type;
-  }
-
   public void dump(String prefix) {
-    System.out.println(toString(prefix) + ": " + this.identifier);
+    System.out.println(toString(prefix) + ": " + this.identifier + " type: " + this.type);
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         SimpleNode n = (SimpleNode)children[i];

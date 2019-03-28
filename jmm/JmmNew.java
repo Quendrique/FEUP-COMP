@@ -147,11 +147,11 @@ if (jjtc000) {
   static final public void VarDeclaration() throws ParseException {/*@bgen(jjtree) VarDeclaration */
                         ASTVarDeclaration jjtn000 = new ASTVarDeclaration(JJTVARDECLARATION);
                         boolean jjtc000 = true;
-                        jjtree.openNodeScope(jjtn000);Token t;
+                        jjtree.openNodeScope(jjtn000);Token t1, t2;
     try {
-      Type();
-      t = jj_consume_token(IDENTIFIER);
-jjtn000.setIdentifier(t.image);
+      t1 = Type();
+      t2 = jj_consume_token(IDENTIFIER);
+jjtn000.setIdentifier(t2.image); jjtn000.type = t1.image;
       jj_consume_token(SCM);
     } catch (Throwable jjte000) {
 if (jjtc000) {
@@ -412,44 +412,32 @@ if (jjtc000) {
   }
 
 //LOOKAHEAD 2
-  static final public Token Type() throws ParseException {/*@bgen(jjtree) Type */
-               ASTType jjtn000 = new ASTType(JJTTYPE);
-               boolean jjtc000 = true;
-               jjtree.openNodeScope(jjtn000);Token t;
-    try {
-      if (jj_2_4(2)) {
-        t = jj_consume_token(INT);
-        jj_consume_token(OSQB);
-        jj_consume_token(CSQB);
-      } else {
-        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-        case BOOLEAN:{
-          t = jj_consume_token(BOOLEAN);
-          break;
-          }
-        case INT:{
-          t = jj_consume_token(INT);
-          break;
-          }
-        case IDENTIFIER:{
-          t = jj_consume_token(IDENTIFIER);
-          break;
-          }
-        default:
-          jj_la1[8] = jj_gen;
-          jj_consume_token(-1);
-          throw new ParseException();
+  static final public Token Type() throws ParseException {Token t;
+    if (jj_2_4(2)) {
+      t = jj_consume_token(INT);
+      jj_consume_token(OSQB);
+      jj_consume_token(CSQB);
+    } else {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case BOOLEAN:{
+        t = jj_consume_token(BOOLEAN);
+        break;
         }
-      }
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-jjtn000.setType(t.image);
-        {if ("" != null) return t;}
-    } finally {
-if (jjtc000) {
-        jjtree.closeNodeScope(jjtn000, true);
+      case INT:{
+        t = jj_consume_token(INT);
+        break;
+        }
+      case IDENTIFIER:{
+        t = jj_consume_token(IDENTIFIER);
+        break;
+        }
+      default:
+        jj_la1[8] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
       }
     }
+{if ("" != null) return t;}
     throw new Error("Missing return statement in function");
   }
 
@@ -1274,6 +1262,18 @@ if (jjtc000) {
     finally { jj_save(9, xla); }
   }
 
+  static private boolean jj_3_10()
+ {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_scan_token(37)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(36)) return true;
+    }
+    if (jj_3R_23()) return true;
+    return false;
+  }
+
   static private boolean jj_3R_27()
  {
     if (jj_scan_token(FALSE)) return true;
@@ -1474,18 +1474,6 @@ if (jjtc000) {
   static private boolean jj_3R_28()
  {
     if (jj_scan_token(IDENTIFIER)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_10()
- {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_scan_token(37)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(36)) return true;
-    }
-    if (jj_3R_23()) return true;
     return false;
   }
 

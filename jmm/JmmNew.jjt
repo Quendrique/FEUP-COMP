@@ -122,9 +122,9 @@ void ClassDeclaration(): {Token t1, t2;}
     {jjtThis.setName(t1.image);}
 }
 
-void VarDeclaration(): {Token t;}
+void VarDeclaration(): {Token t1, t2;}
 {
-    Type() t=<IDENTIFIER> {jjtThis.setIdentifier(t.image);} <SCM>
+    t1 = Type() t2 = <IDENTIFIER> {jjtThis.setIdentifier(t2.image); jjtThis.type = t1.image;} <SCM>
 }
 
 void MainDeclaration(): {Token t;}
@@ -165,7 +165,7 @@ void MethodArgument(): {Token t1, t2;}
 }
 
 //LOOKAHEAD 2
-Token Type(): {Token t;}
+Token Type() #void: {Token t;}
 {
     (
         LOOKAHEAD(2) 
@@ -175,7 +175,6 @@ Token Type(): {Token t;}
         | t=<IDENTIFIER>  
     )
     {
-        jjtThis.setType(t.image);
         return t;
     }
     
