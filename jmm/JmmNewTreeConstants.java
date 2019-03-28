@@ -10,8 +10,8 @@ public interface JmmNewTreeConstants
   public int JJTRETURN = 6;
   public int JJTMETHODARGUMENT = 7;
   public int JJTVOID = 8;
-  public int JJTASSIGNSTATEMENT = 9;
-  public int JJTARRAYASSIGNSTATEMENT = 10;
+  public int JJTASSIGN = 9;
+  public int JJTARRAYASSIGN = 10;
   public int JJTARRAYINDEX = 11;
   public int JJTWHILE = 12;
   public int JJTIF = 13;
@@ -39,8 +39,8 @@ public interface JmmNewTreeConstants
     "Return",
     "MethodArgument",
     "void",
-    "AssignStatement",
-    "ArrayAssignStatement",
+    "Assign",
+    "ArrayAssign",
     "ArrayIndex",
     "While",
     "If",
@@ -58,4 +58,4 @@ public interface JmmNewTreeConstants
     "Args",
   };
 }
-/* JavaCC - OriginalChecksum=f54e04f40e507f002cc5bcaf68db7309 (do not edit this line) */
+/* JavaCC - OriginalChecksum=4aacd607693b2e50927c82e42d43db1a (do not edit this line) */
