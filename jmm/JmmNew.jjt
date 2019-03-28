@@ -1,7 +1,7 @@
 options {
  LOOKAHEAD=1;
  MULTI=true;
- DEBUG_PARSER=true;
+ DEBUG_PARSER=false;
 }
 PARSER_BEGIN(JmmNew)
 import java.io.BufferedReader;
@@ -136,9 +136,9 @@ void MainDeclaration(): {Token t;}
     {jjtThis.setIdentifier(t.image);}
 }
 
-void MethodDeclaration(): {Token t;}
+void MethodDeclaration(): {Token t1, t2;}
 {
-    <PUBLIC> Type() t=<IDENTIFIER> <OPRNT> 
+    <PUBLIC> t1 = Type() t2 =<IDENTIFIER> <OPRNT> 
     (
         (
             MethodArgument()
@@ -153,16 +153,19 @@ void MethodDeclaration(): {Token t;}
         (Statement())*
         <RETURN> Expression() <SCM> #Return(1)
     <CB>
-    {jjtThis.setName(t.image);}
+    {
+        jjtThis.setName(t2.image);
+        jjtThis.type = t1.image;
+    }
 }
 
-void MethodArgument(): {Token t;}
+void MethodArgument(): {Token t1, t2;}
 {
-  Type() t = <IDENTIFIER> {jjtThis.setIdentifier(t.image);} #Identifier
+  t1 = Type() t2 = <IDENTIFIER> {jjtThis.setIdentifier(t2.image); jjtThis.type = t1.image;} 
 }
 
 //LOOKAHEAD 2
-void Type(): {Token t;}
+Token Type(): {Token t;}
 {
     (
         LOOKAHEAD(2) 
@@ -171,7 +174,11 @@ void Type(): {Token t;}
         | t=<INT> 
         | t=<IDENTIFIER>  
     )
-    {jjtThis.setType(t.image);}
+    {
+        jjtThis.setType(t.image);
+        return t;
+    }
+    
 }
 
 //LOOKAHEAD 2
@@ -181,9 +188,9 @@ void Statement() #void: {}
         (Statement())*
     <CB>
     |
-    <IF> <OPRNT> Expression() <CPRNT> Statement() <ELSE> Statement() #IfStatement 
+    If() 
     |
-    While() #WhileStatement
+    While()
     |
     ( 
         LOOKAHEAD(2)
@@ -207,7 +214,7 @@ void ArrayAssignStatement(): {Token t;}
     t=<IDENTIFIER> {jjtThis.setIdentifier(t.image);} <OSQB> Expression() #ArrayIndex <CSQB> <EQLS> Expression() <SCM>
 }
 
-void While() #void: {}
+void While() : {}
 {
   <WHILE> <OPRNT>
     try {
@@ -228,6 +235,11 @@ void While() #void: {}
       } while (t.kind != CPRNT);
     }
     Statement() 
+}
+
+void If(): {}
+{
+    <IF> <OPRNT> Expression() #Condition <CPRNT> Statement() #Then <ELSE> Statement() #Else
 }
 
 //LOOKAHEAD 2

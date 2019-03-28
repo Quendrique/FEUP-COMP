@@ -9,21 +9,25 @@ public interface JmmNewTreeConstants
   public int JJTMETHODARGUMENTS = 5;
   public int JJTRETURN = 6;
   public int JJTMETHODARGUMENT = 7;
-  public int JJTIDENTIFIER = 8;
-  public int JJTTYPE = 9;
-  public int JJTVOID = 10;
-  public int JJTIFSTATEMENT = 11;
-  public int JJTWHILESTATEMENT = 12;
-  public int JJTASSIGNSTATEMENT = 13;
-  public int JJTARRAYASSIGNSTATEMENT = 14;
-  public int JJTARRAYINDEX = 15;
-  public int JJTAND = 16;
-  public int JJTLESSTHAN = 17;
-  public int JJTADDSUB = 18;
-  public int JJTMULTDIV = 19;
-  public int JJTINTEGERLITERAL = 20;
-  public int JJTCALL = 21;
-  public int JJTARGS = 22;
+  public int JJTTYPE = 8;
+  public int JJTVOID = 9;
+  public int JJTASSIGNSTATEMENT = 10;
+  public int JJTARRAYASSIGNSTATEMENT = 11;
+  public int JJTARRAYINDEX = 12;
+  public int JJTWHILE = 13;
+  public int JJTIF = 14;
+  public int JJTCONDITION = 15;
+  public int JJTTHEN = 16;
+  public int JJTELSE = 17;
+  public int JJTAND = 18;
+  public int JJTLESSTHAN = 19;
+  public int JJTADDSUB = 20;
+  public int JJTMULTDIV = 21;
+  public int JJTINTEGERLITERAL = 22;
+  public int JJTIDENTIFIER = 23;
+  public int JJTNEW = 24;
+  public int JJTCALL = 25;
+  public int JJTARGS = 26;
 
 
   public String[] jjtNodeName = {
@@ -35,21 +39,25 @@ public interface JmmNewTreeConstants
     "MethodArguments",
     "Return",
     "MethodArgument",
-    "Identifier",
     "Type",
     "void",
-    "IfStatement",
-    "WhileStatement",
     "AssignStatement",
     "ArrayAssignStatement",
     "ArrayIndex",
+    "While",
+    "If",
+    "Condition",
+    "Then",
+    "Else",
     "And",
     "LessThan",
     "AddSub",
     "MultDiv",
     "IntegerLiteral",
+    "Identifier",
+    "New",
     "Call",
     "Args",
   };
 }
-/* JavaCC - OriginalChecksum=c810732c31d7f72a3c89f6cbc2f24fa4 (do not edit this line) */
+/* JavaCC - OriginalChecksum=4020381e6f8e0ebc7bfd84445d995754 (do not edit this line) */

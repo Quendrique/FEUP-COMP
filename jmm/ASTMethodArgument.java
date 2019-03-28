@@ -4,6 +4,7 @@ public
 class ASTMethodArgument extends SimpleNode {
 
   protected String identifier;
+  public String type;
 
   public ASTMethodArgument(int id) {
     super(id);
@@ -19,6 +20,18 @@ class ASTMethodArgument extends SimpleNode {
 
   public void setIdentifier(String identifier) {
     this.identifier = identifier;
+  }
+
+  public void dump(String prefix) {
+    System.out.println(toString(prefix) + ": type: " + this.type);
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        SimpleNode n = (SimpleNode)children[i];
+        if (n != null) {
+          n.dump(prefix + "    ");
+        }
+      }
+    }
   }
 
 }

@@ -4,6 +4,7 @@ public
 class ASTMethodDeclaration extends SimpleNode {
 
   protected String name;
+  public String type;
 
   public ASTMethodDeclaration(int id) {
     super(id);
@@ -22,12 +23,12 @@ class ASTMethodDeclaration extends SimpleNode {
   }
 
   public void dump(String prefix) {
-    System.out.println(toString(prefix) + ": " + this.name);
+    System.out.println(toString(prefix) + ": type: " + this.type);
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         SimpleNode n = (SimpleNode)children[i];
         if (n != null) {
-          n.dump(prefix + " ");
+          n.dump(prefix + "    ");
         }
       }
     }

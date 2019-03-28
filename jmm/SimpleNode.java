@@ -8,14 +8,6 @@ class SimpleNode implements Node {
   protected int id;
   protected Object value;
   protected JmmNew parser;
-  protected Integer val = null;
-
-  public int getVal(){
-    return val;
-  }
-  public void setVal(int val){
-    this.val = val;
-  }
 
   public SimpleNode(int i) {
     id = i;
@@ -77,7 +69,7 @@ class SimpleNode implements Node {
       for (int i = 0; i < children.length; ++i) {
         SimpleNode n = (SimpleNode)children[i];
         if (n != null) {
-          n.dump(prefix + " ");
+          n.dump(prefix + "    ");
         }
       }
     }
@@ -88,4 +80,4 @@ class SimpleNode implements Node {
   }
 }
 
-/* JavaCC - OriginalChecksum=5299b1728cb00e94e179395b97efcb7b (do not edit this line) */
+/* JavaCC - OriginalChecksum=197c934e78284e57260ea8dc7762052b (do not edit this line) */

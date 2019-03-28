@@ -36,7 +36,7 @@ class ASTClassDeclaration extends SimpleNode {
       for (int i = 0; i < children.length; ++i) {
         SimpleNode n = (SimpleNode)children[i];
         if (n != null) {
-          n.dump(prefix + " ");
+          n.dump(prefix + "    ");
         }
       }
     }
