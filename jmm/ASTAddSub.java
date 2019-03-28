@@ -21,8 +21,12 @@ class ASTAddSub extends SimpleNode {
     this.op = op;
   } 
 
+  public String toString() {
+    return "";
+  }
+
   public void dump(String prefix) {
-    System.out.println(toString(prefix) + ": " + this.op);
+    System.out.println(toString(prefix) + "(" + this.op + ")");
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         SimpleNode n = (SimpleNode)children[i];

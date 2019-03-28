@@ -117,7 +117,7 @@ void ClassDeclaration(): {Token t1, t2;}
         (VarDeclaration())*  
         
         
-         ( LOOKAHEAD(2) MainDeclaration() | MethodDeclaration())*
+        ( LOOKAHEAD(2) MainDeclaration() | MethodDeclaration())*
     <CB>
     {jjtThis.setName(t1.image);}
 }
@@ -241,7 +241,6 @@ void If(): {}
     <IF> <OPRNT> Expression() #Condition <CPRNT> Statement() #Then <ELSE> Statement() #Else
 }
 
-//LOOKAHEAD 2
 void Expression() #void: {}
 {
   And()
@@ -270,30 +269,30 @@ void MultDiv() #void: {Token t;}
 void Literal() #void: {Token t;}
 {
 	
-  t = <INTEGERLITERAL> LiteralNR() {jjtThis.setValue(Integer.parseInt(t.image));} #IntegerLiteral
+    t = <INTEGERLITERAL> LiteralNR() {jjtThis.setValue(Integer.parseInt(t.image));} #IntegerLiteral
+    |
+    <TRUE> LiteralNR() 
+    |
+    <FALSE> LiteralNR() 
 	|
-  <TRUE> LiteralNR() 
-	|
-  <FALSE> LiteralNR() 
-	|
-  (t = <IDENTIFIER> {jjtThis.setIdentifier(t.image);} LiteralNR()) #Identifier
-  |
-  <THIS> LiteralNR()
-	|
-  <NEW> New()
-	|
-  <NOT> Expression() LiteralNR()
-	|
-  <OPRNT> Expression() <CPRNT> LiteralNR()
+    (t = <IDENTIFIER> {jjtThis.setIdentifier(t.image);} LiteralNR()) #Identifier
+    |
+    <THIS> LiteralNR()
+    |   
+    <NEW> New()
+    |
+    <NOT> Expression() LiteralNR()
+    |
+    <OPRNT> Expression() <CPRNT> LiteralNR()
 }
 
 void LiteralNR() #void: {Token t;}
 {
-  <OSQB> Literal() <CSQB> LiteralNR()
-	|
-	<PNT> MethodOrLength()
-  |
-  {}
+    <OSQB> Literal() #ArrayIndex <CSQB> LiteralNR()   
+    |
+    <PNT> MethodOrLength()
+    |
+    {}
 }
 
 void MethodOrLength() #void: {}
