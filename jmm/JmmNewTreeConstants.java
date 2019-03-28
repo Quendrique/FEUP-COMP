@@ -23,10 +23,12 @@ public interface JmmNewTreeConstants
   public int JJTADDSUB = 19;
   public int JJTMULTDIV = 20;
   public int JJTINTEGERLITERAL = 21;
-  public int JJTIDENTIFIER = 22;
-  public int JJTNEW = 23;
-  public int JJTCALL = 24;
-  public int JJTARGS = 25;
+  public int JJTTRUE = 22;
+  public int JJTFALSE = 23;
+  public int JJTIDENTIFIER = 24;
+  public int JJTNEW = 25;
+  public int JJTCALL = 26;
+  public int JJTARGS = 27;
 
 
   public String[] jjtNodeName = {
@@ -52,10 +54,12 @@ public interface JmmNewTreeConstants
     "AddSub",
     "MultDiv",
     "IntegerLiteral",
+    "True",
+    "False",
     "Identifier",
     "New",
     "Call",
     "Args",
   };
 }
-/* JavaCC - OriginalChecksum=4aacd607693b2e50927c82e42d43db1a (do not edit this line) */
+/* JavaCC - OriginalChecksum=4744cc80d6554bd6b1529aa5673beb4b (do not edit this line) */

@@ -134,7 +134,7 @@ public interface JmmNewConstants {
     "\"boolean\"",
     "\"String\"",
     "\"true\"",
-    "\"flase\"",
+    "\"false\"",
     "\"this\"",
     "\"new\"",
     "\"length\"",

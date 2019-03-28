@@ -98,7 +98,7 @@ TOKEN:
     | < BOOLEAN: "boolean" >
     | < STRING: "String">
     | < TRUE: "true">
-    | < FALSE: "flase">
+    | < FALSE: "false">
     | < THIS: "this">
     | < NEW: "new">
     | < LENGTH: "length">
@@ -271,9 +271,9 @@ void Literal() #void: {Token t;}
 	
     t = <INTEGERLITERAL> LiteralNR() {jjtThis.setValue(Integer.parseInt(t.image));} #IntegerLiteral
     |
-    <TRUE> LiteralNR() 
+    <TRUE> LiteralNR() #True 
     |
-    <FALSE> LiteralNR() 
+    <FALSE> LiteralNR() #False
 	|
     (t = <IDENTIFIER> {jjtThis.setIdentifier(t.image);} LiteralNR()) #Identifier
     |

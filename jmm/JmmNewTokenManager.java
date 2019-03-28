@@ -177,7 +177,7 @@ static private int jjMoveStringLiteralDfa1_0(long active0){
             return jjStopAtPos(1, 6);
          break;
       case 97:
-         return jjMoveStringLiteralDfa2_0(active0, 0x10000L);
+         return jjMoveStringLiteralDfa2_0(active0, 0x40000010000L);
       case 101:
          return jjMoveStringLiteralDfa2_0(active0, 0x300000100000L);
       case 102:
@@ -187,7 +187,7 @@ static private int jjMoveStringLiteralDfa1_0(long active0){
       case 104:
          return jjMoveStringLiteralDfa2_0(active0, 0x80000080000L);
       case 108:
-         return jjMoveStringLiteralDfa2_0(active0, 0x40000040800L);
+         return jjMoveStringLiteralDfa2_0(active0, 0x40800L);
       case 110:
          return jjMoveStringLiteralDfa2_0(active0, 0x4000000000L);
       case 111:
@@ -216,11 +216,13 @@ static private int jjMoveStringLiteralDfa2_0(long old0, long active0){
    switch(curChar)
    {
       case 97:
-         return jjMoveStringLiteralDfa3_0(active0, 0x40000004800L);
+         return jjMoveStringLiteralDfa3_0(active0, 0x4800L);
       case 98:
          return jjMoveStringLiteralDfa3_0(active0, 0x2000L);
       case 105:
          return jjMoveStringLiteralDfa3_0(active0, 0x80000098000L);
+      case 108:
+         return jjMoveStringLiteralDfa3_0(active0, 0x40000000000L);
       case 110:
          return jjMoveStringLiteralDfa3_0(active0, 0x200000000000L);
       case 111:
@@ -571,7 +573,7 @@ public static final String[] jjstrLiteralImages = {
 "\167\150\151\154\145", "\162\145\164\165\162\156", "\173", "\175", "\133", "\135", "\50", "\51", 
 "\54", "\56", "\73", "\75", "\41", "\46\46", "\74", "\53", "\55", "\57", "\52", 
 "\151\156\164", "\142\157\157\154\145\141\156", "\123\164\162\151\156\147", 
-"\164\162\165\145", "\146\154\141\163\145", "\164\150\151\163", "\156\145\167", 
+"\164\162\165\145", "\146\141\154\163\145", "\164\150\151\163", "\156\145\167", 
 "\154\145\156\147\164\150", null, null, };
 static protected Token jjFillToken()
 {
