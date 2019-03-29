@@ -8,5 +8,5 @@ javacc JmmNew.jj
 
 javac *.java
 
-java JmmNew <PathToFileTest>
+java JmmNew \< PathToFileTest \>
   Ex: HelloWorld.jmm
