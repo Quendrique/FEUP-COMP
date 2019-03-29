@@ -1,7 +1,7 @@
 options {
  LOOKAHEAD=1;
  MULTI=true;
- DEBUG_PARSER=false;
+ DEBUG_PARSER=true;
 }
 PARSER_BEGIN(JmmNew)
 import java.io.BufferedReader;
@@ -288,7 +288,7 @@ void Literal() #void: {Token t;}
 
 void LiteralNR() #void: {Token t;}
 {
-    <OSQB> Literal() #ArrayIndex <CSQB> LiteralNR()   
+    <OSQB> Expression() #ArrayIndex <CSQB> LiteralNR()   
     |
     <PNT> MethodOrLength()
     |
