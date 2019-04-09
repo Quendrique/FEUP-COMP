@@ -32,5 +32,6 @@ interface Node {
   public int jjtGetNumChildren();
 
   public int getId();
+
 }
 /* JavaCC - OriginalChecksum=f321f02c1d43b87914acea48d856de05 (do not edit this line) */
