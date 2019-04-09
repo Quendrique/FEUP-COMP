@@ -31,6 +31,8 @@ public class JmmNew{
     SimpleNode root = myJmmNew.Program();
     root.dump("");
 
+    ST st = new ST();
+    
  }
     
 }
