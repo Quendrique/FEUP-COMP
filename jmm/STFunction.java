@@ -16,12 +16,12 @@ public class STFunction extends Object {
   public void dump() {
     System.out.println("  Return descriptor: " + (returnDescriptor == null ? "" : returnDescriptor.toString()));
     System.out.println("  Parameters:");
-    params.forEach((key, value) ->
-      System.out.println("    " + value.toString() + " " + key)
-    );
+    params.forEach((key, value) -> {
+      System.out.println("    " + value.toString() + " " + key);
+    });
     System.out.println("  Locals:");
-    locals.forEach((key, value) ->
-      System.out.println("    " + value.toString() + " " + key)
-    );
+    locals.forEach((key, value) -> {
+      System.out.println("    " + value.toString() + " " + key);
+    });
   }
 }

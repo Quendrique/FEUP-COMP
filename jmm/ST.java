@@ -30,6 +30,8 @@ public class ST extends Object {
 
   public void analyzeMethodDeclaration(Node node) {
 
+    boolean paramsChecked = false;
+
     STFunction stFunction = new STFunction();
     String stFunctionName = null;
     if (((SimpleNode) node).getClass().getSimpleName().equals("ASTMethodDeclaration")) {
@@ -38,22 +40,33 @@ public class ST extends Object {
     } else {
       stFunctionName = "main";
     }
-    
-    //parameters
-    Node[] children = ((SimpleNode) node).children;
-    if (((SimpleNode) children[0]).getClass().getSimpleName().equals("ASTMethodArguments")) {
-      for(Node methodArg: ((SimpleNode) children[0]).children) {
-        stFunction.params.put(((ASTMethodArgument) methodArg).getIdentifier(), new STO(((ASTMethodArgument) methodArg).type));
-      }
-    }
 
-    //locals
+    Node[] children = ((SimpleNode) node).children;
+    
     for(Node childNode : children) {
+      if (!paramsChecked) {
+        if (((SimpleNode) childNode).getClass().getSimpleName().equals("ASTMethodArguments")) {
+          for(Node methodArg: ((SimpleNode) childNode).children) {
+            stFunction.params.put(((ASTMethodArgument) methodArg).getIdentifier(), new STO(((ASTMethodArgument) methodArg).type));
+          }
+        } else {
+          if(!((SimpleNode) childNode).getClass().getSimpleName().equals("ASTVarDeclaration")) {
+            break;
+          } else {
+            System.out.println("kdjsg");
+            stFunction.locals.put(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type));
+          }
+        }
+        paramsChecked = true;
+        continue;
+      }
+
       if(!((SimpleNode) childNode).getClass().getSimpleName().equals("ASTVarDeclaration")) {
         break;
       } else {
         stFunction.locals.put(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type));
       }
+
     }
 
     functionTable.put(stFunctionName, stFunction);
