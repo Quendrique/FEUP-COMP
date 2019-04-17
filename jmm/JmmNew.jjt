@@ -10,9 +10,9 @@ import java.io.IOException;
 
 public class JmmNew{
 
-  static int errorCount=0;
+    static int errorCount=0;
 
- public static void main(String args[]) throws ParseException {
+    public static void main(String args[]) throws ParseException {
 
     final String FILENAME = args[0];
 
@@ -31,7 +31,12 @@ public class JmmNew{
     SimpleNode root = myJmmNew.Program();
     root.dump("");
 
+    System.out.println("/****************/");
+    System.out.println("/* SYMBOL TABLE */");
+    System.out.println("/****************/\n");
+
     ST st = new ST(root);
+    st.dump();
     
  }
     
