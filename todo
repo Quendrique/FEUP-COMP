@@ -1,0 +1,3 @@
+global variables are being incorrectly stored
+not sure of just how valid the symbol table is right now
+arrays aren't being registered as such in the st

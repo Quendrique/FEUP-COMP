@@ -17,6 +17,10 @@ public class STO extends Object {
     this.value = value;
   }
 
+  public String getType() {
+    return this.type;
+  }
+
   public String toString() {
     return this.type;
   }

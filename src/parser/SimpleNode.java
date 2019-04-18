@@ -7,7 +7,7 @@ import semantic.*;
 public class SimpleNode implements Node {
 
   protected Node parent;
-  protected Node[] children; //ESPARGUETE - MUDAR ISTO DEPOIS
+  protected Node[] children; 
   protected int id;
   protected Object value;
   protected Jmm parser;
@@ -90,18 +90,27 @@ public class SimpleNode implements Node {
   
   public void checkSemantics() {
 
-    buildSymbolTable();
+    if (this.parent == null) {
+      this.scope = "global";
+    }
+
+    for(Node node : this.children) {
+      if(((SimpleNode) node).children != null) {
+        nodeType = ((SimpleNode) node).getClass().getSimpleName();
+        if (nodeType.equals("ASTMethodDeclaration") || nodeType.equals("ASTMainDeclaration")) {
+          analyzeMethodDeclaration(node);
+        }
+      }
+    }
 
   }
 
   public void buildSymbolTable() {
 
-    if (parent == null) { //root node 
-      if (this.symbolTable == null) {
-        this.symbolTable = new ST();
-        this.symbolTable.addFunction("global", new STFunction());
-      }
-
+    if (parent == null && this.symbolTable == null) { //root node 
+      this.symbolTable = new ST();
+      this.symbolTable.addFunction("global", new STFunction());
+    
       String nodeType;
       Node[] children = ((SimpleNode) this.children[0]).children;
   
