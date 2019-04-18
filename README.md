@@ -6,8 +6,9 @@
 
 ```
 ./scripts/compile.sh
-./scripts/run.
+./scripts/run.sh
 ```
+
 ### Windows
 
 > To do
