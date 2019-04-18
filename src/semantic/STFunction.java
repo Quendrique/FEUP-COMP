@@ -16,6 +16,18 @@ public class STFunction extends Object {
     this.locals = new HashMap<String, STO>();
   }
 
+  public void addSymbol(String identifier, STO symbol, boolean isParam) {
+    if (isParam) {
+      this.params.put(identifier, symbol);
+    } else {
+      this.locals.put(identifier, symbol);
+    }
+  }
+
+  public void setReturn(STO returnSymbol) {
+    this.returnDescriptor = returnSymbol;
+  }
+
   public void dump() {
     System.out.println("  Return descriptor: " + (returnDescriptor == null ? "" : returnDescriptor.toString()));
     System.out.println("  Parameters:");

@@ -2,13 +2,17 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package parser;
 
+import semantic.*;
+
 public class SimpleNode implements Node {
 
   protected Node parent;
-  public Node[] children; //ESPARGUETE - MUDAR ISTO DEPOIS
+  protected Node[] children; //ESPARGUETE - MUDAR ISTO DEPOIS
   protected int id;
   protected Object value;
   protected Jmm parser;
+  protected String scope;
+  protected ST symbolTable;
 
   public SimpleNode(int i) {
     id = i;
@@ -79,6 +83,85 @@ public class SimpleNode implements Node {
   public int getId() {
     return id;
   }
+
+  public ST getSymbolTable() {
+    return this.symbolTable;
+  }
+  
+  public void checkSemantics() {
+
+    buildSymbolTable();
+
+  }
+
+  public void buildSymbolTable() {
+
+    if (parent == null) { //root node 
+      if (this.symbolTable == null) {
+        this.symbolTable = new ST();
+        this.symbolTable.addFunction("global", new STFunction());
+      }
+
+      String nodeType;
+      Node[] children = ((SimpleNode) this.children[0]).children;
+  
+      for(Node node : children) {
+        if(((SimpleNode) node).children != null) {
+          nodeType = ((SimpleNode) node).getClass().getSimpleName();
+          if (nodeType.equals("ASTMethodDeclaration") || nodeType.equals("ASTMainDeclaration")) {
+            analyzeMethodDeclaration(node);
+          }
+        }
+      }
+    }
+
+  }
+
+  public void analyzeMethodDeclaration(Node node) {
+
+    boolean paramsChecked = false;
+
+    STFunction stFunction = new STFunction();
+    String stFunctionName = null;
+    if (((SimpleNode) node).getClass().getSimpleName().equals("ASTMethodDeclaration")) {
+      stFunctionName = ((ASTMethodDeclaration) node).getName();
+      stFunction.setReturn(new STO(((ASTMethodDeclaration) node).type));
+    } else {
+      stFunctionName = "main";
+      //TODO add void return type
+    }
+
+    Node[] children = ((SimpleNode) node).children;
+    
+    for(Node childNode : children) {
+      if (!paramsChecked) {
+        if (((SimpleNode) childNode).getClass().getSimpleName().equals("ASTMethodArguments")) {
+          for(Node methodArg: ((SimpleNode) childNode).children) {
+            stFunction.addSymbol(((ASTMethodArgument) methodArg).getIdentifier(), new STO(((ASTMethodArgument) methodArg).type), true);
+          }
+        } else {
+          if(!((SimpleNode) childNode).getClass().getSimpleName().equals("ASTVarDeclaration")) {
+            break;
+          } else {
+            stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false);
+          }
+        }
+        paramsChecked = true;
+        continue;
+      }
+
+      if(!((SimpleNode) childNode).getClass().getSimpleName().equals("ASTVarDeclaration")) {
+        break;
+      } else {
+        stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false);
+      }
+
+    }
+
+    this.symbolTable.addFunction(stFunctionName, stFunction);
+  
+  }
+
 }
 
 /* JavaCC - OriginalChecksum=197c934e78284e57260ea8dc7762052b (do not edit this line) */

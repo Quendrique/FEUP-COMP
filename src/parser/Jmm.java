@@ -30,12 +30,8 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants, JmmConstants {/*@b
     SimpleNode root = myJmm.Program();
     root.dump("");
 
-    System.out.println("/****************/");
-    System.out.println("/* SYMBOL TABLE */");
-    System.out.println("/****************/\u005cn");
-
-    ST st = new ST(root);
-    st.dump();
+    root.buildSymbolTable();
+    root.symbolTable.dump();
 
  }
 
@@ -1340,6 +1336,38 @@ if (jjtc000) {
     finally { jj_save(9, xla); }
   }
 
+  static private boolean jj_3_9()
+ {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_scan_token(34)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(35)) return true;
+    }
+    if (jj_3R_22()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_4()
+ {
+    if (jj_scan_token(INT)) return true;
+    if (jj_scan_token(OSQB)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_17()
+ {
+    if (jj_3R_24()) return true;
+    if (jj_scan_token(IDENTIFIER)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_1()
+ {
+    if (jj_3R_16()) return true;
+    return false;
+  }
+
   static private boolean jj_3R_24()
  {
     Token xsp;
@@ -1520,38 +1548,6 @@ if (jjtc000) {
     }
     }
     }
-    return false;
-  }
-
-  static private boolean jj_3_9()
- {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_scan_token(34)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(35)) return true;
-    }
-    if (jj_3R_22()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_4()
- {
-    if (jj_scan_token(INT)) return true;
-    if (jj_scan_token(OSQB)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_17()
- {
-    if (jj_3R_24()) return true;
-    if (jj_scan_token(IDENTIFIER)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_1()
- {
-    if (jj_3R_16()) return true;
     return false;
   }
 

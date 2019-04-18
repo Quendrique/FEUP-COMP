@@ -34,12 +34,8 @@ public class Jmm {
     SimpleNode root = myJmm.Program();
     root.dump("");
 
-    System.out.println("/****************/");
-    System.out.println("/* SYMBOL TABLE */");
-    System.out.println("/****************/\n");
-
-    ST st = new ST(root);
-    st.dump();
+    root.buildSymbolTable();
+    root.symbolTable.dump();
 
  }
     
