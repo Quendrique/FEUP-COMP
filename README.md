@@ -1,12 +1,9 @@
-COMP
+# COMP 18/19: Java-- Parser
 
-How to run:
+## How to run
 
-jjtree JmmNew.jjt
-
-javacc JmmNew.jj
-
-javac *.java
-
-java JmmNew \< PathToFileTest \>
-  Ex: HelloWorld.jmm
+```
+./scripts/compile.sh
+./scripts/run.
+```
+Current default test file: MonteCarloPi.jmm
