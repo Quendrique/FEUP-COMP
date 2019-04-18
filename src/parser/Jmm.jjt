@@ -1,0 +1,332 @@
+options {
+ LOOKAHEAD=1;
+ MULTI=true;
+ DEBUG_PARSER=false;
+}
+PARSER_BEGIN(Jmm)
+package parser;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import semantic.*;
+
+public class Jmm {
+
+    static int errorCount=0;
+
+    public static void main(String args[]) throws ParseException {
+
+    final String FILENAME = args[0];
+
+    BufferedReader br = null;
+    FileReader fr = null;
+
+    try {
+        fr = new FileReader(FILENAME);
+        br = new BufferedReader(fr);
+
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+    Jmm myJmm = new Jmm(br);
+    SimpleNode root = myJmm.Program();
+    root.dump("");
+
+    System.out.println("/****************/");
+    System.out.println("/* SYMBOL TABLE */");
+    System.out.println("/****************/\n");
+
+    ST st = new ST(root);
+    st.dump();
+
+ }
+    
+}
+PARSER_END(Jmm)
+SKIP :
+{
+    " " | "\r" | "\t" | "\n" 
+}
+
+SKIP :
+{
+  "/*" : multilinecomment
+}
+
+SKIP :
+{
+  "//" : singlelinecomment
+}
+
+< multilinecomment >
+SKIP :
+{
+  "*/" : DEFAULT
+| < ~[ ] >
+}
+
+< singlelinecomment >
+SKIP :
+{
+  < [ "\n", "\r" ] > : DEFAULT
+| < ~[ ] >
+}
+
+
+TOKEN:
+{
+    < CLASS: "class">
+    | < EXTENDS: "extends" >
+    | < PUBLIC: "public">
+    | < STATIC: "static">
+    | < VOID: "void">
+    | < MAIN: "main">
+    | < IF: "if">
+    | < ELSE: "else">
+    | < WHILE: "while">
+    | < RETURN: "return">
+    | < OB: "{" >
+    | < CB: "}" >
+    | < OSQB: "[" >
+    | < CSQB: "]" >
+    | < OPRNT: "(">
+    | < CPRNT: ")">
+    | < CM: ",">
+    | < PNT: ".">
+    | < SCM: ";" >
+    | < EQLS: "=">
+    | < NOT: "!">
+    | < AND: "&&">
+    | < LS: "<">
+    | < PLS: "+">
+    | < MNS: "-">
+    | < SLSH: "/">
+    | < ASTRSK: "*">
+    | < INT: "int" >
+    | < BOOLEAN: "boolean" >
+    | < STRING: "String">
+    | < TRUE: "true">
+    | < FALSE: "false">
+    | < THIS: "this">
+    | < NEW: "new">
+    | < LENGTH: "length">
+    | < IDENTIFIER: (["A"-"Z","a"-"z","_"](["0"-"9","A"-"Z","a"-"z","_"])*)>
+    | < INTEGERLITERAL: (["0"-"9"])+>
+}
+
+SimpleNode Program(): {}
+{
+    ClassDeclaration() {return jjtThis;} <EOF>
+}
+
+void ClassDeclaration(): {Token t1, t2;}
+{
+    <CLASS> t1=<IDENTIFIER> (<EXTENDS> t2=<IDENTIFIER> {jjtThis.setExtends(t2.image);})? <OB> 
+        (VarDeclaration())*  
+        
+        
+        ( LOOKAHEAD(2) MainDeclaration() | MethodDeclaration())*
+    <CB>
+    {jjtThis.setName(t1.image);}
+}
+
+void VarDeclaration(): {Token t1, t2;}
+{
+    t1 = Type() t2 = <IDENTIFIER> {jjtThis.setIdentifier(t2.image); jjtThis.type = t1.image;} <SCM>
+}
+
+void MainDeclaration(): {Token t;}
+{
+    <PUBLIC> <STATIC> <VOID> <MAIN> <OPRNT> <STRING> <OSQB> <CSQB> t = <IDENTIFIER> <CPRNT> <OB>
+        (LOOKAHEAD(2) VarDeclaration())*
+        (Statement())*
+    <CB>
+    {jjtThis.setIdentifier(t.image);}
+}
+
+void MethodDeclaration(): {Token t1, t2;}
+{
+    <PUBLIC> t1 = Type() t2 =<IDENTIFIER> <OPRNT> 
+    (
+        (
+            MethodArgument()
+            (
+            <CM> MethodArgument()
+            )* 
+        ) #MethodArguments
+    )* 
+    <CPRNT>
+    <OB>
+        (LOOKAHEAD(2) VarDeclaration())*
+        (Statement())*
+        <RETURN> Expression() <SCM> #Return(1)
+    <CB>
+    {
+        jjtThis.setName(t2.image);
+        jjtThis.type = t1.image;
+    }
+}
+
+void MethodArgument(): {Token t1, t2;}
+{
+  t1 = Type() t2 = <IDENTIFIER> {jjtThis.setIdentifier(t2.image); jjtThis.type = t1.image;} 
+}
+
+//LOOKAHEAD 2
+Token Type() #void: {Token t;}
+{
+    (
+        LOOKAHEAD(2) 
+        t=<INT> <OSQB> <CSQB>
+        | t=<BOOLEAN>  
+        | t=<INT> 
+        | t=<IDENTIFIER>  
+    )
+    {
+        return t;
+    }
+    
+}
+
+//LOOKAHEAD 2
+void Statement() #void: {}
+{
+    <OB>
+        (Statement())*
+    <CB>
+    |
+    If() 
+    |
+    While()
+    |
+    ( 
+        LOOKAHEAD(2)
+        Assign()
+        |
+        LOOKAHEAD(2)
+        ArrayAssign()
+        |
+        Expression() <SCM>
+    )
+    
+}
+
+void Assign(): {Token t;}
+{
+    t=<IDENTIFIER> {jjtThis.identifier = t.image;} <EQLS> Expression() <SCM>
+}
+
+void ArrayAssign(): {Token t;}
+{
+    t=<IDENTIFIER> {jjtThis.identifier = t.image;} <OSQB> Expression() #ArrayIndex <CSQB> <EQLS> Expression() <SCM>
+}
+
+void While() : {}
+{
+  <WHILE> <OPRNT>
+    try {
+        Expression() <CPRNT>
+    } 
+    catch(ParseException e) {
+      System.out.println(e.getMessage());
+      Jmm.errorCount++;
+      Token t;
+
+      if(Jmm.errorCount>10){
+          System.out.println(Jmm.errorCount + " errors: exiting program");
+          System.exit(1);
+        }
+
+      do {
+        t = getNextToken();
+      } while (t.kind != CPRNT);
+    }
+    Statement() 
+}
+
+void If(): {}
+{
+    <IF> <OPRNT> Expression() #Condition <CPRNT> Statement() #Then <ELSE> Statement() #Else
+}
+
+void Expression() #void: {}
+{
+  And()
+}
+
+void And() #void: {}
+{
+  Lt() (LOOKAHEAD(2) <AND> Lt() #And(2))*
+}
+
+void Lt() #void: {}
+{
+  AddSub() (LOOKAHEAD(2) <LS> AddSub() #LessThan(2))*
+}
+
+void AddSub() #void: {Token t;}
+{
+  MultDiv() (LOOKAHEAD(2) ( t=<PLS>  | t=<MNS> ) MultDiv() {jjtThis.setOp(t.image);} #AddSub(2))* 
+}
+
+void MultDiv() #void: {Token t;}
+{
+  Literal() (LOOKAHEAD(2) ( t=<ASTRSK> | t=<SLSH> ) Literal() {jjtThis.setOp(t.image);} #MultDiv(2))*
+}
+
+void Literal() #void: {Token t;}
+{
+	
+    t = <INTEGERLITERAL> LiteralNR() {jjtThis.setValue(Integer.parseInt(t.image));} #IntegerLiteral
+    |
+    <TRUE> LiteralNR() #True 
+    |
+    <FALSE> LiteralNR() #False
+	|
+    (t = <IDENTIFIER> {jjtThis.setIdentifier(t.image);} LiteralNR()) #Identifier
+    |
+    <THIS> LiteralNR()
+    |   
+    <NEW> New()
+    |
+    <NOT> Expression() LiteralNR()
+    |
+    <OPRNT> Expression() <CPRNT> LiteralNR()
+}
+
+void LiteralNR() #void: {Token t;}
+{
+    <OSQB> Expression() #ArrayIndex <CSQB> LiteralNR()   
+    |
+    <PNT> MethodOrLength()
+    |
+    {}
+}
+
+void MethodOrLength() #void: {}
+{
+	<LENGTH> LiteralNR()
+	|
+	Call()
+}
+
+void New() : {Token t;}
+{
+	<INT> <OSQB> Expression() <CSQB> LiteralNR()
+	|
+	t=<IDENTIFIER> <OPRNT> <CPRNT> LiteralNR() {jjtThis.identifier=t.image;}
+}
+
+void Call(): {Token t;}
+{
+    t=<IDENTIFIER> {jjtThis.setValue(t.image);} <OPRNT> 
+    (Args())* 
+    <CPRNT> LiteralNR()
+}
+
+void Args() : {}
+{
+    Expression() (<CM> Expression())*
+}

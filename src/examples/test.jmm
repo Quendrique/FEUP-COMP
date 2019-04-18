@@ -1,0 +1,6 @@
+class Fac extends Test {
+	public static void main(String[] a) {
+		int i = 0;
+		return i;
+	}
+}
