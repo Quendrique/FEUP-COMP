@@ -2,6 +2,9 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package parser;
 
+import semantic.*;
+import java.util.HashMap;
+
 public
 class ASTVarDeclaration extends SimpleNode {
 
@@ -22,6 +25,11 @@ class ASTVarDeclaration extends SimpleNode {
 
   public String getIdentifier() {
     return this.identifier;
+  }
+
+  @Override
+  public void checkNodeSemantic() {
+    
   }
 
   public void dump(String prefix) {

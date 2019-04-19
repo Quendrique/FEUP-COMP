@@ -5,3 +5,4 @@ main areas to focus on for semantic analysis:
   check if variables aren't declared more than once
   in assigns, check if the variable type is respected (a boolean should only accepts 'true' or 'false', for example) 
   still in assigns, check if variable was previously declared
+already checking for duplicate entries but only within same function or within global scope

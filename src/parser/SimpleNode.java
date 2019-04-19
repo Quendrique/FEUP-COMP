@@ -87,23 +87,27 @@ public class SimpleNode implements Node {
   public ST getSymbolTable() {
     return this.symbolTable;
   }
+
+  public void checkNodeSemantic() {}; 
   
   public void checkSemantics() {
 
     if (this.parent == null) {
       this.scope = "global";
+    } else {
+      this.scope = ((SimpleNode) this.parent).scope;
+      this.symbolTable = ((SimpleNode) this.parent).symbolTable;
     }
 
-    /* TODO
-    for(Node node : this.children) {
-      if(((SimpleNode) node).children != null) {
-        nodeType = ((SimpleNode) node).getClass().getSimpleName();
-        if (nodeType.equals("ASTMethodDeclaration") || nodeType.equals("ASTMainDeclaration")) {
-          analyzeMethodDeclaration(node);
-        }
+
+    this.checkNodeSemantic();
+    
+    if(this.children != null) {
+      for(Node node : this.children) {
+        ((SimpleNode) node).checkSemantics();
       }
     }
-    */
+    
 
   }
 
@@ -112,16 +116,18 @@ public class SimpleNode implements Node {
     if (parent == null && this.symbolTable == null) { //root node 
       this.symbolTable = new ST();
       this.symbolTable.addFunction("global", new STFunction());
+      STFunction globalTable = this.symbolTable.getFunctionTable().get("global");
     
       String nodeType;
       Node[] children = ((SimpleNode) this.children[0]).children;
   
       for(Node node : children) {
-        if(((SimpleNode) node).children != null) {
-          nodeType = ((SimpleNode) node).getClass().getSimpleName();
-          if (nodeType.equals("ASTMethodDeclaration") || nodeType.equals("ASTMainDeclaration")) {
-            analyzeMethodDeclaration(node);
-          }
+        nodeType = ((SimpleNode) node).getClass().getSimpleName();
+        if (nodeType.equals("ASTMethodDeclaration") || nodeType.equals("ASTMainDeclaration")) {
+          analyzeMethodDeclaration(node);
+        } else if (nodeType.equals("ASTVarDeclaration")) {
+          //kinda esparguete, besides deve haver uma entrada especial para a tabela global
+          globalTable.addSymbol(((ASTVarDeclaration) node).getIdentifier(), new STO(((ASTVarDeclaration) node).type), true); 
         }
       }
     }

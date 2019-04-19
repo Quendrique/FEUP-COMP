@@ -35,7 +35,7 @@ public class Jmm {
     root.dump("");
 
     root.buildSymbolTable();
-    //root.checkSemantics();
+    root.checkSemantics();
     root.symbolTable.dump();
 
  }

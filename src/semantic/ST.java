@@ -6,10 +6,13 @@ import parser.*;
 public class ST extends Object {
 
   HashMap<String, STFunction> functionTable;
-  SimpleNode AST;
 
   public ST() {
     this.functionTable = new HashMap<String, STFunction>();
+  }
+
+  public HashMap<String, STFunction> getFunctionTable() {
+    return this.functionTable;
   }
 
   public void addFunction(String identifier, STFunction function) {
