@@ -1,4 +1,4 @@
-global variables are being incorrectly stored
+global variables are being incorrectly stored - done kinda 
 not sure of just how valid the symbol table is right now
 arrays aren't being registered as such in the st
 main areas to focus on for semantic analysis:
@@ -6,3 +6,4 @@ main areas to focus on for semantic analysis:
   in assigns, check if the variable type is respected (a boolean should only accepts 'true' or 'false', for example) 
   still in assigns, check if variable was previously declared
 already checking for duplicate entries but only within same function or within global scope
+add line count ?? dont know
