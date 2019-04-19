@@ -23,6 +23,13 @@ class ASTIdentifier extends SimpleNode {
     this.identifier = identifier;
   } 
 
+  @Override
+  public void checkNodeSemantic() {
+    if (!this.symbolTable.doesSymbolExist(this.identifier, this.scope)) {
+      System.out.println("Variable " + this.identifier + " was not declared");
+    }
+  }
+
   public void dump(String prefix) {
     System.out.println(toString(prefix) + ": " + this.identifier);
     if (children != null) {

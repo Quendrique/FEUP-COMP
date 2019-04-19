@@ -10,8 +10,9 @@ class FindMaximum {
 
 		i = 1;
 		testing = 2;
+		testing_arrays[2] = 0;
 		maximum = arr[0];
-		while (i < arr.length) {
+		while (testing < arr.length) {
 			value = arr[i];
 			if (maximum < value) {
 				maximum = value;
