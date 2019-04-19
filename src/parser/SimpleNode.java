@@ -94,6 +94,7 @@ public class SimpleNode implements Node {
       this.scope = "global";
     }
 
+    /* TODO
     for(Node node : this.children) {
       if(((SimpleNode) node).children != null) {
         nodeType = ((SimpleNode) node).getClass().getSimpleName();
@@ -102,6 +103,7 @@ public class SimpleNode implements Node {
         }
       }
     }
+    */
 
   }
 

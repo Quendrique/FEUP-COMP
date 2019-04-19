@@ -129,9 +129,9 @@ void ClassDeclaration(): {Token t1, t2;}
     {jjtThis.setName(t1.image);}
 }
 
-void VarDeclaration(): {Token t1, t2;}
+void VarDeclaration(): {String t1; Token t2;}
 {
-    t1 = Type() t2 = <IDENTIFIER> {jjtThis.setIdentifier(t2.image); jjtThis.type = t1.image;} <SCM>
+    t1 = Type() t2 = <IDENTIFIER> {jjtThis.setIdentifier(t2.image); jjtThis.type = t1;} <SCM>
 }
 
 void MainDeclaration(): {Token t;}
@@ -143,7 +143,7 @@ void MainDeclaration(): {Token t;}
     {jjtThis.setIdentifier(t.image);}
 }
 
-void MethodDeclaration(): {Token t1, t2;}
+void MethodDeclaration(): {String t1; Token t2;}
 {
     <PUBLIC> t1 = Type() t2 =<IDENTIFIER> <OPRNT> 
     (
@@ -162,27 +162,27 @@ void MethodDeclaration(): {Token t1, t2;}
     <CB>
     {
         jjtThis.setName(t2.image);
-        jjtThis.type = t1.image;
+        jjtThis.type = t1;
     }
 }
 
-void MethodArgument(): {Token t1, t2;}
+void MethodArgument(): {String t1; Token t2;}
 {
-  t1 = Type() t2 = <IDENTIFIER> {jjtThis.setIdentifier(t2.image); jjtThis.type = t1.image;} 
+  t1 = Type() t2 = <IDENTIFIER> {jjtThis.setIdentifier(t2.image); jjtThis.type = t1; } 
 }
 
 //LOOKAHEAD 2
-Token Type() #void: {Token t;}
+String Type() #void: {Token t; String returnValue;}
 {
     (
         LOOKAHEAD(2) 
-        t=<INT> <OSQB> <CSQB>
-        | t=<BOOLEAN>  
-        | t=<INT> 
-        | t=<IDENTIFIER>  
+        <INT> <OSQB> <CSQB> {returnValue = "int[]";}
+        | t=<BOOLEAN> {returnValue = "boolean";} 
+        | t=<INT> {returnValue = "int";} 
+        | t=<IDENTIFIER> {returnValue = t.image; } 
     )
     {
-        return t;
+        return returnValue;
     }
     
 }
