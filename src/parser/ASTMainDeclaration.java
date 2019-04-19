@@ -23,6 +23,11 @@ class ASTMainDeclaration extends SimpleNode {
     this.identifier = identifier;
   }
 
+  @Override
+  public void checkNodeSemantic() {
+    this.scope = "main";
+  }
+
   public void dump(String prefix) {
     System.out.println(toString(prefix) + ": args: " + this.identifier);
     if (children != null) {

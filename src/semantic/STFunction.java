@@ -44,23 +44,12 @@ public class STFunction extends Object {
     }
   }
 
-  public void setReturn(STO returnSymbol) {
-    this.returnDescriptor = returnSymbol;
+  public boolean doesSymbolExist(String identifier) {
+    return (this.locals.get(identifier) != null) || (this.params.get(identifier) != null); 
   }
 
-  public boolean doesSymbolExist(String identifier, String type) {
-    STO doesVariableExist;
-    if (((doesVariableExist = this.params.get(identifier)) != null || (doesVariableExist = this.locals.get(identifier)) != null)
-    && doesVariableExist.type == type) {
-      if (!doesVariableExist.checked) {
-        doesVariableExist.checked = true;
-        return false;
-      } else {
-        return true;
-      }
-    }
-    return (((doesVariableExist = this.params.get(identifier)) != null || (doesVariableExist = this.locals.get(identifier)) != null)
-    && doesVariableExist.type == type);
+  public void setReturn(STO returnSymbol) {
+    this.returnDescriptor = returnSymbol;
   }
 
   public void dump() {

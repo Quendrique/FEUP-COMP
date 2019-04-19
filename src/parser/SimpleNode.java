@@ -99,7 +99,6 @@ public class SimpleNode implements Node {
       this.symbolTable = ((SimpleNode) this.parent).symbolTable;
     }
 
-
     this.checkNodeSemantic();
     
     if(this.children != null) {
