@@ -1,3 +1,7 @@
 global variables are being incorrectly stored
 not sure of just how valid the symbol table is right now
 arrays aren't being registered as such in the st
+main areas to focus on for semantic analysis:
+  check if variables aren't declared more than once
+  in assigns, check if the variable type is respected (a boolean should only accepts 'true' or 'false', for example) 
+  still in assigns, check if variable was previously declared
