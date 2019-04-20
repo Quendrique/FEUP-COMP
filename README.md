@@ -4,9 +4,11 @@
 
 ### Unix
 
+> Inside /scripts
+
 ```
-./scripts/compile.sh
-./scripts/run.sh
+./compile.sh
+./run.sh
 ```
 
 ### Windows
