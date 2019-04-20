@@ -28,6 +28,10 @@ public class ST extends Object {
     return ((returnSymbol = functionTable.get(scope).doesSymbolExist(identifier)) != null) ? returnSymbol : functionTable.get("global").doesSymbolExist(identifier);
   }
 
+  public STFunction doesFunctionExist(String identifier) {
+    return this.functionTable.get(identifier);
+  }
+
   public void dump() {
 
     System.out.println("\n** SYMBOL TABLE **\n");

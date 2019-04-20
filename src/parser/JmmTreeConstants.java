@@ -28,9 +28,10 @@ public interface JmmTreeConstants
   public int JJTTRUE = 22;
   public int JJTFALSE = 23;
   public int JJTIDENTIFIER = 24;
-  public int JJTNEW = 25;
-  public int JJTCALL = 26;
-  public int JJTARGS = 27;
+  public int JJTLENGTH = 25;
+  public int JJTNEW = 26;
+  public int JJTCALL = 27;
+  public int JJTARGS = 28;
 
 
   public String[] jjtNodeName = {
@@ -59,9 +60,10 @@ public interface JmmTreeConstants
     "True",
     "False",
     "Identifier",
+    "Length",
     "New",
     "Call",
     "Args",
   };
 }
-/* JavaCC - OriginalChecksum=b57f861aca9b14bd9f87b6b53fe43616 (do not edit this line) */
+/* JavaCC - OriginalChecksum=28ab01e7a7d4fb676dd9b97973c855c0 (do not edit this line) */

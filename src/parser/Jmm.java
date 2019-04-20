@@ -538,7 +538,7 @@ returnValue = t.image;
                 jjtree.openNodeScope(jjtn000);Token t;
     try {
       t = jj_consume_token(IDENTIFIER);
-jjtn000.identifier = t.image;
+jjtn000.lhsIdentifier = t.image;
       jj_consume_token(EQLS);
       Expression();
       jj_consume_token(SCM);
@@ -1104,7 +1104,16 @@ if (jjtc001) {
   static final public void MethodOrLength() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case LENGTH:{
-      jj_consume_token(LENGTH);
+ASTLength jjtn001 = new ASTLength(JJTLENGTH);
+          boolean jjtc001 = true;
+          jjtree.openNodeScope(jjtn001);
+      try {
+        jj_consume_token(LENGTH);
+      } finally {
+if (jjtc001) {
+            jjtree.closeNodeScope(jjtn001, true);
+          }
+      }
       LiteralNR();
       break;
       }

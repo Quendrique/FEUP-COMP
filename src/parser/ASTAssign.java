@@ -30,8 +30,26 @@ class ASTAssign extends SimpleNode {
     if (this.children != null) {
       rhsNode = (SimpleNode) this.children[0];
       if (rhsNode.toString().equals("Identifier")) {
-        //is it an array access ? if so, check if the name of the rhs contains the prefix int (since the name of the type is int[] - fix this later to have the sto store the type and a boolean checking if its an array or not and override the toString() method to print wtv)
         STO rhs = this.symbolTable.doesSymbolExist(((ASTIdentifier) rhsNode).getIdentifier(), this.scope);
+
+        if (rhsNode.children != null) {
+          if (((SimpleNode) rhsNode).children[0].toString().equals("ArrayIndex") && lhs.getType() != "int") {
+            System.out.println("Cannot assign variable " + ((ASTIdentifier) rhsNode).getIdentifier() + " of type " + rhs.getType() + " to variable " + this.lhsIdentifier + " of type " + lhs.getType());
+          } else if (((SimpleNode) rhsNode).children[0].toString().equals("Length")) {
+            // ??
+          } else if (((SimpleNode) rhsNode).children[0].toString().equals("Call")) {
+            //if function external to the class, assume it's correct and ignore
+            STFunction functionBeingCalled = this.symbolTable.doesFunctionExist(((ASTCall) rhsNode.children[0]).getValue());
+            if (functionBeingCalled != null) {
+              //check if variable is of type [class] TODO
+              if (functionBeingCalled.getReturn().getType() != lhs.getType()) {
+                System.out.println("Return type for function " + ((ASTCall) rhsNode.children[0]).getValue() + " not compatible with variable " + this.lhsIdentifier + " of type " + lhs.getType());
+              }
+            }
+            
+          }
+          return;
+        } 
         if (rhs != null && lhs.getType() != rhs.getType()) {
           System.out.println("Cannot assign variable " + ((ASTIdentifier) rhsNode).getIdentifier() + " of type " + rhs.getType() + " to variable " + this.lhsIdentifier + " of type " + lhs.getType());
         }

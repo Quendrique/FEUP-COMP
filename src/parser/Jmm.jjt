@@ -304,7 +304,7 @@ void LiteralNR() #void: {Token t;}
 
 void MethodOrLength() #void: {}
 {
-	<LENGTH> LiteralNR()
+	<LENGTH> #Length LiteralNR()
 	|
 	Call()
 }

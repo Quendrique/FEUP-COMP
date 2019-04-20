@@ -3,7 +3,7 @@ not sure of just how valid the symbol table is right now
 arrays aren't being registered as such in the st - done
 main areas to focus on for semantic analysis:
   check if variables aren't declared more than once - done ?
-  in assigns, check if the variable type is respected (a boolean should only accepts 'true' or 'false', for example) 
+  in assigns, check if the variable type is respected (a boolean should only accepts 'true' or 'false', for example) - kinda done
   still in assigns, check if variable was previously declared - done ?
 already checking for duplicate entries but only within same function or within global scope - fixed, but still need info on where the duplicates are
 add line count ?? dont know
@@ -14,3 +14,8 @@ still need to allow for variables with the same identifier but different types t
 identifiers refering external classes (for example, ioPlus in FindMaximum.jmm) reporting an error, need to fix this (calls to static methods from other classes should be allowed i think)
 
 remove getClasse().getSimpleName() calls and override the toString method of each node instead - done
+
+variable = variable now type checked
+
+variable = function call return type correctness now checked 
+

@@ -7,9 +7,10 @@ class FindMaximum {
 		int i;
 		int maximum;
 		int value;
+		boolean testBoolean;
 
 		i = 5 && 4;
-		i = testingLhsAssign;
+		i = testBoolean;
 
 		i = 1;
 		testing = 2;
@@ -44,6 +45,10 @@ class FindMaximum {
 
 	public static void main(String[] args) {
 		FindMaximum fm;
+
+
+		boolean testing;
+		testing = fm.get_array();
 
 		fm = new FindMaximum();
 		fm.build_test_arr();
