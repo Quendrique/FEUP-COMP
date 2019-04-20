@@ -12,3 +12,5 @@ assign checking if variable exists in table but not if the correct type is being
 still need to allow for variables with the same identifier but different types to be declared
 
 identifiers refering external classes (for example, ioPlus in FindMaximum.jmm) reporting an error, need to fix this (calls to static methods from other classes should be allowed i think)
+
+remove getClasse().getSimpleName() calls and override the toString method of each node instead - done

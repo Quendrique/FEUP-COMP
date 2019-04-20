@@ -121,10 +121,10 @@ public class SimpleNode implements Node {
       Node[] children = ((SimpleNode) this.children[0]).children;
   
       for(Node node : children) {
-        nodeType = ((SimpleNode) node).getClass().getSimpleName();
-        if (nodeType.equals("ASTMethodDeclaration") || nodeType.equals("ASTMainDeclaration")) {
+        nodeType = ((SimpleNode) node).toString();
+        if (nodeType.equals("MethodDeclaration") || nodeType.equals("MainDeclaration")) {
           analyzeMethodDeclaration(node);
-        } else if (nodeType.equals("ASTVarDeclaration")) {
+        } else if (nodeType.equals("VarDeclaration")) {
           //kinda esparguete, besides deve haver uma entrada especial para a tabela global
           globalTable.addSymbol(((ASTVarDeclaration) node).getIdentifier(), new STO(((ASTVarDeclaration) node).type), true); 
         }
@@ -139,7 +139,8 @@ public class SimpleNode implements Node {
 
     STFunction stFunction = new STFunction();
     String stFunctionName = null;
-    if (((SimpleNode) node).getClass().getSimpleName().equals("ASTMethodDeclaration")) {
+    String nodeType = ((SimpleNode) node).toString();
+    if (nodeType.equals("MethodDeclaration")) {
       stFunctionName = ((ASTMethodDeclaration) node).getName();
       stFunction.setReturn(new STO(((ASTMethodDeclaration) node).type));
     } else {
@@ -150,13 +151,14 @@ public class SimpleNode implements Node {
     Node[] children = ((SimpleNode) node).children;
     
     for(Node childNode : children) {
+      nodeType = ((SimpleNode) childNode).toString();
       if (!paramsChecked) {
-        if (((SimpleNode) childNode).getClass().getSimpleName().equals("ASTMethodArguments")) {
+        if (nodeType.equals("MethodArguments")) {
           for(Node methodArg: ((SimpleNode) childNode).children) {
             stFunction.addSymbol(((ASTMethodArgument) methodArg).getIdentifier(), new STO(((ASTMethodArgument) methodArg).type), true);
           }
         } else {
-          if(!((SimpleNode) childNode).getClass().getSimpleName().equals("ASTVarDeclaration")) {
+          if(!nodeType.equals("VarDeclaration")) {
             break;
           } else {
             stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false);
@@ -166,7 +168,7 @@ public class SimpleNode implements Node {
         continue;
       }
 
-      if(!((SimpleNode) childNode).getClass().getSimpleName().equals("ASTVarDeclaration")) {
+      if(!nodeType.equals("VarDeclaration")) {
         break;
       } else {
         stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false);
