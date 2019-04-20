@@ -14,8 +14,3 @@
 ### Windows
 
 > To do
-
-## Additional notes
-
-Current default test file: MonteCarloPi.jmm
-
