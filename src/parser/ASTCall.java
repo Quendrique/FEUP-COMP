@@ -28,11 +28,20 @@ class ASTCall extends SimpleNode {
     this.value = value;
   }
 
-  public void checkNodeSemantics() {
+  @Override
+  public void checkNodeSemantic() {
+
+    //System.out.println("checking if function " + this.value + " exists in function table");
+    STFunction functionCalled = this.symbolTable.doesFunctionExist(this.value);
+    if (functionCalled != null) {
+      this.returnType = functionCalled.getReturn().getType();
+    } else {
+      this.returnType = "null"; //function external to the class
+    }
 
     if (this.children != null) {
-      STFunction functionCalled = this.symbolTable.doesFunctionExist(this.value);
       if (functionCalled != null) {
+        //System.out.println("call class function");
         checkForCorrectArgs(functionCalled);
       }
     }
@@ -50,19 +59,17 @@ class ASTCall extends SimpleNode {
     int count = 0;
     STO argument, parameter;
     String argIdentifier;
-    /*
+    
     while (it.hasNext() && count < ((SimpleNode) this.children[0]).children.length) {
-      // !!!! ADD RETURN TO ALL EXPRESSION NODES
+      //System.out.println(((SimpleNode) this.children[0]).children.length);
       Map.Entry<String, STO> symbol = it.next();
-      //argIdentifier = ((SimpleNode) ((SimpleNode) this.children[0]).children[count]).getValue
-      argument = this.symbolTable.doesSymbolExist(argIdentifier, this.scope);
-      if (argument != null && symbol.getValue().getType() != argument.getType()) {
+      if (!symbol.getValue().getType().equals(((SimpleNode) (((SimpleNode) this.children[0]).children[count])).returnType)) {
         System.out.println("No function signature for identifier " + this.value + " and specified arguments found");
         return;
       }
       count++;
     }
-    */
+    
   }
 
 

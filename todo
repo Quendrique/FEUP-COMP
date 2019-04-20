@@ -23,3 +23,7 @@ check if array was initialized with size before any assign
 
 started checking if arguments in function call are of the correct type
 
+dont know how to deal with calls with lengths
+
+function call arguments are now type checked
+

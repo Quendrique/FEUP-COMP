@@ -9,10 +9,12 @@ class ASTMultDiv extends SimpleNode {
 
   public ASTMultDiv(int id) {
     super(id);
+    this.returnType = "int";
   }
 
   public ASTMultDiv(Jmm p, int id) {
     super(p, id);
+    this.returnType = "int";
   }
 
   public String getOp() {

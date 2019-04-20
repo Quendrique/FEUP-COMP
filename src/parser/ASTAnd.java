@@ -3,8 +3,10 @@
 package parser;
 
 public class ASTAnd extends SimpleNode {
+
   public ASTAnd(int id) {
     super(id);
+    this.returnType = "boolean";
   }
 
   public ASTAnd(Jmm p, int id) {

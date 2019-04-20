@@ -9,10 +9,12 @@ class ASTIntegerLiteral extends SimpleNode {
 
   public ASTIntegerLiteral(int id) {
     super(id);
+    this.returnType = "int";
   }
 
   public ASTIntegerLiteral(Jmm p, int id) {
     super(p, id);
+    this.returnType = "int";
   }
 
   public int getValue() {

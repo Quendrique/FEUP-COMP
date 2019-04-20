@@ -278,13 +278,13 @@ void Literal() #void: {Token t;}
 	
     t = <INTEGERLITERAL> LiteralNR() {jjtThis.setValue(Integer.parseInt(t.image));} #IntegerLiteral
     |
-    <TRUE> LiteralNR() #True 
+    <TRUE> LiteralNR() #BooleanLiteral 
     |
-    <FALSE> LiteralNR() #False
+    <FALSE> LiteralNR() #BooleanLiteral 
 	|
     (t = <IDENTIFIER> {jjtThis.setIdentifier(t.image);} LiteralNR()) #Identifier
     |
-    <THIS> LiteralNR()
+    <THIS> LiteralNR() #This
     |   
     <NEW> New()
     |
@@ -311,9 +311,9 @@ void MethodOrLength() #void: {}
 
 void New() : {Token t;}
 {
-	<INT> <OSQB> Expression() <CSQB> LiteralNR()
+	<INT> <OSQB> Expression() <CSQB> LiteralNR() {jjtThis.returnType="int";}
 	|
-	t=<IDENTIFIER> <OPRNT> <CPRNT> LiteralNR() {jjtThis.identifier=t.image;}
+	t=<IDENTIFIER> <OPRNT> <CPRNT> LiteralNR() {jjtThis.returnType=t.image;}
 }
 
 void Call(): {Token t;}

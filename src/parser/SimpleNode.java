@@ -13,6 +13,7 @@ public class SimpleNode implements Node {
   protected Jmm parser;
   protected String scope;
   protected ST symbolTable;
+  protected String returnType;
 
   public SimpleNode(int i) {
     id = i;

@@ -4,12 +4,15 @@ package parser;
 
 public
 class ASTLessThan extends SimpleNode {
+
   public ASTLessThan(int id) {
     super(id);
+    this.returnType = "boolean";
   }
 
   public ASTLessThan(Jmm p, int id) {
     super(p, id);
+    this.returnType = "boolean";
   }
 
   public String toString() {

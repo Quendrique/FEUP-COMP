@@ -8,10 +8,12 @@ public class ASTAddSub extends SimpleNode {
 
   public ASTAddSub(int id) {
     super(id);
+    this.returnType = "int";
   }
 
   public ASTAddSub(Jmm p, int id) {
     super(p, id);
+    this.returnType = "int";
   }
 
   public String getOp() {

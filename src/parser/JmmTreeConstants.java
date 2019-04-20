@@ -25,9 +25,9 @@ public interface JmmTreeConstants
   public int JJTADDSUB = 19;
   public int JJTMULTDIV = 20;
   public int JJTINTEGERLITERAL = 21;
-  public int JJTTRUE = 22;
-  public int JJTFALSE = 23;
-  public int JJTIDENTIFIER = 24;
+  public int JJTBOOLEANLITERAL = 22;
+  public int JJTIDENTIFIER = 23;
+  public int JJTTHIS = 24;
   public int JJTLENGTH = 25;
   public int JJTNEW = 26;
   public int JJTCALL = 27;
@@ -57,13 +57,13 @@ public interface JmmTreeConstants
     "AddSub",
     "MultDiv",
     "IntegerLiteral",
-    "True",
-    "False",
+    "BooleanLiteral",
     "Identifier",
+    "This",
     "Length",
     "New",
     "Call",
     "Args",
   };
 }
-/* JavaCC - OriginalChecksum=28ab01e7a7d4fb676dd9b97973c855c0 (do not edit this line) */
+/* JavaCC - OriginalChecksum=0f58b232e7d093a2128beba2649e17e6 (do not edit this line) */
