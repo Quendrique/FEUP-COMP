@@ -23,8 +23,9 @@ public class ST extends Object {
     this.functionTable.get(functionIdentifier).addSymbol(symbolIdentifier, symbol, isParam);
   }
 
-  public boolean doesSymbolExist(String identifier, String scope) {
-    return (functionTable.get(scope).doesSymbolExist(identifier) || functionTable.get("global").doesSymbolExist(identifier));
+  public STO doesSymbolExist(String identifier, String scope) {
+    STO returnSymbol;
+    return ((returnSymbol = functionTable.get(scope).doesSymbolExist(identifier)) != null) ? returnSymbol : functionTable.get("global").doesSymbolExist(identifier);
   }
 
   public void dump() {

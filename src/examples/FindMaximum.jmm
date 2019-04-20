@@ -8,6 +8,9 @@ class FindMaximum {
 		int maximum;
 		int value;
 
+		i = 5 && 4;
+		i = testingLhsAssign;
+
 		i = 1;
 		testing = 2;
 		testing_arrays[2] = 0;

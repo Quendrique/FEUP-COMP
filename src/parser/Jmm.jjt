@@ -212,7 +212,7 @@ void Statement() #void: {}
 
 void Assign(): {Token t;}
 {
-    t=<IDENTIFIER> {jjtThis.identifier = t.image;} <EQLS> Expression() <SCM>
+    t=<IDENTIFIER> {jjtThis.lhsIdentifier = t.image;} <EQLS> Expression() <SCM>
 }
 
 void ArrayAssign(): {Token t;}

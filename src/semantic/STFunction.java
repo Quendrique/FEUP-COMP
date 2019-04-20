@@ -44,8 +44,9 @@ public class STFunction extends Object {
     }
   }
 
-  public boolean doesSymbolExist(String identifier) {
-    return (this.locals.get(identifier) != null) || (this.params.get(identifier) != null); 
+  public STO doesSymbolExist(String identifier) {
+    STO returnSymbol;
+    return ((returnSymbol = this.locals.get(identifier)) != null ? returnSymbol : this.params.get(identifier)); 
   }
 
   public void setReturn(STO returnSymbol) {

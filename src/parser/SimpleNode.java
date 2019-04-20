@@ -106,7 +106,6 @@ public class SimpleNode implements Node {
         ((SimpleNode) node).checkSemantics();
       }
     }
-    
 
   }
 
