@@ -33,7 +33,7 @@ class ASTAssign extends SimpleNode {
         STO rhs = this.symbolTable.doesSymbolExist(((ASTIdentifier) rhsNode).getIdentifier(), this.scope);
 
         if (rhsNode.children != null) {
-          if (((SimpleNode) rhsNode).children[0].toString().equals("ArrayIndex") && lhs.getType() != "int") {
+          if (((SimpleNode) rhsNode).children[0].toString().equals("ArrayIndex") && !lhs.getType().equals("int")) {
             System.out.println("Cannot assign variable " + ((ASTIdentifier) rhsNode).getIdentifier() + " of type " + rhs.getType() + " to variable " + this.lhsIdentifier + " of type " + lhs.getType());
           } else if (((SimpleNode) rhsNode).children[0].toString().equals("Length")) {
             // ??
@@ -42,7 +42,7 @@ class ASTAssign extends SimpleNode {
             STFunction functionBeingCalled = this.symbolTable.doesFunctionExist(((ASTCall) rhsNode.children[0]).getValue());
             if (functionBeingCalled != null) {
               //check if variable is of type [class] TODO
-              if (functionBeingCalled.getReturn().getType() != lhs.getType()) {
+              if (!functionBeingCalled.getReturn().getType().equals(lhs.getType())) {
                 System.out.println("Return type for function " + ((ASTCall) rhsNode.children[0]).getValue() + " not compatible with variable " + this.lhsIdentifier + " of type " + lhs.getType());
               }
             }
@@ -50,7 +50,7 @@ class ASTAssign extends SimpleNode {
           }
           return;
         } 
-        if (rhs != null && lhs.getType() != rhs.getType()) {
+        if (rhs != null && !lhs.getType().equals(rhs.getType())) {
           System.out.println("Cannot assign variable " + ((ASTIdentifier) rhsNode).getIdentifier() + " of type " + rhs.getType() + " to variable " + this.lhsIdentifier + " of type " + lhs.getType());
         }
       }

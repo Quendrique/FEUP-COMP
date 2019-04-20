@@ -19,3 +19,7 @@ variable = variable now type checked
 
 variable = function call return type correctness now checked 
 
+check if array was initialized with size before any assign
+
+started checking if arguments in function call are of the correct type
+

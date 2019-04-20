@@ -1,30 +1,30 @@
 package semantic;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import parser.*;
 
 public class STFunction extends Object {
 
   STO returnDescriptor;  
-  HashMap<String, STO> params;
-  HashMap<String, STO> locals;
+  LinkedHashMap<String, STO> params;
+  LinkedHashMap<String, STO> locals;
 
   public STFunction() {
     this.returnDescriptor = null;
-    this.params = new HashMap<String, STO>();
-    this.locals = new HashMap<String, STO>();
+    this.params = new LinkedHashMap<String, STO>();
+    this.locals = new LinkedHashMap<String, STO>();
   }
 
   public STO getReturn() {
     return this.returnDescriptor;
   }
 
-  public HashMap<String, STO> getParams() {
+  public LinkedHashMap<String, STO> getParams() {
     return this.params;
   }
 
-  public HashMap<String, STO> getLocals() {
+  public LinkedHashMap<String, STO> getLocals() {
     return this.locals;
   }
 

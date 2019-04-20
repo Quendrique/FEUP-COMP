@@ -217,7 +217,7 @@ void Assign(): {Token t;}
 
 void ArrayAssign(): {Token t;}
 {
-    t=<IDENTIFIER> {jjtThis.identifier = t.image;} <OSQB> Expression() #ArrayIndex <CSQB> <EQLS> Expression() <SCM>
+    t=<IDENTIFIER> {jjtThis.lhsIdentifier = t.image;} <OSQB> Expression() #ArrayIndex <CSQB> <EQLS> Expression() <SCM>
 }
 
 void While() : {}

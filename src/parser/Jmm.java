@@ -569,31 +569,31 @@ if (jjtc000) {
                      jjtree.openNodeScope(jjtn000);Token t;
     try {
       t = jj_consume_token(IDENTIFIER);
-jjtn000.identifier = t.image;
+jjtn000.lhsIdentifier = t.image;
       jj_consume_token(OSQB);
 ASTArrayIndex jjtn001 = new ASTArrayIndex(JJTARRAYINDEX);
-                                                            boolean jjtc001 = true;
-                                                            jjtree.openNodeScope(jjtn001);
+                                                               boolean jjtc001 = true;
+                                                               jjtree.openNodeScope(jjtn001);
       try {
         Expression();
       } catch (Throwable jjte001) {
 if (jjtc001) {
-                                                              jjtree.clearNodeScope(jjtn001);
-                                                              jjtc001 = false;
-                                                            } else {
-                                                              jjtree.popNode();
-                                                            }
-                                                            if (jjte001 instanceof RuntimeException) {
-                                                              {if (true) throw (RuntimeException)jjte001;}
-                                                            }
-                                                            if (jjte001 instanceof ParseException) {
-                                                              {if (true) throw (ParseException)jjte001;}
-                                                            }
-                                                            {if (true) throw (Error)jjte001;}
+                                                                 jjtree.clearNodeScope(jjtn001);
+                                                                 jjtc001 = false;
+                                                               } else {
+                                                                 jjtree.popNode();
+                                                               }
+                                                               if (jjte001 instanceof RuntimeException) {
+                                                                 {if (true) throw (RuntimeException)jjte001;}
+                                                               }
+                                                               if (jjte001 instanceof ParseException) {
+                                                                 {if (true) throw (ParseException)jjte001;}
+                                                               }
+                                                               {if (true) throw (Error)jjte001;}
       } finally {
 if (jjtc001) {
-                                                              jjtree.closeNodeScope(jjtn001, true);
-                                                            }
+                                                                 jjtree.closeNodeScope(jjtn001, true);
+                                                               }
       }
       jj_consume_token(CSQB);
       jj_consume_token(EQLS);

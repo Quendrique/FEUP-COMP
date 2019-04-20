@@ -2,6 +2,11 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package parser;
 
+import semantic.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Iterator;
+
 public
 class ASTCall extends SimpleNode {
 
@@ -22,6 +27,44 @@ class ASTCall extends SimpleNode {
   public void setValue(String value) {
     this.value = value;
   }
+
+  public void checkNodeSemantics() {
+
+    if (this.children != null) {
+      STFunction functionCalled = this.symbolTable.doesFunctionExist(this.value);
+      if (functionCalled != null) {
+        checkForCorrectArgs(functionCalled);
+      }
+    }
+  }
+
+  public void checkForCorrectArgs(STFunction functionCalled) {
+    LinkedHashMap<String, STO> paramsNeeded = functionCalled.getParams();
+    int numArguments = ((SimpleNode) this.children[0]).children.length;
+    if (paramsNeeded.size() != numArguments) {
+      System.out.println("No function signature for identifier " + this.value + " and specified number of arguments found");
+      return;
+    }
+
+    Iterator<Map.Entry<String, STO>> it = paramsNeeded.entrySet().iterator();
+    int count = 0;
+    STO argument, parameter;
+    String argIdentifier;
+    /*
+    while (it.hasNext() && count < ((SimpleNode) this.children[0]).children.length) {
+      // !!!! ADD RETURN TO ALL EXPRESSION NODES
+      Map.Entry<String, STO> symbol = it.next();
+      //argIdentifier = ((SimpleNode) ((SimpleNode) this.children[0]).children[count]).getValue
+      argument = this.symbolTable.doesSymbolExist(argIdentifier, this.scope);
+      if (argument != null && symbol.getValue().getType() != argument.getType()) {
+        System.out.println("No function signature for identifier " + this.value + " and specified arguments found");
+        return;
+      }
+      count++;
+    }
+    */
+  }
+
 
   public void dump(String prefix) {
     System.out.println(toString(prefix) + ": " + this.value);

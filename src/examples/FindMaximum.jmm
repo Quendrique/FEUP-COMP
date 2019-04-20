@@ -48,11 +48,13 @@ class FindMaximum {
 
 
 		boolean testing;
+		int[] testingArray;
+		testingArray[0] = testing;
 		testing = fm.get_array();
 
 		fm = new FindMaximum();
 		fm.build_test_arr();
 
-		ioPlus.printResult(fm.find_maximum(fm.get_array()));
+		ioPlus.printResult(fm.find_maximum(testing));
 	}
 }

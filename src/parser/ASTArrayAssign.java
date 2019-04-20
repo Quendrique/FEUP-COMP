@@ -2,10 +2,12 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package parser;
 
+import semantic.*;
+
 public
 class ASTArrayAssign extends SimpleNode {
 
-  public String identifier;
+  public String lhsIdentifier;
 
   public ASTArrayAssign(int id) {
     super(id);
@@ -17,13 +19,51 @@ class ASTArrayAssign extends SimpleNode {
 
   @Override
   public void checkNodeSemantic() {
-    if (this.symbolTable.doesSymbolExist(this.identifier, this.scope) == null) {
-      System.out.println("Variable " + this.identifier + " was not declared");
+    //note: if it's an array, it's of the type int, hence the type checks using "int" and not lhs.getType() for example
+
+    //check if rhs variable exists
+    STO lhs = this.symbolTable.doesSymbolExist(this.lhsIdentifier, this.scope);
+    if (lhs == null) {
+      System.out.println("Variable " + this.lhsIdentifier + " was not declared");
     }
+
+    //check if expression corresponding to the array index returns an int ??? needed?
+
+    //check, if a variable is being assigned to the other, that their types match
+    SimpleNode rhsNode;
+    if (this.children != null) {
+      rhsNode = (SimpleNode) this.children[1];
+      if (rhsNode.toString().equals("Identifier")) {
+        
+        STO rhs = this.symbolTable.doesSymbolExist(((ASTIdentifier) rhsNode).getIdentifier(), this.scope);
+
+        if (rhsNode.children != null) {
+          if (((SimpleNode) rhsNode).children[0].toString().equals("ArrayIndex")) {
+            System.out.println("Cannot assign variable " + ((ASTIdentifier) rhsNode).getIdentifier() + " of type " + rhs.getType() + " to variable " + this.lhsIdentifier + " of type " + lhs.getType());
+          } else if (((SimpleNode) rhsNode).children[0].toString().equals("Length")) {
+            // ??
+          } else if (((SimpleNode) rhsNode).children[0].toString().equals("Call")) {
+            //if function external to the class, assume it's correct and ignore
+            STFunction functionBeingCalled = this.symbolTable.doesFunctionExist(((ASTCall) rhsNode.children[0]).getValue());
+            if (functionBeingCalled != null) {
+              //check if variable is of type [class] TODO
+              if (!functionBeingCalled.getReturn().getType().equals("int")) {
+                System.out.println("Return type for function " + ((ASTCall) rhsNode.children[0]).getValue() + " not compatible with variable " + this.lhsIdentifier + " of type " + lhs.getType());
+              }
+            }
+            
+          }
+          return;
+        } 
+        if (rhs != null && !rhs.getType().equals("int")) {
+          System.out.println("Cannot assign variable " + ((ASTIdentifier) rhsNode).getIdentifier() + " of type " + rhs.getType() + " to variable " + this.lhsIdentifier + " of type " + lhs.getType());
+        }
+      }
+    } 
   }
 
   public void dump(String prefix) {
-    System.out.println(toString(prefix) + ": " + this.identifier);
+    System.out.println(toString(prefix) + ": " + this.lhsIdentifier);
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         SimpleNode n = (SimpleNode)children[i];
