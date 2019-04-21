@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import semantic.*;
+import codeGeneration.*;
 
 public class Jmm {
 
@@ -37,6 +38,9 @@ public class Jmm {
     root.buildSymbolTable();
     root.checkSemantics();
     root.symbolTable.dump();
+
+    Generator codeGenerator = new Generator();
+    codeGenerator.generate(root);
 
  }
     
