@@ -82,14 +82,14 @@ public class Generator {
       default:
       // ?? dont know how to deal with other types
     }
-    this.out.println(returType);
+    this.out.println(returnType);
   }
 
   public void genMethodArguments(SimpleNode args) {
     for(int i = 0; i < args.jjtGetNumChildren(); i++) {
-
+      // ?? :) 
     }
-    this.out.print(")")
+    this.out.print(")");
   }
 
   public void genMethodBody() {
