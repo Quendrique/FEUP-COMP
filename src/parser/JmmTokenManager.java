@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import semantic.*;
+import codeGeneration.*;
 
 /** Token Manager. */
 @SuppressWarnings("unused")public class JmmTokenManager implements JmmConstants {

@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import semantic.*;
+import codeGeneration.*;
 
 public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants, JmmConstants {/*@bgen(jjtree)*/
   protected static JJTJmmState jjtree = new JJTJmmState();
@@ -33,6 +34,9 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants, JmmConstants {/*@b
     root.buildSymbolTable();
     root.checkSemantics();
     root.symbolTable.dump();
+
+    Generator codeGenerator = new Generator();
+    codeGenerator.generate(root);
 
  }
 
@@ -945,7 +949,7 @@ if (jjtc001) {
       }
     case TRUE:{
       jj_consume_token(TRUE);
-ASTTrue jjtn002 = new ASTTrue(JJTTRUE);
+ASTBooleanLiteral jjtn002 = new ASTBooleanLiteral(JJTBOOLEANLITERAL);
              boolean jjtc002 = true;
              jjtree.openNodeScope(jjtn002);
       try {
@@ -973,7 +977,7 @@ if (jjtc002) {
       }
     case FALSE:{
       jj_consume_token(FALSE);
-ASTFalse jjtn003 = new ASTFalse(JJTFALSE);
+ASTBooleanLiteral jjtn003 = new ASTBooleanLiteral(JJTBOOLEANLITERAL);
               boolean jjtc003 = true;
               jjtree.openNodeScope(jjtn003);
       try {
@@ -1030,7 +1034,30 @@ if (jjtc004) {
       }
     case THIS:{
       jj_consume_token(THIS);
-      LiteralNR();
+ASTThis jjtn005 = new ASTThis(JJTTHIS);
+             boolean jjtc005 = true;
+             jjtree.openNodeScope(jjtn005);
+      try {
+        LiteralNR();
+      } catch (Throwable jjte005) {
+if (jjtc005) {
+               jjtree.clearNodeScope(jjtn005);
+               jjtc005 = false;
+             } else {
+               jjtree.popNode();
+             }
+             if (jjte005 instanceof RuntimeException) {
+               {if (true) throw (RuntimeException)jjte005;}
+             }
+             if (jjte005 instanceof ParseException) {
+               {if (true) throw (ParseException)jjte005;}
+             }
+             {if (true) throw (Error)jjte005;}
+      } finally {
+if (jjtc005) {
+               jjtree.closeNodeScope(jjtn005, true);
+             }
+      }
       break;
       }
     case NEW:{
@@ -1140,6 +1167,9 @@ if (jjtc001) {
         Expression();
         jj_consume_token(CSQB);
         LiteralNR();
+jjtree.closeNodeScope(jjtn000, true);
+                                                       jjtc000 = false;
+jjtn000.returnType="int";
         break;
         }
       case IDENTIFIER:{
@@ -1149,7 +1179,7 @@ if (jjtc001) {
         LiteralNR();
 jjtree.closeNodeScope(jjtn000, true);
                                                      jjtc000 = false;
-jjtn000.identifier=t.image;
+jjtn000.returnType=t.image;
         break;
         }
       default:
@@ -1348,26 +1378,6 @@ if (jjtc000) {
     try { return !jj_3_10(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(9, xla); }
-  }
-
-  static private boolean jj_3_4()
- {
-    if (jj_scan_token(INT)) return true;
-    if (jj_scan_token(OSQB)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_17()
- {
-    if (jj_3R_24()) return true;
-    if (jj_scan_token(IDENTIFIER)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_1()
- {
-    if (jj_3R_16()) return true;
-    return false;
   }
 
   static private boolean jj_3R_24()
@@ -1580,6 +1590,26 @@ if (jjtc000) {
     if (jj_scan_token(35)) return true;
     }
     if (jj_3R_22()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_4()
+ {
+    if (jj_scan_token(INT)) return true;
+    if (jj_scan_token(OSQB)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_17()
+ {
+    if (jj_3R_24()) return true;
+    if (jj_scan_token(IDENTIFIER)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_1()
+ {
+    if (jj_3R_16()) return true;
     return false;
   }
 
