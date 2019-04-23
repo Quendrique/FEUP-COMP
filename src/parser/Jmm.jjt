@@ -39,8 +39,8 @@ public class Jmm {
     root.checkSemantics();
     root.symbolTable.dump();
 
-    Generator codeGenerator = new Generator();
-    codeGenerator.generate(root);
+    //Generator codeGenerator = new Generator();
+    //codeGenerator.generate(root);
 
  }
     
@@ -282,9 +282,9 @@ void Literal() #void: {Token t;}
 	
     t = <INTEGERLITERAL> LiteralNR() {jjtThis.setValue(Integer.parseInt(t.image));} #IntegerLiteral
     |
-    <TRUE> LiteralNR() #BooleanLiteral 
+    <TRUE> LiteralNR() {jjtThis.returnType = "boolean";} #BooleanLiteral 
     |
-    <FALSE> LiteralNR() #BooleanLiteral 
+    <FALSE> LiteralNR() {jjtThis.returnType = "boolean";} #BooleanLiteral 
 	|
     (t = <IDENTIFIER> {jjtThis.setIdentifier(t.image);} LiteralNR()) #Identifier
     |
@@ -315,7 +315,7 @@ void MethodOrLength() #void: {}
 
 void New() : {Token t;}
 {
-	<INT> <OSQB> Expression() <CSQB> LiteralNR() {jjtThis.returnType="int";}
+	<INT> <OSQB> Expression() <CSQB> LiteralNR() {jjtThis.returnType="int[]";}
 	|
 	t=<IDENTIFIER> <OPRNT> <CPRNT> LiteralNR() {jjtThis.returnType=t.image;}
 }

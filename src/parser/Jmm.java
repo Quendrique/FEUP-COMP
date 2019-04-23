@@ -35,8 +35,13 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants, JmmConstants {/*@b
     root.checkSemantics();
     root.symbolTable.dump();
 
+<<<<<<< HEAD
+    //Generator codeGenerator = new Generator();
+    //codeGenerator.generate(root);
+=======
     Generator codeGenerator = new Generator();
     codeGenerator.generate(root);
+>>>>>>> 1eaf872d21cd83833af473dd82e1a68497ef0db1
 
  }
 
@@ -949,57 +954,47 @@ if (jjtc001) {
       }
     case TRUE:{
       jj_consume_token(TRUE);
+<<<<<<< HEAD
+      LiteralNR();
+ASTBooleanLiteral jjtn002 = new ASTBooleanLiteral(JJTBOOLEANLITERAL);
+                         boolean jjtc002 = true;
+                         jjtree.openNodeScope(jjtn002);
+=======
 ASTBooleanLiteral jjtn002 = new ASTBooleanLiteral(JJTBOOLEANLITERAL);
              boolean jjtc002 = true;
              jjtree.openNodeScope(jjtn002);
+>>>>>>> 1eaf872d21cd83833af473dd82e1a68497ef0db1
       try {
-        LiteralNR();
-      } catch (Throwable jjte002) {
-if (jjtc002) {
-               jjtree.clearNodeScope(jjtn002);
-               jjtc002 = false;
-             } else {
-               jjtree.popNode();
-             }
-             if (jjte002 instanceof RuntimeException) {
-               {if (true) throw (RuntimeException)jjte002;}
-             }
-             if (jjte002 instanceof ParseException) {
-               {if (true) throw (ParseException)jjte002;}
-             }
-             {if (true) throw (Error)jjte002;}
+jjtree.closeNodeScope(jjtn002, true);
+                         jjtc002 = false;
+jjtn002.returnType = "boolean";
       } finally {
 if (jjtc002) {
-               jjtree.closeNodeScope(jjtn002, true);
-             }
+                           jjtree.closeNodeScope(jjtn002, true);
+                         }
       }
       break;
       }
     case FALSE:{
       jj_consume_token(FALSE);
+<<<<<<< HEAD
+      LiteralNR();
+ASTBooleanLiteral jjtn003 = new ASTBooleanLiteral(JJTBOOLEANLITERAL);
+                          boolean jjtc003 = true;
+                          jjtree.openNodeScope(jjtn003);
+=======
 ASTBooleanLiteral jjtn003 = new ASTBooleanLiteral(JJTBOOLEANLITERAL);
               boolean jjtc003 = true;
               jjtree.openNodeScope(jjtn003);
+>>>>>>> 1eaf872d21cd83833af473dd82e1a68497ef0db1
       try {
-        LiteralNR();
-      } catch (Throwable jjte003) {
-if (jjtc003) {
-                jjtree.clearNodeScope(jjtn003);
-                jjtc003 = false;
-              } else {
-                jjtree.popNode();
-              }
-              if (jjte003 instanceof RuntimeException) {
-                {if (true) throw (RuntimeException)jjte003;}
-              }
-              if (jjte003 instanceof ParseException) {
-                {if (true) throw (ParseException)jjte003;}
-              }
-              {if (true) throw (Error)jjte003;}
+jjtree.closeNodeScope(jjtn003, true);
+                          jjtc003 = false;
+jjtn003.returnType = "boolean";
       } finally {
 if (jjtc003) {
-                jjtree.closeNodeScope(jjtn003, true);
-              }
+                            jjtree.closeNodeScope(jjtn003, true);
+                          }
       }
       break;
       }
@@ -1169,7 +1164,11 @@ if (jjtc001) {
         LiteralNR();
 jjtree.closeNodeScope(jjtn000, true);
                                                        jjtc000 = false;
+<<<<<<< HEAD
+jjtn000.returnType="int[]";
+=======
 jjtn000.returnType="int";
+>>>>>>> 1eaf872d21cd83833af473dd82e1a68497ef0db1
         break;
         }
       case IDENTIFIER:{

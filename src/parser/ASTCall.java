@@ -29,6 +29,11 @@ class ASTCall extends SimpleNode {
   }
 
   @Override
+  public String getSymbolReturn() {
+    return this.symbolTable.doesFunctionExist(this.value).getReturn().getType();
+  }
+
+  @Override
   public void checkNodeSemantic() {
 
     //System.out.println("checking if function " + this.value + " exists in function table");
@@ -49,7 +54,13 @@ class ASTCall extends SimpleNode {
 
   public void checkForCorrectArgs(STFunction functionCalled) {
     LinkedHashMap<String, STO> paramsNeeded = functionCalled.getParams();
-    int numArguments = ((SimpleNode) this.children[0]).children.length;
+    Node[] args = ((SimpleNode) this.children[0]).children;
+    int numArguments;
+    if (args == null) {
+      numArguments = 0;
+    } else {
+      numArguments = ((SimpleNode) this.children[0]).children.length;
+    }
     if (paramsNeeded.size() != numArguments) {
       System.out.println("No function signature for identifier " + this.value + " and specified number of arguments found");
       return;

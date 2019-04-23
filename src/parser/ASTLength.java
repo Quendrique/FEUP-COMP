@@ -12,5 +12,20 @@ class ASTLength extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public void checkNodeSemantic() {
+    //System.out.println("debug ast length: parent return type -> " + ((SimpleNode) this.parent).getClass());
+    if (this.parent instanceof ASTIdentifier || this.parent instanceof ASTCall) {
+
+      if (!((SimpleNode) this.parent).getSymbolReturn().equals("int[]")) {
+        System.out.println("The length property can only be accessed in objects of type int[]");
+      }
+    } else {
+      if (((SimpleNode) this.parent).returnType == null || !((SimpleNode) this.parent).returnType.equals("int[]")) {
+        System.out.println("The length property can only be accessed in objects of type int[]");
+      }
+    }
+  }
+
 }
 /* JavaCC - OriginalChecksum=000062e1cd2b5218a42c259eb26d339e (do not edit this line) */

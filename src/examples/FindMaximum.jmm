@@ -57,15 +57,15 @@ class FindMaximum {
 	public static void main(String[] args) {
 		FindMaximum fm;
 
-
 		boolean testing;
 		int[] testingArray;
 		testing = fm.get_array();
 
+		testingArray.get_array().length;
+
 		fm = new FindMaximum();
 		fm.build_test_arr();
 
-		ioPlus.printResult(fm.find_maximum(testing));
-
+		ioPlus.printResult(fm.find_maximum());
 	}
 }

@@ -27,3 +27,11 @@ dont know how to deal with calls with lengths
 
 function call arguments are now type checked
 
+working on code generation for method calls
+
+lengths only for arrays
+
+length kinda being checked now
+
+
+

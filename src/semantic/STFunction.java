@@ -9,6 +9,7 @@ public class STFunction extends Object {
   STO returnDescriptor;  
   LinkedHashMap<String, STO> params;
   LinkedHashMap<String, STO> locals;
+  //add indices
 
   public STFunction() {
     this.returnDescriptor = null;

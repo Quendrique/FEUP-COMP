@@ -90,6 +90,10 @@ public class SimpleNode implements Node {
   }
 
   public void checkNodeSemantic() {}; 
+
+  public String getSymbolReturn() {
+    return "";
+  }; 
   
   public void checkSemantics() {
 
