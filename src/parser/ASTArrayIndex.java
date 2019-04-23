@@ -2,6 +2,8 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package parser;
 
+import org.w3c.dom.Node;
+
 public
 class ASTArrayIndex extends SimpleNode {
   public ASTArrayIndex(int id) {
@@ -10,6 +12,34 @@ class ASTArrayIndex extends SimpleNode {
 
   public ASTArrayIndex(Jmm p, int id) {
     super(p, id);
+  }
+
+
+  @Override
+  public void checkNodeSemantic() {
+       
+
+    //Index is a number
+    if(this.jjtGetChild(0).getClass().getSimpleName().equals("ASTIntegerLiteral")){
+      //System.out.println("Index is a number");
+      return;
+    }
+    //Index is an identifier
+    else if(this.jjtGetChild(0).getClass().getSimpleName().equals("ASTIdentifier")){
+      //How to check type of identifier? TODO
+      //System.out.println("Index is an identifier");
+      return;
+    }
+    //Index is an expression
+    else if(this.jjtGetChild(0).getClass().getSimpleName().equals("ASTAddSub")){
+      //How to check type of return? TODO
+      //System.out.println("Index is an expression");
+      return;
+    }
+    else System.out.println("Array index is not of type int");
+
+      
+    
   }
 
 }

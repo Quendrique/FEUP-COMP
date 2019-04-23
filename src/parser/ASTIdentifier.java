@@ -26,9 +26,11 @@ class ASTIdentifier extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
     //If symbol doesn't exist in the symbol table and it's not a function call, there is a variable not declared
-    if (this.symbolTable.doesSymbolExist(this.identifier, this.scope) == null && !this.jjtGetChild(0).getClass().getSimpleName().equals("ASTCall")) {
-      
-      System.out.println("Variable " + this.identifier + " was not declared");
+    if (this.symbolTable.doesSymbolExist(this.identifier, this.scope) == null && this.jjtGetNumChildren() > 0) {
+     
+        if(!this.jjtGetChild(0).getClass().getSimpleName().equals("ASTCall")){
+          System.out.println("Variable " + this.identifier + " was not declared");
+        }
       
     }
   }
