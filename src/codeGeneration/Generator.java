@@ -9,6 +9,7 @@ import parser.*;
 public class Generator {
 
   private PrintWriter out;
+  //fileoutputstream
 
   public Generator() {
 
@@ -33,14 +34,16 @@ public class Generator {
   }
 
   public void generate(SimpleNode root) {
+    /*
     
     SimpleNode classNode = (SimpleNode) root.jjtGetChild(0);
     genClass(((ASTClassDeclaration) classNode).getName());
     this.out.close();
+    */
   }
 
   public void genClass(String className) {
-    this.out.print(".class public" + className + "\n ..super java/lang/Object\n");
+    this.out.print(".class public" + className + "\n .super java/lang/Object\n"); //TODO
     this.out.flush();
   }
 
@@ -57,6 +60,8 @@ public class Generator {
   }
   
   public void genMethodSignature(SimpleNode method) {
+    /*
+    
     String identifier, type;
     if (method instanceof ASTMainDeclaration) {
       type = "static void"; identifier = "main";
@@ -80,16 +85,20 @@ public class Generator {
         returnType = "V";
         break;
       default:
+      //boolean -> Z 
       // ?? dont know how to deal with other types
+      // identifier -> L[path];
     }
     this.out.println(returnType);
+    */
+    
   }
 
   public void genMethodArguments(SimpleNode args) {
-    for(int i = 0; i < args.jjtGetNumChildren(); i++) {
+    //for(int i = 0; i < args.jjtGetNumChildren(); i++) {
       // ?? :) 
-    }
-    this.out.print(")");
+    //}
+    //this.out.print(")");
   }
 
   public void genMethodBody() {

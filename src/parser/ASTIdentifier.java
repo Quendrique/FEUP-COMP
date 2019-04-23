@@ -21,7 +21,12 @@ class ASTIdentifier extends SimpleNode {
 
   public void setIdentifier(String identifier) {
     this.identifier = identifier;
-  } 
+  }
+  
+  @Override
+  public String getSymbolReturn() {
+    return this.symbolTable.doesSymbolExist(this.identifier, this.scope).getType();
+  }
 
   @Override
   public void checkNodeSemantic() {
