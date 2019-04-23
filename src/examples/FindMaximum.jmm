@@ -1,16 +1,14 @@
 class FindMaximum {
 	int[] test_arr;
-	int[] test_arr;
 
 	public int find_maximum(int[] arr) {
-		int i;
 		int i;
 		int maximum;
 		int value;
 		boolean testBoolean;
+		int testing;
+		int[] testing_arrays;
 
-		i = 5 && 4;
-		i = testBoolean;
 
 		i = 1;
 		testing = 2;
@@ -48,7 +46,6 @@ class FindMaximum {
 
 		boolean testing;
 		int[] testingArray;
-		testingArray[0] = testing;
 		testing = fm.get_array();
 
 		testingArray.get_array().length;
