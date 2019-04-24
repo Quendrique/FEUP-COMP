@@ -1,6 +1,13 @@
 class Fac extends Test {
-	public static void main(String[] a) {
-		int i = 0;
-		return i;
+
+	int t;
+	boolean b;
+	int[] p;
+
+	public static void main(String[] args) {
+		int i;
+
+		i=0;
+
 	}
 }

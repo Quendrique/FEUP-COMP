@@ -48,25 +48,58 @@ public class Generator {
   }
 
   public void generate() {
+    System.out.println("File Name: " + this.root.getName());
     genClass(this.root.getName());
-
+    genGlobals();
 
     out.println(builder);
     out.close();
-    
-    
-
-
-    
   }
+
+  private void appendLine(String line) {
+		builder.append(line + "\n");
+	}
 
   public void genClass(String className) {
-    builder.append(".class public " + className + "\n.super java/lang/Object\n");
+    appendLine(".class public " + className + "\n.super java/lang/Object");
   }
 
-  public void genGlobal() {
+  public void genGlobals() {
+    for (int i = 0; i < root.jjtGetNumChildren(); i++) {
+			SimpleNode childRoot = (SimpleNode) root.jjtGetChild(i);
 
+			if (childRoot.getId() == JmmTreeConstants.JJTVARDECLARATION)
+        genVarDeclaration((ASTVarDeclaration) childRoot);
+		}
   }
+
+  public void genVarDeclaration(ASTVarDeclaration dec){
+    String varName, varType = "";
+    
+
+
+    varName = dec.getIdentifier();
+
+    System.out.println("Type: " + dec.getType());
+
+    
+
+    if (dec.getType().equals("int[]"))
+				varType = " [I ";
+		else if (dec.getType().equals("int"))
+      varType = " I ";
+    else if (dec.getType().equals("boolean"))
+			varType = " Z ";
+		else{
+      return;
+    }
+		
+
+		appendLine(".field static " + varName + varType);
+    
+  }
+
+
 
   public void genMethod(SimpleNode method) {
 
