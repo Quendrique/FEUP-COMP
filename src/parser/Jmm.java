@@ -35,7 +35,7 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants, JmmConstants {/*@b
     root.checkSemantics();
     root.symbolTable.dump();
 
-    System.out.println("\n\nEntering code Generation");
+    System.out.println("\u005cn\u005cnEntering code Generation");
     Generator codeGenerator = new Generator(root);
     codeGenerator.generate();
 

@@ -39,7 +39,7 @@ public class Jmm {
     root.checkSemantics();
     root.symbolTable.dump();
 
-    System.out.println("Entering code Generation");
+    System.out.println("\n\nEntering code Generation");
     Generator codeGenerator = new Generator(root);
     codeGenerator.generate();
 

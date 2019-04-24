@@ -48,20 +48,20 @@ public class Generator {
   }
 
   public void generate() {
-    builder.append("Writing to file test");
+    genClass(this.root.getName());
+
 
     out.println(builder);
     out.close();
     
-
-
     
+
+
     
   }
 
   public void genClass(String className) {
-    this.out.print(".class public" + className + "\n .super java/lang/Object\n"); //TODO
-    this.out.flush();
+    builder.append(".class public " + className + "\n.super java/lang/Object\n");
   }
 
   public void genGlobal() {
