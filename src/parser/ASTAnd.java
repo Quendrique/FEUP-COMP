@@ -13,6 +13,15 @@ public class ASTAnd extends SimpleNode {
     super(p, id);
   }
 
+  @Override  
+  public void checkNodeSemantic() {
+    SimpleNode lhs, rhs;
+    lhs = (SimpleNode) this.jjtGetChild(0); rhs = (SimpleNode) this.jjtGetChild(1);
+    if (lhs.returnType != "boolean" || rhs.returnType != "boolean") {
+      System.out.println("Both sides of a '&&' operation should be of type boolean");
+    }
+  }
+
   public String toString() {
     return "(&&)";
   }

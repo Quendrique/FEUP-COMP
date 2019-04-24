@@ -14,7 +14,9 @@ public class SimpleNode implements Node {
   protected String scope;
   protected ST symbolTable;
   protected String returnType;
-
+  protected String beginLine;
+  protected String beginCol;
+  
   public SimpleNode(int i) {
     id = i;
   }
@@ -159,12 +161,14 @@ public class SimpleNode implements Node {
       if (!paramsChecked) {
         if (nodeType.equals("MethodArguments")) {
           for(Node methodArg: ((SimpleNode) childNode).children) {
+            ((ASTMethodArgument) methodArg).returnType = ((ASTMethodArgument) methodArg).type;
             stFunction.addSymbol(((ASTMethodArgument) methodArg).getIdentifier(), new STO(((ASTMethodArgument) methodArg).type), true);
           }
         } else {
           if(!nodeType.equals("VarDeclaration")) {
             break;
           } else {
+            ((ASTVarDeclaration) childNode).returnType = ((ASTVarDeclaration) childNode).type;
             stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false);
           }
         }
@@ -175,6 +179,8 @@ public class SimpleNode implements Node {
       if(!nodeType.equals("VarDeclaration")) {
         break;
       } else {
+        ((ASTVarDeclaration) childNode).returnType = ((ASTVarDeclaration) childNode).type;
+        System.out.println(((ASTVarDeclaration) childNode).getIdentifier() + ((ASTVarDeclaration) childNode).returnType);
         stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false);
       }
 

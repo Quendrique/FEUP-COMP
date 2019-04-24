@@ -28,6 +28,15 @@ public class ASTAddSub extends SimpleNode {
     return "";
   }
 
+  @Override  
+  public void checkNodeSemantic() {
+    SimpleNode lhs, rhs;
+    lhs = (SimpleNode) this.jjtGetChild(0); rhs = (SimpleNode) this.jjtGetChild(1);
+    if (lhs.returnType != "int" || rhs.returnType != "int") {
+      System.out.println("Both sides of a " + this.op + " operation should be of type int");
+    }
+  }
+
   public void dump(String prefix) {
     System.out.println(toString(prefix) + "(" + this.op + ")");
     if (children != null) {
