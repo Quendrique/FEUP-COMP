@@ -8,10 +8,18 @@ import parser.*;
 
 public class Generator {
 
-  private PrintWriter out;
-  //fileoutputstream
+  private ASTClassDeclaration root;
 
-  public Generator() {
+  private StringBuilder builder;
+  private PrintWriter out;
+
+  public Generator(SimpleNode root) throws IOException {
+
+    this.root = (ASTClassDeclaration) root.jjtGetChild(0);
+
+    String fileName = this.root.getName() + ".j";
+
+    System.out.println("filename: " + fileName);
 
     try {
 
@@ -20,7 +28,7 @@ public class Generator {
         dir.mkdirs();
       }
 
-      File file = new File("jasmin/Test.j"); //TEMP
+      File file = new File("jasmin/" + fileName);
       if (!file.exists()) {
         file.createNewFile();
       }
@@ -31,15 +39,24 @@ public class Generator {
         System.out.println(e.getMessage());
     }
 
+    this.builder = new StringBuilder();
+
+    FileWriter fw = new FileWriter("jasmin/" + fileName);
+    
+    this.out = new PrintWriter(fw);
+
   }
 
-  public void generate(SimpleNode root) {
-    /*
+  public void generate() {
+    builder.append("Writing to file test");
+
+    out.println(builder);
+    out.close();
     
-    SimpleNode classNode = (SimpleNode) root.jjtGetChild(0);
-    genClass(((ASTClassDeclaration) classNode).getName());
-    this.out.close();
-    */
+
+
+    
+    
   }
 
   public void genClass(String className) {
@@ -104,5 +121,11 @@ public class Generator {
   public void genMethodBody() {
 
   }
+
+
+  public SimpleNode getRoot(){
+    return this.root;
+  }
+
 
 }

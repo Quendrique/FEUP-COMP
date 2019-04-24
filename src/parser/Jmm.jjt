@@ -16,7 +16,7 @@ public class Jmm {
 
     static int errorCount=0;
 
-    public static void main(String args[]) throws ParseException {
+    public static void main(String args[]) throws ParseException, IOException{
 
     final String FILENAME = args[0];
 
@@ -39,8 +39,9 @@ public class Jmm {
     root.checkSemantics();
     root.symbolTable.dump();
 
-    //Generator codeGenerator = new Generator();
-    //codeGenerator.generate(root);
+    System.out.println("Entering code Generation");
+    Generator codeGenerator = new Generator(root);
+    codeGenerator.generate();
 
  }
     
