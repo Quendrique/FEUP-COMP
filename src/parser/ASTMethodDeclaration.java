@@ -24,6 +24,10 @@ class ASTMethodDeclaration extends SimpleNode {
     this.name = name;
   }
 
+  public String getType() {
+    return this.type;
+  }
+
   @Override
   public void checkNodeSemantic() {
     this.scope = this.name;
