@@ -115,11 +115,9 @@ public class Generator {
     //StackController stack = new StackController();
 
     genMethodSignature(method);
-
-    /*
-    genMethodBody();
+    //genMethodBody();
     generateMethodFooter();
-    */
+    
   }
   
   public void genMethodSignature(SimpleNode method) {
@@ -158,7 +156,20 @@ public class Generator {
 
 
   public void genMethodBody() {
+    //TODO     Fuck...
+  }
 
+
+  public void generateMethodFooter(){
+
+    //TODO
+
+
+    endMethod();
+  }
+
+  public void endMethod(){
+    appendLine(".end method\n");
   }
 
 
