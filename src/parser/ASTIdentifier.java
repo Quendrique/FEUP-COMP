@@ -34,7 +34,7 @@ class ASTIdentifier extends SimpleNode {
     if (this.symbolTable.doesSymbolExist(this.identifier, this.scope) == null && this.jjtGetNumChildren() > 0) {
      
         if(!this.jjtGetChild(0).getClass().getSimpleName().equals("ASTCall")){
-          System.out.println("Variable " + this.identifier + " was not declared");
+         super.printSemanticError("Variable " + this.identifier + " was not declared");
         }
       
     }

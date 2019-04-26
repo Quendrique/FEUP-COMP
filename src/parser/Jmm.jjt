@@ -2,6 +2,7 @@ options {
  LOOKAHEAD=1;
  MULTI=true;
  DEBUG_PARSER=false;
+ NODE_SCOPE_HOOK=true;
 }
 PARSER_BEGIN(Jmm)
 package parser;
@@ -46,6 +47,8 @@ public class Jmm {
  }
     
 }
+
+
 PARSER_END(Jmm)
 SKIP :
 {

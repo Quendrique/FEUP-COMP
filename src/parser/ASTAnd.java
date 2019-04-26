@@ -18,7 +18,7 @@ public class ASTAnd extends SimpleNode {
     SimpleNode lhs, rhs;
     lhs = (SimpleNode) this.jjtGetChild(0); rhs = (SimpleNode) this.jjtGetChild(1);
     if (lhs.returnType != "boolean" || rhs.returnType != "boolean") {
-      System.out.println("Both sides of a '&&' operation should be of type boolean");
+      super.printSemanticError("Both sides of a '&&' operation should be of type boolean");
     }
   }
 

@@ -18,11 +18,11 @@ class ASTLength extends SimpleNode {
     if (this.parent instanceof ASTIdentifier || this.parent instanceof ASTCall) {
 
       if (!((SimpleNode) this.parent).getSymbolReturn().equals("int[]")) {
-        System.out.println("The length property can only be accessed in objects of type int[]");
+        super.printSemanticError("The length property can only be accessed in objects of type int[]");
       }
     } else {
       if (((SimpleNode) this.parent).returnType == null || !((SimpleNode) this.parent).returnType.equals("int[]")) {
-        System.out.println("The length property can only be accessed in objects of type int[]");
+        super.printSemanticError("The length property can only be accessed in objects of type int[]");
       }
     }
   }

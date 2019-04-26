@@ -22,7 +22,7 @@ class ASTAssign extends SimpleNode {
     //check if rhs variable exists
     STO lhs = this.symbolTable.doesSymbolExist(this.lhsIdentifier, this.scope);
     if (lhs == null) {
-      System.out.println("Variable " + this.lhsIdentifier + " was not declared");
+      super.printSemanticError("Variable " + this.lhsIdentifier + " was not declared");
     }
 
     //check, if a variable is being assigned to the other, that their types match
@@ -34,7 +34,7 @@ class ASTAssign extends SimpleNode {
 
         if (rhsNode.children != null) {
           if (((SimpleNode) rhsNode).children[0].toString().equals("ArrayIndex") && !lhs.getType().equals("int")) {
-            System.out.println("Cannot assign variable " + ((ASTIdentifier) rhsNode).getIdentifier() + " of type " + rhs.getType() + " to variable " + this.lhsIdentifier + " of type " + lhs.getType());
+            super.printSemanticError("Cannot assign variable " + ((ASTIdentifier) rhsNode).getIdentifier() + " of type " + rhs.getType() + " to variable " + this.lhsIdentifier + " of type " + lhs.getType());
           } else if (((SimpleNode) rhsNode).children[0].toString().equals("Length")) {
             // ??
           } else if (((SimpleNode) rhsNode).children[0].toString().equals("Call")) {
@@ -43,7 +43,7 @@ class ASTAssign extends SimpleNode {
             if (functionBeingCalled != null) {
               //check if variable is of type [class] TODO
               if (!functionBeingCalled.getReturn().getType().equals(lhs.getType())) {
-                System.out.println("Return type for function " + ((ASTCall) rhsNode.children[0]).getValue() + " not compatible with variable " + this.lhsIdentifier + " of type " + lhs.getType());
+                super.printSemanticError("Return type for function " + ((ASTCall) rhsNode.children[0]).getValue() + " not compatible with variable " + this.lhsIdentifier + " of type " + lhs.getType());
               }
             }
             
@@ -51,7 +51,7 @@ class ASTAssign extends SimpleNode {
           return;
         } 
         if (rhs != null && !lhs.getType().equals(rhs.getType())) {
-          System.out.println("Cannot assign variable " + ((ASTIdentifier) rhsNode).getIdentifier() + " of type " + rhs.getType() + " to variable " + this.lhsIdentifier + " of type " + lhs.getType());
+          super.printSemanticError("Cannot assign variable " + ((ASTIdentifier) rhsNode).getIdentifier() + " of type " + rhs.getType() + " to variable " + this.lhsIdentifier + " of type " + lhs.getType());
         }
       }
     } 
