@@ -7,7 +7,7 @@ import parser.*;
 public class STFunction extends Object {
 
   STO returnDescriptor;  
-  LinkedHashMap<String, STO> params;
+  LinkedHashMap<String, STO> params; // TODO params and locals can have similar identifiers, fix this
   LinkedHashMap<String, STO> locals;
   //add indices
 

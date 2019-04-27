@@ -8,12 +8,12 @@ public class ASTAddSub extends SimpleNode {
 
   public ASTAddSub(int id) {
     super(id);
-    this.returnType = "int";
+    this.actualReturnType = "int";
   }
 
   public ASTAddSub(Jmm p, int id) {
     super(p, id);
-    this.returnType = "int";
+    this.actualReturnType = "int";
   }
 
   public String getOp() {
@@ -32,7 +32,7 @@ public class ASTAddSub extends SimpleNode {
   public void checkNodeSemantic() {
     SimpleNode lhs, rhs;
     lhs = (SimpleNode) this.jjtGetChild(0); rhs = (SimpleNode) this.jjtGetChild(1);
-    if (lhs.returnType != "int" || rhs.returnType != "int") {
+    if (lhs.getReturnType() != "int" || rhs.getReturnType() != "int") {
       System.out.println("Both sides of a " + this.op + " operation should be of type int");
     }
   }

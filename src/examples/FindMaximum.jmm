@@ -9,11 +9,22 @@ class FindMaximum {
 		int testing;
 		int[] testing_arrays;
 
-		i = 1 < 1;
-		testing = 2;
+		i = 1 < 1; //TODO
+		i = 1 + 1;
+		i = testBoolean - i;
+		i = i + i;
+		i = testing_arrays[0] + testing_arrays[0];
+		i = testing_arrays / 1;
+		i = i.test_array_index_type_int() + 1;
+		i = i.get_array() * 1;
+		i = i.get_array().length + 1;
+		i = testing_arrays[1].get_array().length; //TODO
+		//i = (1+1).length;
+
+ 		testing = 2;
 		testing_arrays[2] = 0;
 		maximum = arr[0];
-		while (testing < arr.length) {
+		while (testing[1] < arr.length) {
 			value = arr[i];
 			if (maximum < value) {
 				maximum = value;

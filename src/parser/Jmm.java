@@ -35,13 +35,8 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants, JmmConstants {/*@b
     root.checkSemantics();
     root.symbolTable.dump();
 
-<<<<<<< HEAD
     //Generator codeGenerator = new Generator();
     //codeGenerator.generate(root);
-=======
-    Generator codeGenerator = new Generator();
-    codeGenerator.generate(root);
->>>>>>> 1eaf872d21cd83833af473dd82e1a68497ef0db1
 
  }
 
@@ -954,20 +949,14 @@ if (jjtc001) {
       }
     case TRUE:{
       jj_consume_token(TRUE);
-<<<<<<< HEAD
       LiteralNR();
 ASTBooleanLiteral jjtn002 = new ASTBooleanLiteral(JJTBOOLEANLITERAL);
                          boolean jjtc002 = true;
                          jjtree.openNodeScope(jjtn002);
-=======
-ASTBooleanLiteral jjtn002 = new ASTBooleanLiteral(JJTBOOLEANLITERAL);
-             boolean jjtc002 = true;
-             jjtree.openNodeScope(jjtn002);
->>>>>>> 1eaf872d21cd83833af473dd82e1a68497ef0db1
       try {
 jjtree.closeNodeScope(jjtn002, true);
                          jjtc002 = false;
-jjtn002.returnType = "boolean";
+jjtn002.actualReturnType = "boolean";
       } finally {
 if (jjtc002) {
                            jjtree.closeNodeScope(jjtn002, true);
@@ -977,20 +966,14 @@ if (jjtc002) {
       }
     case FALSE:{
       jj_consume_token(FALSE);
-<<<<<<< HEAD
       LiteralNR();
 ASTBooleanLiteral jjtn003 = new ASTBooleanLiteral(JJTBOOLEANLITERAL);
                           boolean jjtc003 = true;
                           jjtree.openNodeScope(jjtn003);
-=======
-ASTBooleanLiteral jjtn003 = new ASTBooleanLiteral(JJTBOOLEANLITERAL);
-              boolean jjtc003 = true;
-              jjtree.openNodeScope(jjtn003);
->>>>>>> 1eaf872d21cd83833af473dd82e1a68497ef0db1
       try {
 jjtree.closeNodeScope(jjtn003, true);
                           jjtc003 = false;
-jjtn003.returnType = "boolean";
+jjtn003.actualReturnType = "boolean";
       } finally {
 if (jjtc003) {
                             jjtree.closeNodeScope(jjtn003, true);
@@ -1164,11 +1147,7 @@ if (jjtc001) {
         LiteralNR();
 jjtree.closeNodeScope(jjtn000, true);
                                                        jjtc000 = false;
-<<<<<<< HEAD
-jjtn000.returnType="int[]";
-=======
-jjtn000.returnType="int";
->>>>>>> 1eaf872d21cd83833af473dd82e1a68497ef0db1
+jjtn000.actualReturnType="int[]";
         break;
         }
       case IDENTIFIER:{
@@ -1178,7 +1157,7 @@ jjtn000.returnType="int";
         LiteralNR();
 jjtree.closeNodeScope(jjtn000, true);
                                                      jjtc000 = false;
-jjtn000.returnType=t.image;
+jjtn000.actualReturnType=t.image;
         break;
         }
       default:

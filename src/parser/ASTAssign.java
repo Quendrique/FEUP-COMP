@@ -20,7 +20,7 @@ class ASTAssign extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
     //check if rhs variable exists
-    STO lhs = this.symbolTable.doesSymbolExist(this.lhsIdentifier, this.scope);
+    STO lhs = SimpleNode.symbolTable.doesSymbolExist(this.lhsIdentifier, this.scope);
     if (lhs == null) {
       System.out.println("Variable " + this.lhsIdentifier + " was not declared");
     }
@@ -30,7 +30,7 @@ class ASTAssign extends SimpleNode {
     if (this.children != null) {
       rhsNode = (SimpleNode) this.children[0];
       if (rhsNode.toString().equals("Identifier")) {
-        STO rhs = this.symbolTable.doesSymbolExist(((ASTIdentifier) rhsNode).getIdentifier(), this.scope);
+        STO rhs = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) rhsNode).getIdentifier(), this.scope);
 
         if (rhsNode.children != null) {
           if (((SimpleNode) rhsNode).children[0].toString().equals("ArrayIndex") && !lhs.getType().equals("int")) {
@@ -39,7 +39,7 @@ class ASTAssign extends SimpleNode {
             // ??
           } else if (((SimpleNode) rhsNode).children[0].toString().equals("Call")) {
             //if function external to the class, assume it's correct and ignore
-            STFunction functionBeingCalled = this.symbolTable.doesFunctionExist(((ASTCall) rhsNode.children[0]).getValue());
+            STFunction functionBeingCalled = SimpleNode.symbolTable.doesFunctionExist(((ASTCall) rhsNode.children[0]).getValue());
             if (functionBeingCalled != null) {
               //check if variable is of type [class] TODO
               if (!functionBeingCalled.getReturn().getType().equals(lhs.getType())) {

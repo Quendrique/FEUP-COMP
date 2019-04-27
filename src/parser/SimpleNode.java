@@ -12,8 +12,9 @@ public class SimpleNode implements Node {
   protected Object value;
   protected Jmm parser;
   protected String scope;
-  protected ST symbolTable;
-  protected String returnType;
+  protected static ST symbolTable;
+  protected String returnType = "";
+  protected String actualReturnType = "";
   protected String beginLine;
   protected String beginCol;
   
@@ -93,9 +94,13 @@ public class SimpleNode implements Node {
 
   public void checkNodeSemantic() {}; 
 
-  public String getSymbolReturn() {
+  public String getReturnType() {
     return "";
-  }; 
+  };
+  
+  public String getActualReturnType() {
+    return "";
+  }
   
   public void checkSemantics() {
 
@@ -103,7 +108,6 @@ public class SimpleNode implements Node {
       this.scope = "global";
     } else {
       this.scope = ((SimpleNode) this.parent).scope;
-      this.symbolTable = ((SimpleNode) this.parent).symbolTable;
     }
 
     this.checkNodeSemantic();
@@ -119,9 +123,9 @@ public class SimpleNode implements Node {
   public void buildSymbolTable() {
 
     if (parent == null && this.symbolTable == null) { //root node 
-      this.symbolTable = new ST();
-      this.symbolTable.addFunction("global", new STFunction());
-      STFunction globalTable = this.symbolTable.getFunctionTable().get("global");
+      SimpleNode.symbolTable = new ST();
+      SimpleNode.symbolTable.addFunction("global", new STFunction());
+      STFunction globalTable = SimpleNode.symbolTable.getFunctionTable().get("global");
     
       String nodeType;
       Node[] children = ((SimpleNode) this.children[0]).children;
@@ -180,13 +184,12 @@ public class SimpleNode implements Node {
         break;
       } else {
         ((ASTVarDeclaration) childNode).returnType = ((ASTVarDeclaration) childNode).type;
-        System.out.println(((ASTVarDeclaration) childNode).getIdentifier() + ((ASTVarDeclaration) childNode).returnType);
         stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false);
       }
 
     }
 
-    this.symbolTable.addFunction(stFunctionName, stFunction);
+    SimpleNode.symbolTable.addFunction(stFunctionName, stFunction);
   
   }
 

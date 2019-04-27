@@ -6,11 +6,12 @@ public class ASTAnd extends SimpleNode {
 
   public ASTAnd(int id) {
     super(id);
-    this.returnType = "boolean";
+    this.actualReturnType = "boolean";
   }
 
   public ASTAnd(Jmm p, int id) {
     super(p, id);
+    this.actualReturnType = "boolean";
   }
 
   @Override  

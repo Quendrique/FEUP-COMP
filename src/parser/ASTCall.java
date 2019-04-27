@@ -29,15 +29,34 @@ class ASTCall extends SimpleNode {
   }
 
   @Override
-  public String getSymbolReturn() {
-    return this.symbolTable.doesFunctionExist(this.value).getReturn().getType();
+  public String getActualReturnType() {
+    if (this.actualReturnType == "") {
+      STFunction function = SimpleNode.symbolTable.doesFunctionExist(this.value);
+      if (function != null) {
+        this.actualReturnType = function.getReturn().getType();
+      }
+    }
+    return this.actualReturnType;
+  }
+
+  @Override
+  public String getReturnType() {
+    this.actualReturnType = SimpleNode.symbolTable.doesFunctionExist(this.value).getReturn().getType();
+    //followed by call or length
+    if (this.jjtGetNumChildren() > 0) {
+      SimpleNode child = (SimpleNode) this.jjtGetChild(0);
+      return child.getReturnType();
+      //if function call external to the class, return null ??
+    } else {
+      return this.actualReturnType;
+    }
   }
 
   @Override
   public void checkNodeSemantic() {
 
     //System.out.println("checking if function " + this.value + " exists in function table");
-    STFunction functionCalled = this.symbolTable.doesFunctionExist(this.value);
+    STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(this.value);
     if (functionCalled != null) {
       this.returnType = functionCalled.getReturn().getType();
     } else {

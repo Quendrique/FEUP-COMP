@@ -14,6 +14,10 @@ class ASTArrayIndex extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public String getReturnType() {
+    return "int";
+  }
 
   @Override
   public void checkNodeSemantic() {

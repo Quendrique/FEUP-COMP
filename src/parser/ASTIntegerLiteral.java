@@ -19,7 +19,12 @@ class ASTIntegerLiteral extends SimpleNode {
 
   public int getValue() {
     return this.value;
-  }  
+  }
+  
+  @Override
+  public String getReturnType() {
+    return this.returnType;
+  }
 
   public void setValue(int value) {
     this.value = value;
