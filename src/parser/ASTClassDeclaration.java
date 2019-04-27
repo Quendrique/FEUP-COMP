@@ -14,6 +14,7 @@ class ASTClassDeclaration extends SimpleNode {
 
   public ASTClassDeclaration(Jmm p, int id) {
     super(p, id);
+    
   }
 
   public String getName() {
@@ -22,6 +23,7 @@ class ASTClassDeclaration extends SimpleNode {
 
   public void setName(String name) {
     this.name = name;
+    SimpleNode.className = this.name;
   }
 
   public String getExtends() {

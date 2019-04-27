@@ -59,6 +59,9 @@ class ASTCall extends SimpleNode {
     STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(this.value);
     if (functionCalled != null) {
       this.returnType = functionCalled.getReturn().getType();
+      if (this.parent != null && !((SimpleNode) this.parent).getActualReturnType().equals(SimpleNode.className)) {
+        super.printSemanticError("Invalid call to method");
+      }
     } else {
       this.returnType = "null"; //function external to the class
     }
@@ -69,6 +72,11 @@ class ASTCall extends SimpleNode {
         checkForCorrectArgs(functionCalled);
       }
     }
+
+    /*
+      FindMaximum fm;
+      fm.get_array(); -> should work, isn't
+    */
   }
 
   public void checkForCorrectArgs(STFunction functionCalled) {
