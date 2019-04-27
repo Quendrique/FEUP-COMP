@@ -12,5 +12,7 @@ class ASTArgs extends SimpleNode {
     super(p, id);
   }
 
+  
+
 }
 /* JavaCC - OriginalChecksum=5d9de5a6ebbff5cf5c8cda2f19272e53 (do not edit this line) */

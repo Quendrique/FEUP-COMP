@@ -7,11 +7,22 @@ class ASTThis extends SimpleNode {
   
   public ASTThis(int id) {
     super(id);
-    this.returnType = "this";
+    this.actualReturnType = "this";
   }
 
   public ASTThis(Jmm p, int id) {
     super(p, id);
+    this.actualReturnType = "this";
+  }
+
+  @Override
+  public String getActualReturnType() {
+    return this.actualReturnType;
+  }
+
+  @Override
+  public String getReturnType() {
+    return this.actualReturnType;
   }
 
 }

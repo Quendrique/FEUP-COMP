@@ -1046,7 +1046,30 @@ if (jjtc005) {
       }
     case NOT:{
       jj_consume_token(NOT);
-      Expression();
+ASTNot jjtn006 = new ASTNot(JJTNOT);
+            boolean jjtc006 = true;
+            jjtree.openNodeScope(jjtn006);
+      try {
+        Expression();
+      } catch (Throwable jjte006) {
+if (jjtc006) {
+              jjtree.clearNodeScope(jjtn006);
+              jjtc006 = false;
+            } else {
+              jjtree.popNode();
+            }
+            if (jjte006 instanceof RuntimeException) {
+              {if (true) throw (RuntimeException)jjte006;}
+            }
+            if (jjte006 instanceof ParseException) {
+              {if (true) throw (ParseException)jjte006;}
+            }
+            {if (true) throw (Error)jjte006;}
+      } finally {
+if (jjtc006) {
+              jjtree.closeNodeScope(jjtn006, true);
+            }
+      }
       LiteralNR();
       break;
       }

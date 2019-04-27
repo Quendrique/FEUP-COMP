@@ -296,7 +296,7 @@ void Literal() #void: {Token t;}
     |   
     <NEW> New()
     |
-    <NOT> Expression() LiteralNR()
+    <NOT> Expression() #Not LiteralNR()
     |
     <OPRNT> Expression() <CPRNT> LiteralNR()
 }

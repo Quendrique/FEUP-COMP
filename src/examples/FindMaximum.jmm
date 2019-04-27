@@ -8,6 +8,7 @@ class FindMaximum {
 		boolean testBoolean;
 		int testing;
 		int[] testing_arrays;
+		FindMaximum testClass;
 
 		// int (+ - / * <) int
 
@@ -43,9 +44,29 @@ class FindMaximum {
 
 		// (class).(call)
 
+		test.testing();
+		test.boolean_return_test();
+		testClass.testing();
+		testClass.boolean_return_test();
+
 		// !boolean
 
+		testBoolean = !true;
+		testBoolean = !1;
+
 		// if(boolean)
+
+		if (true){
+			i = i;
+		} else {
+			i = i;
+		}
+
+		if (1){
+			i = i;
+		} else {
+			i = i;
+		}
 
  		testing = 2;
 		maximum = arr[0];

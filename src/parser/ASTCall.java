@@ -55,23 +55,31 @@ class ASTCall extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
 
-    //System.out.println("checking if function " + this.value + " exists in function table");
+    String parentReturnType = ((SimpleNode) this.parent).getActualReturnType();
     STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(this.value);
-    if (functionCalled != null) {
-      this.returnType = functionCalled.getReturn().getType();
-      if (this.parent != null && !((SimpleNode) this.parent).getActualReturnType().equals(SimpleNode.className)) {
-        super.printSemanticError("Invalid call to method");
+
+    if (parentReturnType.equals(SimpleNode.className) || parentReturnType.equals("this")) {
+      if (functionCalled != null) {
+        this.returnType = functionCalled.getReturn().getType();
+        if (this.parent != null && !((SimpleNode) this.parent).getActualReturnType().equals(SimpleNode.className)) {
+          super.printSemanticError("Invalid call to method (method not found in this class)");
+        }
+        if (this.children != null) {
+          if (functionCalled != null) {
+            //System.out.println("call class function");
+            checkForCorrectArgs(functionCalled);
+          }
+        }
+      } else {
+        this.returnType = "void"; //function external to the class
       }
-    } else {
-      this.returnType = "null"; //function external to the class
+    } else if (parentReturnType.equals("int") || parentReturnType.equals("int[]") || parentReturnType.equals("boolean")  ) {
+      super.printSemanticError("Invalid call to method (can't invoke methods on primitives)");
     }
 
-    if (this.children != null) {
-      if (functionCalled != null) {
-        //System.out.println("call class function");
-        checkForCorrectArgs(functionCalled);
-      }
-    }
+
+    //System.out.println("checking if function " + this.value + " exists in function table");
+
 
     /*
       FindMaximum fm;

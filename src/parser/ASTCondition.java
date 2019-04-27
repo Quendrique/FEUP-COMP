@@ -12,5 +12,12 @@ class ASTCondition extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public void checkNodeSemantic() {
+    if(!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals("boolean")) {
+      super.printSemanticError("An if condition must return a boolean value");
+    }
+  }
+
 }
 /* JavaCC - OriginalChecksum=69d0e3cf45787dde505033fffedd41a4 (do not edit this line) */
