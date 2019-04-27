@@ -22,7 +22,14 @@ class ASTThis extends SimpleNode {
 
   @Override
   public String getReturnType() {
-    return this.actualReturnType;
+    //check if node has children
+    if (this.jjtGetNumChildren() > 0) {
+      SimpleNode child = (SimpleNode) this.jjtGetChild(0);
+      return child.getReturnType();
+      //if function call external to the class, return null ??
+    } else {
+      return this.actualReturnType;
+    }
   }
 
 }

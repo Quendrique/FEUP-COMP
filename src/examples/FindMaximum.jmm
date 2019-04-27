@@ -42,6 +42,11 @@ class FindMaximum {
 
 		// (array).length
 
+		i = testing_arrays.length;
+		i = testBoolean.length;
+		i = i.length;
+
+
 		// (class).(call)
 
 		test.testing();

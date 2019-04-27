@@ -2,14 +2,25 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package parser;
 
-public
-class ASTReturn extends SimpleNode {
+import semantic.*;
+
+public class ASTReturn extends SimpleNode {
   public ASTReturn(int id) {
     super(id);
   }
 
   public ASTReturn(Jmm p, int id) {
     super(p, id);
+  }
+
+  @Override
+  public void checkNodeSemantic() {
+    STFunction function = SimpleNode.symbolTable.doesFunctionExist(((ASTMethodDeclaration) this.parent).getName());
+    if (function != null) {
+      if (!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals(function.getReturn().getType()) ) {
+        super.printSemanticError("Return value does not match function signature");
+      } 
+    }
   }
 
 }

@@ -12,5 +12,12 @@ class ASTWhile extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public void checkNodeSemantic() {
+    if (!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals("boolean")) {
+      super.printSemanticError("The while condition must return a boolean value");
+    }
+  }
+
 }
 /* JavaCC - OriginalChecksum=7a146956b7611288dd0b57a32590b923 (do not edit this line) */
