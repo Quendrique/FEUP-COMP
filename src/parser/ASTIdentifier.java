@@ -60,9 +60,7 @@ public class ASTIdentifier extends SimpleNode {
     //If symbol doesn't exist in the symbol table and it's not a function call, there is a variable not declared (?)
     STO symbol = SimpleNode.symbolTable.doesSymbolExist(this.identifier, this.scope);
     if (symbol == null) {
-      if(this.jjtGetNumChildren() > 0 && !this.jjtGetChild(0).getClass().getSimpleName().equals("ASTCall")){
         super.printSemanticError("Variable " + this.identifier + " was not declared");
-      }
     } else {
       this.returnType = symbol.getType();
     }

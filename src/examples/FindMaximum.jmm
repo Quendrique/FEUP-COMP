@@ -123,9 +123,9 @@ class FindMaximum {
 
 		testingArray.get_array().length;
 
-		fm = new FindMaximum(); //TODO
+		fm = new FindMaximum(); //TODO change ast to accept constructors
 		fm.build_test_arr();
 
-		ioPlus.printResult(fm.find_maximum());
+		ioPlus.printResult(fm.find_maximum()); //TODO ignore static methods ?? idk
 	}
 }

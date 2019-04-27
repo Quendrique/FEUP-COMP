@@ -2,8 +2,12 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package parser;
 
-public
-class ASTArgs extends SimpleNode {
+import semantic.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Iterator;
+
+public class ASTArgs extends SimpleNode {
   public ASTArgs(int id) {
     super(id);
   }
@@ -12,7 +16,39 @@ class ASTArgs extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public void checkNodeSemantic() {
+    STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(((ASTCall) this.parent).value);
+    if (functionCalled != null) {
+      LinkedHashMap<String, STO> paramsNeeded = functionCalled.getParams();
+      Node[] args = ((SimpleNode) this.children[0]).children;
+      int numArguments;
+      if (args == null) {
+        numArguments = 0;
+      } else {
+        numArguments = ((SimpleNode) this.children[0]).children.length;
+      }
+      if (paramsNeeded.size() != numArguments) {
+        super.printSemanticError("No function signature for identifier " + this.value + " and specified number of arguments found");
+        return;
+      }
   
+      Iterator<Map.Entry<String, STO>> it = paramsNeeded.entrySet().iterator();
+      int count = 0;
+      STO argument, parameter;
+      String argIdentifier;
+      
+      while (it.hasNext() && count < ((SimpleNode) this.children[0]).children.length) {
+        //System.out.println(((SimpleNode) this.children[0]).children.length);
+        Map.Entry<String, STO> symbol = it.next();
+        if (!symbol.getValue().getType().equals(((SimpleNode) (((SimpleNode) this.children[0]).children[count])).returnType)) {
+          super.printSemanticError("No function signature for identifier " + this.value + " and specified arguments found");
+          return;
+        }
+        count++;
+      }
+    }
+  }
 
 }
 /* JavaCC - OriginalChecksum=5d9de5a6ebbff5cf5c8cda2f19272e53 (do not edit this line) */

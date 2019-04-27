@@ -3,9 +3,6 @@
 package parser;
 
 import semantic.*;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Iterator;
 
 public
 class ASTCall extends SimpleNode {
@@ -55,69 +52,27 @@ class ASTCall extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
 
-    String parentReturnType = ((SimpleNode) this.parent).getActualReturnType();
-    STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(this.value);
-
-    if (parentReturnType.equals(SimpleNode.className) || parentReturnType.equals("this")) {
-      if (functionCalled != null) {
-        this.returnType = functionCalled.getReturn().getType();
-        if (this.parent != null && !((SimpleNode) this.parent).getActualReturnType().equals(SimpleNode.className)) {
+    if (this.parent != null) {
+      String parentReturnType = ((SimpleNode) this.parent).getActualReturnType();
+      STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(this.value);
+  
+      if (parentReturnType.equals(SimpleNode.className) || parentReturnType.equals("this")) {
+        if (functionCalled != null) {
+          this.actualReturnType = functionCalled.getReturn().getType();
+        } else {
           super.printSemanticError("Invalid call to method (method not found in this class)");
         }
-        if (this.children != null) {
-          if (functionCalled != null) {
-            //System.out.println("call class function");
-            checkForCorrectArgs(functionCalled);
-          }
-        }
-      } else {
-        this.returnType = "void"; //function external to the class
+      } else if (parentReturnType.equals("int") || parentReturnType.equals("int[]") || parentReturnType.equals("boolean")  ) {
+        super.printSemanticError("Invalid call to method (can't invoke methods on primitives)");
       }
-    } else if (parentReturnType.equals("int") || parentReturnType.equals("int[]") || parentReturnType.equals("boolean")  ) {
-      super.printSemanticError("Invalid call to method (can't invoke methods on primitives)");
     }
-
-
     //System.out.println("checking if function " + this.value + " exists in function table");
-
 
     /*
       FindMaximum fm;
       fm.get_array(); -> should work, isn't
     */
   }
-
-  public void checkForCorrectArgs(STFunction functionCalled) {
-    LinkedHashMap<String, STO> paramsNeeded = functionCalled.getParams();
-    Node[] args = ((SimpleNode) this.children[0]).children;
-    int numArguments;
-    if (args == null) {
-      numArguments = 0;
-    } else {
-      numArguments = ((SimpleNode) this.children[0]).children.length;
-    }
-    if (paramsNeeded.size() != numArguments) {
-      super.printSemanticError("No function signature for identifier " + this.value + " and specified number of arguments found");
-      return;
-    }
-
-    Iterator<Map.Entry<String, STO>> it = paramsNeeded.entrySet().iterator();
-    int count = 0;
-    STO argument, parameter;
-    String argIdentifier;
-    
-    while (it.hasNext() && count < ((SimpleNode) this.children[0]).children.length) {
-      //System.out.println(((SimpleNode) this.children[0]).children.length);
-      Map.Entry<String, STO> symbol = it.next();
-      if (!symbol.getValue().getType().equals(((SimpleNode) (((SimpleNode) this.children[0]).children[count])).returnType)) {
-        super.printSemanticError("No function signature for identifier " + this.value + " and specified arguments found");
-        return;
-      }
-      count++;
-    }
-    
-  }
-
 
   public void dump(String prefix) {
     System.out.println(toString(prefix) + ": " + this.value);
