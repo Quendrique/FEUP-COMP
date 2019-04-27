@@ -116,7 +116,7 @@ public class Generator {
 
     genMethodSignature(method);
     //genMethodBody();
-    generateMethodFooter();
+    genMethodFooter();
     
   }
   
@@ -152,15 +152,31 @@ public class Generator {
     
   }
 
+  public void genMethodCall(SimpleNode call) {
 
+    if (call.jjtGetNumChildren() > 0) {
+      SimpleNode args = (SimpleNode) call.jjtGetChild(0);
+      //get function scope and corresponding stfunction object
+      //go through params in the function and add them to the invocation
+  
+      SimpleNode child;
+      for(int i = 0; i < args.jjtGetNumChildren(); i++) {
+        child = (SimpleNode) args.jjtGetChild(0);
+        
+      }
+    }
 
+    //invokevirtual (class name).(method name)(args all together)(return type)
 
-  public void genMethodBody() {
-    //TODO     Fuck...
   }
 
 
-  public void generateMethodFooter(){
+  public void genMethodBody() {
+    //TODO 
+  }
+
+
+  public void genMethodFooter(){
 
     //TODO
 
@@ -202,8 +218,6 @@ public class Generator {
       default: return null;
     }
   } 
-
-  //Getters and Setters
 
   public SimpleNode getRoot(){
     return this.root;
