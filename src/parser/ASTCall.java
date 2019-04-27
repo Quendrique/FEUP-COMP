@@ -81,7 +81,7 @@ class ASTCall extends SimpleNode {
       numArguments = ((SimpleNode) this.children[0]).children.length;
     }
     if (paramsNeeded.size() != numArguments) {
-      System.out.println("No function signature for identifier " + this.value + " and specified number of arguments found");
+      super.printSemanticError("No function signature for identifier " + this.value + " and specified number of arguments found");
       return;
     }
 
@@ -94,7 +94,7 @@ class ASTCall extends SimpleNode {
       //System.out.println(((SimpleNode) this.children[0]).children.length);
       Map.Entry<String, STO> symbol = it.next();
       if (!symbol.getValue().getType().equals(((SimpleNode) (((SimpleNode) this.children[0]).children[count])).returnType)) {
-        System.out.println("No function signature for identifier " + this.value + " and specified arguments found");
+        super.printSemanticError("No function signature for identifier " + this.value + " and specified arguments found");
         return;
       }
       count++;

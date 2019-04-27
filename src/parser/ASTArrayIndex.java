@@ -40,7 +40,7 @@ class ASTArrayIndex extends SimpleNode {
       //System.out.println("Index is an expression");
       return;
     }
-    else System.out.println("Array index is not of type int");
+    else super.printSemanticError("Array index is not of type int");
 
       
     

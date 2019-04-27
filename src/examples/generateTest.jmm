@@ -1,0 +1,27 @@
+class genTest extends Test {
+
+	int j;
+	
+	
+	public int func(){
+		return 1;
+	}
+	
+	public boolean func2(boolean b){
+		return true;
+	}
+	
+	public boolean func3(int i, int i2){
+		return true;
+	}
+
+	public static void main(String[] args) {
+		int r;
+		int p;
+		
+		r = 1;
+		p = 2;
+		
+		r = p + 1;
+	}
+}

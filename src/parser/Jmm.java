@@ -12,7 +12,7 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants, JmmConstants {/*@b
   protected static JJTJmmState jjtree = new JJTJmmState();
     static int errorCount=0;
 
-    public static void main(String args[]) throws ParseException {
+    public static void main(String args[]) throws ParseException, IOException{
 
     final String FILENAME = args[0];
 
@@ -35,8 +35,9 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants, JmmConstants {/*@b
     root.checkSemantics();
     root.symbolTable.dump();
 
-    //Generator codeGenerator = new Generator();
-    //codeGenerator.generate(root);
+    System.out.println("\u005cn\u005cnEntering code Generation");
+    Generator codeGenerator = new Generator(root);
+    codeGenerator.generate();
 
  }
 
@@ -1358,36 +1359,6 @@ if (jjtc000) {
     finally { jj_save(9, xla); }
   }
 
-  static private boolean jj_3R_24()
- {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_4()) {
-    jj_scanpos = xsp;
-    if (jj_3R_33()) {
-    jj_scanpos = xsp;
-    if (jj_3R_34()) {
-    jj_scanpos = xsp;
-    if (jj_3R_35()) return true;
-    }
-    }
-    }
-    return false;
-  }
-
-  static private boolean jj_3_8()
- {
-    if (jj_scan_token(LS)) return true;
-    if (jj_3R_21()) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_22()
- {
-    if (jj_3R_23()) return true;
-    return false;
-  }
-
   static private boolean jj_3R_19()
  {
     if (jj_scan_token(IDENTIFIER)) return true;
@@ -1588,6 +1559,36 @@ if (jjtc000) {
   static private boolean jj_3_1()
  {
     if (jj_3R_16()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_24()
+ {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_4()) {
+    jj_scanpos = xsp;
+    if (jj_3R_33()) {
+    jj_scanpos = xsp;
+    if (jj_3R_34()) {
+    jj_scanpos = xsp;
+    if (jj_3R_35()) return true;
+    }
+    }
+    }
+    return false;
+  }
+
+  static private boolean jj_3_8()
+ {
+    if (jj_scan_token(LS)) return true;
+    if (jj_3R_21()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_22()
+ {
+    if (jj_3R_23()) return true;
     return false;
   }
 

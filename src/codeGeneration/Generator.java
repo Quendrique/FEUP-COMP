@@ -8,10 +8,18 @@ import parser.*;
 
 public class Generator {
 
-  private PrintWriter out;
-  //fileoutputstream
+  private ASTClassDeclaration root;
 
-  public Generator() {
+  private StringBuilder builder;
+  private PrintWriter out;
+
+  public Generator(SimpleNode root) throws IOException {
+
+    this.root = (ASTClassDeclaration) root.jjtGetChild(0);
+
+    String fileName = this.root.getName() + ".j";
+
+    System.out.println("filename: " + fileName);
 
     try {
 
@@ -20,7 +28,7 @@ public class Generator {
         dir.mkdirs();
       }
 
-      File file = new File("jasmin/Test.j"); //TEMP
+      File file = new File("jasmin/" + fileName);
       if (!file.exists()) {
         file.createNewFile();
       }
@@ -31,78 +39,175 @@ public class Generator {
         System.out.println(e.getMessage());
     }
 
+    this.builder = new StringBuilder();
+
+    FileWriter fw = new FileWriter("jasmin/" + fileName);
+    
+    this.out = new PrintWriter(fw);
+
   }
 
-  public void generate(SimpleNode root) {
-    /*
-    
-    SimpleNode classNode = (SimpleNode) root.jjtGetChild(0);
-    genClass(((ASTClassDeclaration) classNode).getName());
-    this.out.close();
-    */
+  
+
+  private void appendLine(String line) {
+		builder.append(line + "\n");
+  }
+  
+
+  //Generator Functions
+
+  public void generate() {
+    genClass(this.root.getName());
+    genGlobals();
+
+    genMethods();
+
+    out.println(builder);
+    out.close();
   }
 
   public void genClass(String className) {
-    this.out.print(".class public" + className + "\n .super java/lang/Object\n"); //TODO
-    this.out.flush();
+    appendLine(".class public " + className + "\n.super java/lang/Object");
   }
 
-  public void genGlobal() {
+  public void genGlobals() {
+    for (int i = 0; i < root.jjtGetNumChildren(); i++) {
+			SimpleNode childRoot = (SimpleNode) root.jjtGetChild(i);
 
+			if (childRoot.getId() == JmmTreeConstants.JJTVARDECLARATION)
+        genVarDeclaration((ASTVarDeclaration) childRoot);
+		}
   }
+
+  public void genVarDeclaration(ASTVarDeclaration dec){
+    String varName, varType = "";
+    
+    varName = dec.getIdentifier();
+
+    if (dec.getType().equals("int[]"))
+				varType = " [I ";
+		else if (dec.getType().equals("int"))
+      varType = " I ";
+    else if (dec.getType().equals("boolean"))
+			varType = " Z ";
+		else{
+      return;
+    }
+		
+
+		appendLine(".field static " + varName + varType);
+    
+  }
+
+
+  private void genMethods() {
+		for (int i = 0; i < root.jjtGetNumChildren(); i++) {
+			SimpleNode childRoot = (SimpleNode) root.jjtGetChild(i);
+
+			if (childRoot.getId() == JmmTreeConstants.JJTMETHODDECLARATION || childRoot.getId() == JmmTreeConstants.JJTMAINDECLARATION)
+        genMethod(childRoot);
+		}
+	}
+
 
   public void genMethod(SimpleNode method) {
 
-    genMethodSignature(method);
-    genMethodBody();
-    this.out.println(".end method\n");
+    //StackController stack = new StackController();
 
+    genMethodSignature(method);
+    //genMethodBody();
+    generateMethodFooter();
+    
   }
   
   public void genMethodSignature(SimpleNode method) {
-    /*
-    
-    String identifier, type;
+
+    String identifier, type, funcArgs = "";
+    ASTMethodArguments argumentsNode;
+
+    appendLine("\n");
+
     if (method instanceof ASTMainDeclaration) {
-      type = "static void"; identifier = "main";
-    } else if (method instanceof ASTMethodDeclaration) {
-      type = ((ASTethodDeclaration) method).getType(); identifier = ((ASTMainDeclaration) method).getName();
+      appendLine(".method public static main([Ljava/lang/String;)V");
     }
+		else if (method instanceof ASTMethodDeclaration) {
+      ASTMethodDeclaration methodDec = (ASTMethodDeclaration) method;
+      type = methodDec.getType(); identifier = methodDec.getName();
 
-    this.out.print(".method public " + (identifier.equals("main") ? "static " : "") + identifier);
-    if (method.jjtGetChild(0) instanceof ASTMethodArguments) {
-      genMethodArguments(method.jjtGetChild(0));
+      argumentsNode = getArgumentsNode(methodDec);
+
+      //Check if method has arguments
+      if(argumentsNode != null){
+        for (int i = 0; i < argumentsNode.jjtGetNumChildren(); i++) {
+          ASTMethodArgument argNode = (ASTMethodArgument) argumentsNode.jjtGetChild(i);
+          
+          funcArgs += VDMTypeConverter(argNode.getType());
+        }
+  
+      }
+      
+      appendLine(".method public static " + identifier + "(" + funcArgs + ")" + VDMTypeConverter(type));
+      
     }
-    String returnType;
-    switch(type) {
-      case "int":
-        returnType = "I";
-        break;
-      case "int[]":
-        returnType = "[I";
-        break;
-      case "void":
-        returnType = "V";
-        break;
-      default:
-      //boolean -> Z 
-      // ?? dont know how to deal with other types
-      // identifier -> L[path];
-    }
-    this.out.println(returnType);
-    */
     
   }
 
-  public void genMethodArguments(SimpleNode args) {
-    //for(int i = 0; i < args.jjtGetNumChildren(); i++) {
-      // ?? :) 
-    //}
-    //this.out.print(")");
-  }
+
+
 
   public void genMethodBody() {
-
+    //TODO     Fuck...
   }
+
+
+  public void generateMethodFooter(){
+
+    //TODO
+
+
+    endMethod();
+  }
+
+  public void endMethod(){
+    appendLine(".end method\n");
+  }
+
+
+
+  //Auxiliary functions
+  public ASTMethodArguments getArgumentsNode(ASTMethodDeclaration methodDec){
+    SimpleNode argumentsNode;
+    for(int i=0; i < methodDec.jjtGetNumChildren(); i++){
+      argumentsNode = (SimpleNode) methodDec.jjtGetChild(i);
+      if(argumentsNode instanceof ASTMethodArguments){
+        return (ASTMethodArguments) argumentsNode;
+      }
+    }
+    return null;
+  }
+
+  
+  public String VDMTypeConverter(String type){
+    String VDMType = "";
+
+    switch(type){
+      case "int":
+        return "I";
+      case "int[]":
+        return "[I";
+      case "boolean":
+        return "Z";
+      case "void":
+        return "V";
+      default: return null;
+    }
+  } 
+
+  //Getters and Setters
+
+  public SimpleNode getRoot(){
+    return this.root;
+  }
+
 
 }

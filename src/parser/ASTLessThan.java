@@ -21,7 +21,7 @@ class ASTLessThan extends SimpleNode {
     lhs = (SimpleNode) this.jjtGetChild(0); rhs = (SimpleNode) this.jjtGetChild(1);
     System.out.println(lhs.getReturnType() + " " + rhs.getReturnType());
     if (lhs.getReturnType() != "int" || rhs.getReturnType() != "int") {
-      System.out.println("Both sides of a < operation should be of type int");
+      super.printSemanticError("Both sides of a < operation should be of type int");
     }
   }
 

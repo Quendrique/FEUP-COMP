@@ -2,6 +2,7 @@ options {
  LOOKAHEAD=1;
  MULTI=true;
  DEBUG_PARSER=false;
+ NODE_SCOPE_HOOK=false;
 }
 PARSER_BEGIN(Jmm)
 package parser;
@@ -16,7 +17,7 @@ public class Jmm {
 
     static int errorCount=0;
 
-    public static void main(String args[]) throws ParseException {
+    public static void main(String args[]) throws ParseException, IOException{
 
     final String FILENAME = args[0];
 
@@ -39,12 +40,15 @@ public class Jmm {
     root.checkSemantics();
     root.symbolTable.dump();
 
-    //Generator codeGenerator = new Generator();
-    //codeGenerator.generate(root);
+    System.out.println("\n\nEntering code Generation");
+    Generator codeGenerator = new Generator(root);
+    codeGenerator.generate();
 
  }
     
 }
+
+
 PARSER_END(Jmm)
 SKIP :
 {

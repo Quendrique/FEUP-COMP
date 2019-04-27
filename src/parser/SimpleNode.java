@@ -15,8 +15,9 @@ public class SimpleNode implements Node {
   protected static ST symbolTable;
   protected String returnType = "";
   protected String actualReturnType = "";
-  protected String beginLine;
-  protected String beginCol;
+  protected int beginLine;
+  public void setBeginLine( int line ) { beginLine = line ;}
+  public int getBeginLine() { return beginLine ; }
   
   public SimpleNode(int i) {
     id = i;
@@ -191,6 +192,10 @@ public class SimpleNode implements Node {
 
     SimpleNode.symbolTable.addFunction(stFunctionName, stFunction);
   
+  }
+
+  public void printSemanticError(String errorMsg) {
+    System.out.println("Semantic Error at line " + beginLine + " " + errorMsg + ".");
   }
 
 }

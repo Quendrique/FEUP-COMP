@@ -77,6 +77,7 @@ public class JJTJmmState {
     marks.add(mk);
     mk = sp;
     n.jjtOpen();
+    ((SimpleNode)n).setBeginLine(Jmm.getToken(1).beginLine);
   }
 
 

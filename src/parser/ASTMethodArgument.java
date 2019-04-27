@@ -24,6 +24,10 @@ class ASTMethodArgument extends SimpleNode {
     this.identifier = identifier;
   }
 
+  public String getType() {
+    return this.type;
+  }
+
   public void dump(String prefix) {
     System.out.println(toString(prefix) + ": type: " + this.type);
     if (children != null) {
