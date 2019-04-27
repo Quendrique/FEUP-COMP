@@ -23,7 +23,9 @@ class ASTArrayIndex extends SimpleNode {
   public void checkNodeSemantic() {
     if(!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals("int")){
       super.printSemanticError("Array index must be of type int");
-      return;
+    }
+    if(!((SimpleNode) this.parent).getActualReturnType().equals("int[]")) {
+      super.printSemanticError("Variable must be of type int[] in order to access an array position");
     }
   }
 

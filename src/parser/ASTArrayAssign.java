@@ -11,10 +11,22 @@ class ASTArrayAssign extends SimpleNode {
 
   public ASTArrayAssign(int id) {
     super(id);
+    this.actualReturnType = "int[]";
   }
 
   public ASTArrayAssign(Jmm p, int id) {
     super(p, id);
+    this.actualReturnType = "int[]";
+  }
+
+  @Override
+  public String getReturnType() {
+    return this.actualReturnType;
+  }
+
+  @Override
+  public String getActualReturnType() {
+    return this.actualReturnType;
   }
 
   @Override

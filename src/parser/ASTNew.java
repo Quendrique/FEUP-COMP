@@ -15,6 +15,21 @@ class ASTNew extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public String getReturnType() {
+    return this.actualReturnType;
+  }
+
+  @Override
+  public String getActualReturnType() {
+    return this.actualReturnType;
+  } 
+
+  @Override
+  public void checkNodeSemantic() {
+    
+  }
+
   public void dump(String prefix) {
     System.out.println(toString(prefix) + ": " + this.returnType);
     if (children != null) {

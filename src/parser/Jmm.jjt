@@ -321,7 +321,7 @@ void New() : {Token t;}
 {
 	<INT> <OSQB> Expression() <CSQB> LiteralNR() {jjtThis.actualReturnType="int[]";}
 	|
-	t=<IDENTIFIER> <OPRNT> <CPRNT> LiteralNR() {jjtThis.actualReturnType=t.image;}
+	t=<IDENTIFIER> <OPRNT> <CPRNT> LiteralNR() {jjtThis.actualReturnType=t.image; jjtThis.identifier = t.image}
 }
 
 void Call(): {Token t;}
