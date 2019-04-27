@@ -286,9 +286,9 @@ void Literal() #void: {Token t;}
 	
     t = <INTEGERLITERAL> LiteralNR() {jjtThis.setValue(Integer.parseInt(t.image));} #IntegerLiteral
     |
-    <TRUE> LiteralNR() {jjtThis.actualReturnType = "boolean";} #BooleanLiteral 
+    <TRUE> LiteralNR() {jjtThis.booleanValue = "true";} #BooleanLiteral 
     |
-    <FALSE> LiteralNR() {jjtThis.actualReturnType = "boolean";} #BooleanLiteral 
+    <FALSE> LiteralNR() {jjtThis.booleanValue = "false";} #BooleanLiteral 
 	|
     (t = <IDENTIFIER> {jjtThis.setIdentifier(t.image);} LiteralNR()) #Identifier
     |

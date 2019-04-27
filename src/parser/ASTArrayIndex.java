@@ -21,29 +21,10 @@ class ASTArrayIndex extends SimpleNode {
 
   @Override
   public void checkNodeSemantic() {
-       
-
-    //Index is a number
-    if(this.jjtGetChild(0).getClass().getSimpleName().equals("ASTIntegerLiteral")){
-      //System.out.println("Index is a number");
+    if(!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals("int")){
+      super.printSemanticError("Array index must be of type int");
       return;
     }
-    //Index is an identifier
-    else if(this.jjtGetChild(0).getClass().getSimpleName().equals("ASTIdentifier")){
-      //How to check type of identifier? TODO
-      //System.out.println("Index is an identifier");
-      return;
-    }
-    //Index is an expression
-    else if(this.jjtGetChild(0).getClass().getSimpleName().equals("ASTAddSub")){
-      //How to check type of return? TODO
-      //System.out.println("Index is an expression");
-      return;
-    }
-    else super.printSemanticError("Array index is not of type int");
-
-      
-    
   }
 
 }

@@ -14,12 +14,18 @@ public class ASTAnd extends SimpleNode {
     this.actualReturnType = "boolean";
   }
 
+  @Override
+  public String getReturnType() {
+    //logic operations can only return boolean
+    return this.actualReturnType;
+  }
+
   @Override  
   public void checkNodeSemantic() {
     SimpleNode lhs, rhs;
     lhs = (SimpleNode) this.jjtGetChild(0); rhs = (SimpleNode) this.jjtGetChild(1);
-    if (lhs.returnType != "boolean" || rhs.returnType != "boolean") {
-      super.printSemanticError("Both sides of a '&&' operation should be of type boolean");
+    if (lhs.getReturnType() != "boolean" || rhs.getReturnType() != "boolean") {
+      super.printSemanticError("Both sides of a && operation should be of type boolean");
     }
   }
 

@@ -44,6 +44,7 @@ public class ASTIdentifier extends SimpleNode {
         this.actualReturnType = symbol.getType();
       }
     }
+
     //check if node has children
     if (this.jjtGetNumChildren() > 0) {
       SimpleNode child = (SimpleNode) this.jjtGetChild(0);

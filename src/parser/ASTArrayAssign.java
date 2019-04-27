@@ -19,47 +19,14 @@ class ASTArrayAssign extends SimpleNode {
 
   @Override
   public void checkNodeSemantic() {
-    //note: if it's an array, it's of the type int, hence the type checks using "int" and not lhs.getType() for example
-
-    //check if rhs variable exists
     STO lhs = SimpleNode.symbolTable.doesSymbolExist(this.lhsIdentifier, this.scope);
     if (lhs == null) {
       super.printSemanticError("Variable " + this.lhsIdentifier + " was not declared");
     }
-
-    //check if expression corresponding to the array index returns an int ??? needed?
-
-    //check, if a variable is being assigned to the other, that their types match
-    SimpleNode rhsNode;
-    if (this.children != null) {
-      rhsNode = (SimpleNode) this.children[1];
-      if (rhsNode.toString().equals("Identifier")) {
-        
-        STO rhs = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) rhsNode).getIdentifier(), this.scope);
-
-        if (rhsNode.children != null) {
-          if (((SimpleNode) rhsNode).children[0].toString().equals("ArrayIndex")) {
-            super.printSemanticError("Cannot assign variable " + ((ASTIdentifier) rhsNode).getIdentifier() + " of type " + rhs.getType() + " to variable " + this.lhsIdentifier + " of type " + lhs.getType());
-          } else if (((SimpleNode) rhsNode).children[0].toString().equals("Length")) {
-            // ??
-          } else if (((SimpleNode) rhsNode).children[0].toString().equals("Call")) {
-            //if function external to the class, assume it's correct and ignore
-            STFunction functionBeingCalled = SimpleNode.symbolTable.doesFunctionExist(((ASTCall) rhsNode.children[0]).getValue());
-            if (functionBeingCalled != null) {
-              //check if variable is of type [class] TODO
-              if (!functionBeingCalled.getReturn().getType().equals("int")) {
-                super.printSemanticError("Return type for function " + ((ASTCall) rhsNode.children[0]).getValue() + " not compatible with variable " + this.lhsIdentifier + " of type " + lhs.getType());
-              }
-            }
-            
-          }
-          return;
-        } 
-        if (rhs != null && !rhs.getType().equals("int")) {
-          super.printSemanticError("Cannot assign variable " + ((ASTIdentifier) rhsNode).getIdentifier() + " of type " + rhs.getType() + " to variable " + this.lhsIdentifier + " of type " + lhs.getType());
-        }
-      }
-    } 
+    
+    if(!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals("int")) {
+      super.printSemanticError("Variable types not compatible");
+    }
   }
 
   public void dump(String prefix) {

@@ -24,37 +24,10 @@ class ASTAssign extends SimpleNode {
     if (lhs == null) {
       super.printSemanticError("Variable " + this.lhsIdentifier + " was not declared");
     }
-
-    //check, if a variable is being assigned to the other, that their types match
-    SimpleNode rhsNode;
-    if (this.children != null) {
-      rhsNode = (SimpleNode) this.children[0];
-      if (rhsNode.toString().equals("Identifier")) {
-        STO rhs = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) rhsNode).getIdentifier(), this.scope);
-
-        if (rhsNode.children != null) {
-          if (((SimpleNode) rhsNode).children[0].toString().equals("ArrayIndex") && !lhs.getType().equals("int")) {
-            super.printSemanticError("Cannot assign variable " + ((ASTIdentifier) rhsNode).getIdentifier() + " of type " + rhs.getType() + " to variable " + this.lhsIdentifier + " of type " + lhs.getType());
-          } else if (((SimpleNode) rhsNode).children[0].toString().equals("Length")) {
-            // ??
-          } else if (((SimpleNode) rhsNode).children[0].toString().equals("Call")) {
-            //if function external to the class, assume it's correct and ignore
-            STFunction functionBeingCalled = SimpleNode.symbolTable.doesFunctionExist(((ASTCall) rhsNode.children[0]).getValue());
-            if (functionBeingCalled != null) {
-              //check if variable is of type [class] TODO
-              if (!functionBeingCalled.getReturn().getType().equals(lhs.getType())) {
-                super.printSemanticError("Return type for function " + ((ASTCall) rhsNode.children[0]).getValue() + " not compatible with variable " + this.lhsIdentifier + " of type " + lhs.getType());
-              }
-            }
-            
-          }
-          return;
-        } 
-        if (rhs != null && !lhs.getType().equals(rhs.getType())) {
-          super.printSemanticError("Cannot assign variable " + ((ASTIdentifier) rhsNode).getIdentifier() + " of type " + rhs.getType() + " to variable " + this.lhsIdentifier + " of type " + lhs.getType());
-        }
-      }
-    } 
+    
+    if(!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals(lhs.getType())) {
+      super.printSemanticError("Variable types not compatible");
+    }
 
   }
 

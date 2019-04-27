@@ -957,7 +957,7 @@ ASTBooleanLiteral jjtn002 = new ASTBooleanLiteral(JJTBOOLEANLITERAL);
       try {
 jjtree.closeNodeScope(jjtn002, true);
                          jjtc002 = false;
-jjtn002.actualReturnType = "boolean";
+jjtn002.booleanValue = "true";
       } finally {
 if (jjtc002) {
                            jjtree.closeNodeScope(jjtn002, true);
@@ -974,7 +974,7 @@ ASTBooleanLiteral jjtn003 = new ASTBooleanLiteral(JJTBOOLEANLITERAL);
       try {
 jjtree.closeNodeScope(jjtn003, true);
                           jjtc003 = false;
-jjtn003.actualReturnType = "boolean";
+jjtn003.booleanValue = "false";
       } finally {
 if (jjtc003) {
                             jjtree.closeNodeScope(jjtn003, true);

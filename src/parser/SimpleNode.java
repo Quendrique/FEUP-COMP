@@ -18,7 +18,7 @@ public class SimpleNode implements Node {
   protected int beginLine;
   public void setBeginLine( int line ) { beginLine = line ;}
   public int getBeginLine() { return beginLine ; }
-  
+
   public SimpleNode(int i) {
     id = i;
   }
@@ -195,7 +195,7 @@ public class SimpleNode implements Node {
   }
 
   public void printSemanticError(String errorMsg) {
-    System.out.println("Semantic Error at line " + beginLine + " " + errorMsg + ".");
+    System.out.println("Semantic Error at line " + beginLine + ": " + errorMsg + ".");
   }
 
 }

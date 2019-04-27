@@ -7,19 +7,24 @@ class ASTLessThan extends SimpleNode {
 
   public ASTLessThan(int id) {
     super(id);
-    this.returnType = "boolean";
+    this.actualReturnType = "boolean";
   }
 
   public ASTLessThan(Jmm p, int id) {
     super(p, id);
-    this.returnType = "boolean";
+    this.actualReturnType = "boolean";
+  }
+  
+  @Override
+  public String getReturnType() {
+    //logic operations can only return boolean
+    return this.actualReturnType;
   }
 
   @Override  
   public void checkNodeSemantic() {
     SimpleNode lhs, rhs;
     lhs = (SimpleNode) this.jjtGetChild(0); rhs = (SimpleNode) this.jjtGetChild(1);
-    System.out.println(lhs.getReturnType() + " " + rhs.getReturnType());
     if (lhs.getReturnType() != "int" || rhs.getReturnType() != "int") {
       super.printSemanticError("Both sides of a < operation should be of type int");
     }

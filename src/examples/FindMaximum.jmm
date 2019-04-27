@@ -9,7 +9,9 @@ class FindMaximum {
 		int testing;
 		int[] testing_arrays;
 
-		i = 1 < 1; //TODO
+		// int (+ - / * <) int
+
+		i = 1 < 1; 
 		i = 1 + 1;
 		i = testBoolean - i;
 		i = i + i;
@@ -18,11 +20,28 @@ class FindMaximum {
 		i = i.test_array_index_type_int() + 1;
 		i = i.get_array() * 1;
 		i = i.get_array().length + 1;
-		i = testing_arrays[1].get_array().length; //TODO
-		//i = (1+1).length;
+		i = testing_arrays[1].get_array().length + 1; //TODO but not an error regarding this part
+
+		// boolean && boolean
+
+		testBoolean = testBoolean && testBoolean;
+		testBoolean = (1 < 2) && testBoolean;
+		testBoolean = 1 && testBoolean;
+		testBoolean = i && testBoolean;
+		testBoolean = i.get_array().length && testBoolean;
+		testBoolean = i.boolean_return_test() && true;
+		testBoolean = this.boolean_return_test() && true; //TODO but not an error regarding this part
+
+		// (array)[int]
+
+		testing_arrays[2] = 0;
+		testing_arrays[true] = 1;
+		testing_arrays[testBoolean] = 0;
+		i[0] = 1; //TODO
+
+
 
  		testing = 2;
-		testing_arrays[2] = 0;
 		maximum = arr[0];
 		while (testing[1] < arr.length) {
 			value = arr[i];
@@ -44,14 +63,18 @@ class FindMaximum {
 		var1 = 1;
 		var2 = 2;
 
-		testing_arrays[var1] = 1;
+		testing_arrays[var2] = 1;
 		testing_arrays[var1 + var2] = 2;
 
 		return var1;
 	}
 
+	public boolean boolean_return_test() {
+		return true;
+	}
+
 	public int build_test_arr() {
-		test_arr = new int[5];
+		test_arr = new int[5]; //TODO
 		test_arr[0] = 14;
 		test_arr[1] = 28;
 		test_arr[2] = 0;
@@ -70,11 +93,10 @@ class FindMaximum {
 
 		boolean testing;
 		int[] testingArray;
-		testing = fm.get_array();
 
 		testingArray.get_array().length;
 
-		fm = new FindMaximum();
+		fm = new FindMaximum(); //TODO
 		fm.build_test_arr();
 
 		ioPlus.printResult(fm.find_maximum());

@@ -9,11 +9,12 @@ class ASTBooleanLiteral extends SimpleNode {
 
   public ASTBooleanLiteral(int id) {
     super(id);
-    this.returnType = "boolean";
+    this.actualReturnType = "boolean";
   }
 
   public ASTBooleanLiteral(Jmm p, int id) {
     super(p, id);
+    this.actualReturnType = "boolean";
   }
 
   public String getBooleanValue() {
@@ -22,6 +23,12 @@ class ASTBooleanLiteral extends SimpleNode {
 
   public void setBooleanValue(String booleanValue){
     this.booleanValue = booleanValue;
+  }
+
+  @Override
+  public String getReturnType() {
+    //since it's a literal, it can't have child nodes, meaning the actual return type of the node matches the return type
+    return this.actualReturnType;
   }
 
   public String toString() {

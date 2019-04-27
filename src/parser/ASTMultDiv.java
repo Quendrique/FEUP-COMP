@@ -9,12 +9,12 @@ class ASTMultDiv extends SimpleNode {
 
   public ASTMultDiv(int id) {
     super(id);
-    this.returnType = "int";
+    this.actualReturnType = "int";
   }
 
   public ASTMultDiv(Jmm p, int id) {
     super(p, id);
-    this.returnType = "int";
+    this.actualReturnType = "int";
   }
 
   public String getOp() {
@@ -23,6 +23,12 @@ class ASTMultDiv extends SimpleNode {
 
   public void setOp(String op){
     this.op = op;
+  }
+
+  @Override
+  public String getReturnType() {
+    //arithmetic operations can only return int
+    return this.actualReturnType;
   }
 
   @Override  

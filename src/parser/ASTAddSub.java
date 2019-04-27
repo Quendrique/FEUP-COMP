@@ -28,6 +28,12 @@ public class ASTAddSub extends SimpleNode {
     return "";
   }
 
+  @Override
+  public String getReturnType() {
+    //arithmetic operations can only return int
+    return this.actualReturnType;
+  }
+
   @Override  
   public void checkNodeSemantic() {
     SimpleNode lhs, rhs;

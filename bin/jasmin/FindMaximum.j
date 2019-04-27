@@ -13,6 +13,11 @@
 
 
 
+.method public static boolean_return_test()Z
+.end method
+
+
+
 .method public static build_test_arr()I
 .end method
 
