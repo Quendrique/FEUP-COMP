@@ -9,16 +9,22 @@ public class STFunction extends Object {
   STO returnDescriptor;  
   LinkedHashMap<String, STO> params; // TODO params and locals can have similar identifiers, fix this
   LinkedHashMap<String, STO> locals;
+  int index;
   //add indices
 
   public STFunction() {
     this.returnDescriptor = null;
     this.params = new LinkedHashMap<String, STO>();
     this.locals = new LinkedHashMap<String, STO>();
+    this.index = 0;
   }
 
   public STO getReturn() {
     return this.returnDescriptor;
+  }
+
+  public int getIndex() {
+    return this.index;
   }
 
   public LinkedHashMap<String, STO> getParams() {
@@ -32,17 +38,20 @@ public class STFunction extends Object {
   public void addSymbol(String identifier, STO symbol, boolean isParam) {
     if (isParam) {
       if (this.params.get(identifier) == null) {
+        symbol.index = this.index;
         this.params.put(identifier, symbol);
       } else {
         System.out.println("Variable " + identifier + " already declared");
       }
     } else {
       if (this.locals.get(identifier) == null) {
+        symbol.index = this.index;
         this.locals.put(identifier, symbol);
       } else {
         System.out.println("Variable " + identifier + " already declared");
       }
     }
+    this.index++;
   }
 
   public STO doesSymbolExist(String identifier) {
@@ -58,11 +67,11 @@ public class STFunction extends Object {
     System.out.println("  Return descriptor: " + (returnDescriptor == null ? "" : returnDescriptor.toString()));
     System.out.println("  Parameters:");
     params.forEach((key, value) -> {
-      System.out.println("    " + value.toString() + " " + key);
+      System.out.println("    " + value.toString() + " " + key + " (index " + value.getIndex() + ")");
     });
     System.out.println("  Locals:");
     locals.forEach((key, value) -> {
-      System.out.println("    " + value.toString() + " " + key);
+      System.out.println("    " + value.toString() + " " + key + " (index " + value.getIndex() + ")");
     });
   }
 }

@@ -6,6 +6,7 @@ public class STO extends Object {
 
   String type;  
   String value;
+  int index;
 
   public STO(String type) {
     this.type = type;
@@ -23,5 +24,9 @@ public class STO extends Object {
 
   public String toString() {
     return this.type;
+  }
+
+  public int getIndex() {
+    return this.index;
   }
 }
