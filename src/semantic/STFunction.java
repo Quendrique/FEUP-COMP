@@ -10,6 +10,7 @@ public class STFunction extends Object {
   LinkedHashMap<String, STO> params; // TODO params and locals can have similar identifiers, fix this
   LinkedHashMap<String, STO> locals;
   int index;
+  int numLocals;
   //add indices
 
   public STFunction() {
@@ -17,6 +18,7 @@ public class STFunction extends Object {
     this.params = new LinkedHashMap<String, STO>();
     this.locals = new LinkedHashMap<String, STO>();
     this.index = 0;
+    this.numLocals = 0;
   }
 
   public STO getReturn() {
@@ -26,6 +28,10 @@ public class STFunction extends Object {
   public int getIndex() {
     return this.index;
   }
+
+  public int getNumLocals() {
+    return this.numLocals;
+  } 
 
   public LinkedHashMap<String, STO> getParams() {
     return this.params;
@@ -46,6 +52,7 @@ public class STFunction extends Object {
     } else {
       if (this.locals.get(identifier) == null) {
         symbol.index = this.index;
+        this.numLocals++;
         this.locals.put(identifier, symbol);
       } else {
         System.out.println("Variable " + identifier + " already declared");

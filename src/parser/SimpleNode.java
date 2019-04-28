@@ -90,8 +90,8 @@ public class SimpleNode implements Node {
     return id;
   }
 
-  public ST getSymbolTable() {
-    return this.symbolTable;
+  public static ST getSymbolTable() {
+    return symbolTable;
   }
 
   public void checkNodeSemantic() {}; 

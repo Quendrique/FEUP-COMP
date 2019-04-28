@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import parser.*;
+import semantic.*;
 
 public class Generator {
 
@@ -111,11 +112,8 @@ public class Generator {
 
 
   public void genMethod(SimpleNode method) {
-
-    //StackController stack = new StackController();
-
     genMethodSignature(method);
-    //genMethodBody();
+    genMethodBody(method);
     genMethodFooter();
     
   }
@@ -123,7 +121,6 @@ public class Generator {
   public void genMethodSignature(SimpleNode method) {
 
     String identifier, type, funcArgs = "";
-    ASTMethodArguments argumentsNode;
 
     appendLine("\n");
 
@@ -134,16 +131,12 @@ public class Generator {
       ASTMethodDeclaration methodDec = (ASTMethodDeclaration) method;
       type = methodDec.getType(); identifier = methodDec.getName();
 
-      argumentsNode = getArgumentsNode(methodDec);
-
-      //Check if method has arguments
-      if(argumentsNode != null){
-        for (int i = 0; i < argumentsNode.jjtGetNumChildren(); i++) {
-          ASTMethodArgument argNode = (ASTMethodArgument) argumentsNode.jjtGetChild(i);
-          
+      if (methodDec.jjtGetNumChildren() > 0 && methodDec.jjtGetChild(0) instanceof ASTMethodArguments) {
+        for (int i = 0; i < ((SimpleNode) methodDec.jjtGetChild(0)).jjtGetNumChildren(); i++) {
+          ASTMethodArgument argNode = (ASTMethodArgument) ((SimpleNode) methodDec.jjtGetChild(0)).jjtGetChild(i);
           funcArgs += VDMTypeConverter(argNode.getType());
         }
-  
+
       }
       
       appendLine(".method public static " + identifier + "(" + funcArgs + ")" + VDMTypeConverter(type));
@@ -170,9 +163,23 @@ public class Generator {
 
   }
 
+  public void genVarDeclarations(ASTVarDeclaration var) {
+    String identifier, type, value = "";
+    
+  }
 
-  public void genMethodBody() {
-    //TODO 
+
+  public void genMethodBody(SimpleNode method) {
+    appendLine(".limit stack 20"); //TODO
+    String methodName = "";
+    if (method instanceof ASTMethodDeclaration) {
+      methodName = ((ASTMethodDeclaration) method).getName();
+    } else {
+      methodName = "main";
+    }
+
+    STFunction function = SimpleNode.getSymbolTable().doesFunctionExist(methodName);
+    appendLine(".limit locals " + function.getNumLocals());
   }
 
 
@@ -187,21 +194,6 @@ public class Generator {
   public void endMethod(){
     appendLine(".end method\n");
   }
-
-
-
-  //Auxiliary functions
-  public ASTMethodArguments getArgumentsNode(ASTMethodDeclaration methodDec){
-    SimpleNode argumentsNode;
-    for(int i=0; i < methodDec.jjtGetNumChildren(); i++){
-      argumentsNode = (SimpleNode) methodDec.jjtGetChild(i);
-      if(argumentsNode instanceof ASTMethodArguments){
-        return (ASTMethodArguments) argumentsNode;
-      }
-    }
-    return null;
-  }
-
   
   public String VDMTypeConverter(String type){
     String VDMType = "";
@@ -215,7 +207,7 @@ public class Generator {
         return "Z";
       case "void":
         return "V";
-      default: return null;
+      default: return "";
     }
   } 
 
