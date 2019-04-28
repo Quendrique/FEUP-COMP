@@ -18,6 +18,8 @@ class genTest extends Test {
 	public static void main(String[] args) {
 		int r;
 		int p;
+
+		p = this.func();
 		
 		r = 1;
 		p = 2;

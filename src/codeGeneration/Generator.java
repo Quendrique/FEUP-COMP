@@ -115,7 +115,7 @@ public class Generator {
     //StackController stack = new StackController();
 
     genMethodSignature(method);
-    //genMethodBody();
+    genMethodBody(method);
     genMethodFooter();
     
   }
@@ -171,10 +171,43 @@ public class Generator {
   }
 
 
-  public void genMethodBody() {
-    //TODO 
+  public void genMethodBody(SimpleNode method) {
+
+    System.out.println(" Gen Body: " + method.getId());
+
+    if(method.getId()!=3) return;
+    if (method.jjtGetNumChildren() > 0) {
+      int nSts = method.jjtGetNumChildren();
+      //get function scope and corresponding stfunction object
+      //go through params in the function and add them to the invocation
+  
+      SimpleNode child;
+      
+      for(int i = 0; i < nSts; i++) {
+        child = (SimpleNode) method.jjtGetChild(i);
+
+        switch (child.getId()) {
+          case JmmTreeConstants.JJTVARDECLARATION:
+          //genVarDeclaration(child);
+          break;
+          case JmmTreeConstants.JJTCALL:
+            System.out.println(" JJTCALL");
+            genMethodCall(child);
+            break;
+          case JmmTreeConstants.JJTASSIGN:
+            generateAssign(functionChild);
+            break;
+          default:
+          //System.out.println(child.getId());
+            break;
+          }
+      }
+    }
   }
 
+  public void generateAssign(){
+    //TODO
+  }
 
   public void genMethodFooter(){
 
