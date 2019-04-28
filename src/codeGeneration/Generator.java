@@ -165,11 +165,15 @@ public class Generator {
 
   public void genVarDeclarations(ASTVarDeclaration var) {
     String identifier, type, value = "";
-    
+
   }
 
 
+  
   public void genMethodBody(SimpleNode method) {
+
+    System.out.println(" Gen Body: " + JmmTreeConstants.jjtNodeName[method.getId()]);
+
     appendLine(".limit stack 20"); //TODO
     String methodName = "";
     if (method instanceof ASTMethodDeclaration) {
@@ -180,8 +184,84 @@ public class Generator {
 
     STFunction function = SimpleNode.getSymbolTable().doesFunctionExist(methodName);
     appendLine(".limit locals " + function.getNumLocals());
+
+    if(method.getId() != JmmTreeConstants.JJTMETHODDECLARATION && method.getId() != JmmTreeConstants.JJTMAINDECLARATION) return;
+    if (method.jjtGetNumChildren() > 0) {
+
+      int nSts = method.jjtGetNumChildren();
+      //get function scope and corresponding stfunction object
+      //go through params in the function and add them to the invocation
+  
+      SimpleNode child;
+      
+      for(int i = 0; i < nSts; i++) {
+        child = (SimpleNode) method.jjtGetChild(i);
+
+        switch (child.getId()) {
+          case JmmTreeConstants.JJTASSIGN:
+            //generateAssign(functionChild);
+            break;
+          case JmmTreeConstants.JJTARRAYASSIGN:
+            //generateArrayAssign(functionChild);
+            break;
+          case JmmTreeConstants.JJTIF:
+            //generateArrayAssign(functionChild);
+            break;
+          case JmmTreeConstants.JJTWHILE:
+            //generateArrayAssign(functionChild);
+            break;
+          default:
+            genExpression(child);
+            //System.out.println(child.getId());
+            break;
+          }
+      }
+    }
   }
 
+  public void genExpression(SimpleNode node) {
+    String expression = JmmTreeConstants.jjtNodeName[node.getId()];
+    switch (node.getId()) {
+      case JmmTreeConstants.JJTAND:
+        genLogicOp(node);
+        break;
+      case JmmTreeConstants.JJTLESSTHAN:
+        genLogicOp(node);
+        break;
+      case JmmTreeConstants.JJTADDSUB:
+        genArithmeticOp(node);
+        break;
+      case JmmTreeConstants.JJTMULTDIV:
+        genArithmeticOp(node);
+        break;
+      default: // TODO missing cases
+        break;
+    }
+  }
+
+  public void genLogicOp(SimpleNode node) {
+    switch(node.getId()) {
+      case JmmTreeConstants.JJTAND:
+        appendLine("&&");
+        break;
+      case JmmTreeConstants.JJTLESSTHAN:
+        appendLine("<");
+        break;
+    }
+     
+  }
+
+  public void genArithmeticOp(SimpleNode node) {
+    
+  }
+
+  public void genAssign(SimpleNode node){
+    //TODO
+  }
+
+  public void genArrayAssign(SimpleNode node){
+    //TODO
+  }
 
   public void genMethodFooter(){
 
