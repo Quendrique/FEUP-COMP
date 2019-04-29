@@ -17,7 +17,8 @@ public class ASTReturn extends SimpleNode {
   public void checkNodeSemantic() {
     STFunction function = SimpleNode.symbolTable.doesFunctionExist(((ASTMethodDeclaration) this.parent).getName());
     if (function != null) {
-      if (!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals(function.getReturn().getType()) ) {
+      SimpleNode returnNode = (SimpleNode) this.jjtGetChild(0);
+      if (!returnNode.getReturnType().equals(function.getReturn().getType()) ) {
         super.printSemanticError("Return value does not match function signature");
       } 
     }
