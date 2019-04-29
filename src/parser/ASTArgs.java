@@ -21,12 +21,12 @@ public class ASTArgs extends SimpleNode {
     STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(((ASTCall) this.parent).value);
     if (functionCalled != null) {
       LinkedHashMap<String, STO> paramsNeeded = functionCalled.getParams();
-      Node[] args = ((SimpleNode) this.children[0]).children;
+      Node[] args = ((SimpleNode) this).children;
       int numArguments;
       if (args == null) {
         numArguments = 0;
       } else {
-        numArguments = ((SimpleNode) this.children[0]).children.length;
+        numArguments = ((SimpleNode) this).children.length;
       }
       if (paramsNeeded.size() != numArguments) {
         super.printSemanticError("No function signature for identifier " + this.value + " and specified number of arguments found");
@@ -38,10 +38,10 @@ public class ASTArgs extends SimpleNode {
       STO argument, parameter;
       String argIdentifier;
       
-      while (it.hasNext() && count < ((SimpleNode) this.children[0]).children.length) {
+      while (it.hasNext() && count < ((SimpleNode) this).children.length) {
         //System.out.println(((SimpleNode) this.children[0]).children.length);
         Map.Entry<String, STO> symbol = it.next();
-        if (!symbol.getValue().getType().equals(((SimpleNode) (((SimpleNode) this.children[0]).children[count])).returnType)) {
+        if (!symbol.getValue().getType().equals(((SimpleNode) (((SimpleNode) this).children[count])).getReturnType())) {
           super.printSemanticError("No function signature for identifier " + this.value + " and specified arguments found");
           return;
         }

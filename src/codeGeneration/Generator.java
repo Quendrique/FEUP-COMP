@@ -110,7 +110,7 @@ public class Generator {
   public void genMethod(SimpleNode method) {
     genMethodSignature(method);
     genMethodBody(method);
-    genMethodFooter();
+    genMethodFooter(method);
     
   }
   
@@ -171,7 +171,7 @@ public class Generator {
     if (function != null) {
       returnType = parseReturnType(function.getReturn().getType());
     } else {
-      returnType = "void";
+      returnType = "V";
     }
     /*
     iload_1
@@ -180,7 +180,7 @@ public class Generator {
     invokevirtual (class name).(method name)(arg types all together)(return type)
     */
 
-    appendLine("  invokevirtual " + variableType + "." + methodName + "(" + paramTypes + ")" + returnType);
+    appendLine("  invokevirtual " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
 
   }
   
@@ -202,33 +202,24 @@ public class Generator {
     if(method.getId() != JmmTreeConstants.JJTMETHODDECLARATION && method.getId() != JmmTreeConstants.JJTMAINDECLARATION) return;
     if (method.jjtGetNumChildren() > 0) {
 
-      int nSts = method.jjtGetNumChildren();
-      //get function scope and corresponding stfunction object
-  
+      int nSts = method.jjtGetNumChildren();  
       SimpleNode child;
-      
       for(int i = 0; i < nSts; i++) {
         child = (SimpleNode) method.jjtGetChild(i);
 
         switch (child.getId()) {
           case JmmTreeConstants.JJTVARDECLARATION: //not needed
-            //genVarDeclaration((ASTVarDeclaration) child);
             break;
           case JmmTreeConstants.JJTASSIGN:
-            //generateAssign(functionChild);
             break;
           case JmmTreeConstants.JJTARRAYASSIGN:
-            //generateArrayAssign(functionChild);
             break;
           case JmmTreeConstants.JJTIF:
-            //generateArrayAssign(functionChild);
             break;
           case JmmTreeConstants.JJTWHILE:
-            //generateArrayAssign(functionChild);
             break;
           default:
             genExpression(child);
-            //System.out.println(child.getId());
             break;
           }
       }
@@ -252,6 +243,15 @@ public class Generator {
         break;
       case JmmTreeConstants.JJTIDENTIFIER:
         genIdentifierLoad(node);
+        break;
+      case JmmTreeConstants.JJTNEW:
+        break;
+      case JmmTreeConstants.JJTBOOLEANLITERAL:
+        break;
+      case JmmTreeConstants.JJTINTEGERLITERAL:
+        genIntegerLiteral(node);
+        break;
+      case JmmTreeConstants.JJTNOT:
         break;
       default: // TODO missing cases
         break;
@@ -281,8 +281,8 @@ public class Generator {
 
     // 1 + 1
     SimpleNode lhs = (SimpleNode) node.jjtGetChild(0), rhs = (SimpleNode) node.jjtGetChild(1);
-    genArithmeticOpAux(lhs);
-    genArithmeticOpAux(rhs);
+    genExpression(lhs);
+    genExpression(rhs);
 
     switch(op) {
       case "+":
@@ -300,20 +300,6 @@ public class Generator {
 
   }
 
-  public void genArithmeticOpAux(SimpleNode node) {
-
-    switch(node.getId()) {
-      case JmmTreeConstants.JJTINTEGERLITERAL: 
-        genIntegerLiteral(node);
-        break;
-      case JmmTreeConstants.JJTIDENTIFIER: 
-        genIdentifierLoad(node);
-      break;
-    }
-
-
-  }
-
   public void genAssign(SimpleNode node){
     //TODO
   }
@@ -322,15 +308,36 @@ public class Generator {
     //TODO
   }
 
-  public void genMethodFooter(){
+  public void genMethodFooter(SimpleNode method){
 
-    //TODO
+    STFunction function;
+    if (method.getId() == JmmTreeConstants.JJTMAINDECLARATION) {
+      function = SimpleNode.getSymbolTable().doesFunctionExist("main");
+    } else {
+      function = SimpleNode.getSymbolTable().doesFunctionExist(((ASTMethodDeclaration) method).getName());
+    }
 
+    String returnType = "void";
+    if (function != null) {
+      returnType = function.getReturn().getType();
+    }
+    switch(returnType) {
+      case "int":
+        appendLine("  ireturn");
+        break;
+      case "int[]":
+        appendLine("  areturn"); //??
+        break;
+      case "boolean":
+        appendLine("  ireturn"); //??
+        break;
+      case "void":
+        appendLine("  return");
+        break;
+      default:
+        appendLine("  areturn");
 
-    endMethod();
-  }
-
-  public void endMethod(){
+    }
     appendLine(".end method\n");
   }
   
@@ -365,16 +372,6 @@ public class Generator {
   public void genIdentifierLoad (SimpleNode node) {
 
     STO variable = SimpleNode.getSymbolTable().doesSymbolExist(((ASTIdentifier) node).getIdentifier(), node.getScope());
-    if (variable != null) {
-      switch(variable.getType()) {
-        case "int":
-        appendLine("  iload" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
-        break;
-        case "int[]":
-        //TODO
-        break;
-      }
-    }
     if (node.jjtGetNumChildren() > 0) {
       SimpleNode child = ((SimpleNode) node.jjtGetChild(0));
       switch(child.getId()) {
@@ -384,7 +381,16 @@ public class Generator {
         case JmmTreeConstants.JJTLENGTH:
         //TODO
       }
-    } 
+    } else if (variable != null) {
+      switch(variable.getType()) {
+        case "int":
+        appendLine("  iload" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
+        break;
+        case "int[]":
+        //TODO
+        break;
+      }
+    }
   }
 
   public String parseReturnType(String returnType) {

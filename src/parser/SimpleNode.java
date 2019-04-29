@@ -161,7 +161,7 @@ public class SimpleNode implements Node {
       stFunction.setReturn(new STO(((ASTMethodDeclaration) node).type));
     } else {
       stFunctionName = "main";
-      //TODO add void return type
+      stFunction.setReturn(new STO("void"));
     }
 
     Node[] children = ((SimpleNode) node).children;

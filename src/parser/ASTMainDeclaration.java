@@ -9,10 +9,12 @@ public class ASTMainDeclaration extends SimpleNode {
 
   public ASTMainDeclaration(int id) {
     super(id);
+    this.actualReturnType = "void";
   }
 
   public ASTMainDeclaration(Jmm p, int id) {
     super(p, id);
+    this.actualReturnType = "void";
   }
 
   public String getIdentifier() {
