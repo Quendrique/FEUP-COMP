@@ -10,6 +10,12 @@ class FindMaximum {
 		int[] testing_arrays;
 		FindMaximum testClass;
 
+		//just expressions;
+
+		true && true;
+		300 + 100;
+		i + i;
+
 		// int (+ - / * <) int
 
 		i = 1 < 1; 

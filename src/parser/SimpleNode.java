@@ -94,6 +94,10 @@ public class SimpleNode implements Node {
     return symbolTable;
   }
 
+  public String getScope() {
+    return this.scope;
+  }
+
   public void checkNodeSemantic() {}; 
 
   public String getReturnType() {

@@ -174,7 +174,7 @@ public class Generator {
 
     System.out.println(" Gen Body: " + JmmTreeConstants.jjtNodeName[method.getId()]);
 
-    appendLine(".limit stack 20"); //TODO
+    appendLine("  .limit stack 20"); //TODO
     String methodName = "";
     if (method instanceof ASTMethodDeclaration) {
       methodName = ((ASTMethodDeclaration) method).getName();
@@ -183,7 +183,7 @@ public class Generator {
     }
 
     STFunction function = SimpleNode.getSymbolTable().doesFunctionExist(methodName);
-    appendLine(".limit locals " + function.getNumLocals());
+    appendLine("  .limit locals " + function.getNumLocals());
 
     if(method.getId() != JmmTreeConstants.JJTMETHODDECLARATION && method.getId() != JmmTreeConstants.JJTMAINDECLARATION) return;
     if (method.jjtGetNumChildren() > 0) {
@@ -242,17 +242,73 @@ public class Generator {
   public void genLogicOp(SimpleNode node) {
     switch(node.getId()) {
       case JmmTreeConstants.JJTAND:
-        appendLine("&&");
         break;
       case JmmTreeConstants.JJTLESSTHAN:
-        appendLine("<");
         break;
     }
      
   }
 
   public void genArithmeticOp(SimpleNode node) {
-    
+    String op = "";
+    switch(node.getId()) {
+      case JmmTreeConstants.JJTADDSUB:
+        op = ((ASTAddSub) node).getOp();
+        break;
+      case JmmTreeConstants.JJTMULTDIV:
+        op = ((ASTMultDiv) node).getOp();
+        break;
+    }
+
+    // 1 + 1
+    SimpleNode lhs = (SimpleNode) node.jjtGetChild(0), rhs = (SimpleNode) node.jjtGetChild(1);
+    genArithmeticOpAux(lhs);
+    genArithmeticOpAux(rhs);
+
+    switch(op) {
+      case "+":
+        appendLine("  iadd");
+        break;
+      case "-":
+        appendLine("  isub");
+        break;
+      case "/":
+        appendLine("  idiv");
+        break;
+      case "*":
+        appendLine("  imul");
+    } 
+
+  }
+
+  public void genArithmeticOpAux(SimpleNode node) {
+
+    switch(node.getId()) {
+      case JmmTreeConstants.JJTINTEGERLITERAL: 
+        int value = ((ASTIntegerLiteral) node).getValue();
+        if (value <= 5)
+          appendLine("  iconst_" + value);
+        else if(value <= 127)
+          appendLine("  bipush " + value);
+        else if(value <= 32767)
+          appendLine("  sipush " + value);
+        else
+          appendLine("  ldc " + value);
+        break;
+      case JmmTreeConstants.JJTIDENTIFIER: 
+        STO variable = SimpleNode.getSymbolTable().doesSymbolExist(((ASTIdentifier) node).getIdentifier(), node.getScope());
+        switch(variable.getType()) {
+          case "int":
+            appendLine("  iload" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
+            break;
+          case "int[]":
+            //TODO
+            break;
+        }
+      break;
+    }
+
+
   }
 
   public void genAssign(SimpleNode node){
