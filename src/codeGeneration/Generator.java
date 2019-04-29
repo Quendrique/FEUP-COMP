@@ -310,9 +310,6 @@ public class Generator {
   public void genAssign(SimpleNode node){
     
     STO lhs = SimpleNode.getSymbolTable().doesSymbolExist(((ASTAssign) node).getLhs(), node.getScope());
-    if (lhs == null) {
-      lhs = SimpleNode.getSymbolTable().doesSymbolExist(((ASTAssign) node).getLhs(), "global");
-    }
 
     SimpleNode rhs = (SimpleNode) node.jjtGetChild(0);
     genExpression(rhs);
@@ -332,6 +329,12 @@ public class Generator {
           break;
         default:
           appendLine("  astore" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
+      }
+    } else {
+      lhs = SimpleNode.getSymbolTable().doesSymbolExist(((ASTAssign) node).getLhs(), "global");
+      if (lhs != null) {
+        int index = lhs.getIndex();
+        appendLine("  putfield " + SimpleNode.getClassName() + "/" + lhs.getIndex());
       }
     }
 
@@ -415,15 +418,45 @@ public class Generator {
         //TODO
       }
     } else if (variable != null) {
-      switch(variable.getType()) {
-        case "int":
-        appendLine("  iload" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
-        break;
-        case "int[]":
-        //TODO
-        break;
+      if (variable != null) {
+        switch(variable.getType()) {
+          case "int":
+          appendLine("  iload" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
+          break;
+          case "int[]":
+          //TODO
+          break;
+          case "boolean":
+          break;
+          default:
+        }
+      } else { //global variable
+        variable = SimpleNode.getSymbolTable().doesSymbolExist(((ASTIdentifier) node).getIdentifier(), "global");
+        if (variable != null) {
+          appendLine("  aload_0");
+          switch(variable.getType()) {
+            case "int":
+            appendLine("  getfield " + SimpleNode.getClassName() + "/" + variable.getIndex() + " " + parseReturnType(variable.getType()));
+            break;
+            case "int[]":
+            //TODO
+            break;
+            case "boolean":
+            break;
+            default:
+          }
+        }
       }
     }
+    /**
+     * aload_0
+        aload_0
+        getfield foo/y I
+        aload_0
+        getfield foo/z I
+        iadd 
+        putfield foo/x
+     */
   }
 
   public String parseReturnType(String returnType) {

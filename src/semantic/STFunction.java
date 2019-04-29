@@ -7,11 +7,10 @@ import parser.*;
 public class STFunction extends Object {
 
   STO returnDescriptor;  
-  LinkedHashMap<String, STO> params; // TODO params and locals can have similar identifiers, fix this
+  LinkedHashMap<String, STO> params; 
   LinkedHashMap<String, STO> locals;
   int index;
   int numLocals;
-  //add indices
 
   public STFunction() {
     this.returnDescriptor = null;
@@ -23,6 +22,10 @@ public class STFunction extends Object {
 
   public STO getReturn() {
     return this.returnDescriptor;
+  }
+
+  public void isGlobal() {
+    this.index = 0;
   }
 
   public int getIndex() {
@@ -50,7 +53,7 @@ public class STFunction extends Object {
         System.out.println("Variable " + identifier + " already declared");
       }
     } else {
-      if (this.locals.get(identifier) == null) {
+      if (this.locals.get(identifier) == null && this.params.get(identifier) == null) {
         symbol.index = this.index;
         this.numLocals++;
         this.locals.put(identifier, symbol);

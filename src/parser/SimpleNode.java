@@ -98,6 +98,10 @@ public class SimpleNode implements Node {
     return this.scope;
   }
 
+  public static String getClassName() {
+    return className;
+  }
+
   public void checkNodeSemantic() {}; 
 
   public String getReturnType() {
@@ -130,9 +134,10 @@ public class SimpleNode implements Node {
 
     if (parent == null && this.symbolTable == null) { //root node 
       SimpleNode.symbolTable = new ST();
-      SimpleNode.symbolTable.addFunction("global", new STFunction());
-      STFunction globalTable = SimpleNode.symbolTable.getFunctionTable().get("global");
-    
+      STFunction globalTable = new STFunction();
+      globalTable.isGlobal();
+      SimpleNode.symbolTable.addFunction("global", globalTable);
+
       String nodeType;
       Node[] children = ((SimpleNode) this.children[0]).children;
   
