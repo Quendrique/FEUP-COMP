@@ -7,14 +7,49 @@ class TestExamples {
   public int testIntReturn(int i, int j) {
     return 1;
   }
+  public int testIntReturn2(int i, int j) {
+    i = j + 1;
+  }
 
 	public static void main(String[] args) {
 		TestExternal var;
     int i;
+    int i;
     i = 1;
+
+    b = (i=1) && true;
+    b = (1=1) && p;
+
+    t=p.length;
+    t=b.length;
+
+    var.call();
+
+    b = !(1=1);
+
+    if(b){
+      b = !b;
+    }
+
+    if(p){
+      b = !b;
+    }
+
+    notDeclared = 5;
+
+    while(i < 5){
+      i++;
+    }
+
+    while(p){
+      i--;
+    }
+    
     i + 1;
     2+1;
     i+i;
+    i = i + p;
+
     i = (1+1) + (2+3);
     var = new TestExamples();
     var.test(i, i);
