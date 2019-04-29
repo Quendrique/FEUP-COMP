@@ -9,6 +9,7 @@ class TestExamples {
   }
   public int testIntReturn2(int i, int j) {
     i = j + 1;
+    return i;
   }
 
 	public static void main(String[] args) {
@@ -17,32 +18,36 @@ class TestExamples {
     int i;
     i = 1;
 
-    b = (i=1) && true;
-    b = (1=1) && p;
+    b = i && true;
+    b = 1 && p;
 
     t=p.length;
     t=b.length;
 
     var.call();
 
-    b = !(1=1);
+    b = !1;
 
     if(b){
       b = !b;
+    } else {
+      b;
     }
 
     if(p){
       b = !b;
+    } else {
+      b;
     }
 
     notDeclared = 5;
 
     while(i < 5){
-      i++;
+      i;
     }
 
     while(p){
-      i--;
+      i;
     }
     
     i + 1;

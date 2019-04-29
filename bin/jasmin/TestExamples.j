@@ -13,11 +13,30 @@
 
 
 
+.method public static testIntReturn2(II)I
+  .limit stack 20
+  .limit locals 0
+  iload_2
+  iconst_1
+  iadd
+  istore_1
+  ireturn
+.end method
+
+
+
 .method public static main([Ljava/lang/String;)V
   .limit stack 20
   .limit locals 2
   iconst_1
   istore_2
+  istore_1
+  istore_1
+  istore_0
+  istore_0
+  invokevirtual TestExternal/call()V
+  istore_1
+  iconst_5
   iload_2
   iconst_1
   iadd
@@ -27,6 +46,9 @@
   iload_2
   iload_2
   iadd
+  iload_2
+  iadd
+  istore_2
   iconst_1
   iconst_1
   iadd

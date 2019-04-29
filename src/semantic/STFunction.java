@@ -50,7 +50,7 @@ public class STFunction extends Object {
         symbol.index = this.index;
         this.params.put(identifier, symbol);
       } else {
-        System.out.println("Variable " + identifier + " already declared");
+        System.out.println("Semantic error: Variable " + identifier + " already declared.");
       }
     } else {
       if (this.locals.get(identifier) == null && this.params.get(identifier) == null) {
@@ -58,7 +58,7 @@ public class STFunction extends Object {
         this.numLocals++;
         this.locals.put(identifier, symbol);
       } else {
-        System.out.println("Variable " + identifier + " already declared");
+        System.out.println("Semantic error: Variable " + identifier + " already declared.");
       }
     }
     this.index++;
