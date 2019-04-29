@@ -39,7 +39,9 @@ class ASTCall extends SimpleNode {
 
   @Override
   public String getReturnType() {
-    this.actualReturnType = SimpleNode.symbolTable.doesFunctionExist(this.value).getReturn().getType();
+    STFunction func = SimpleNode.symbolTable.doesFunctionExist(this.value);
+    if(func != null)
+      this.actualReturnType = func.getReturn().getType();
     //followed by call or length
     if (this.jjtGetNumChildren() > 0) {
       SimpleNode child = (SimpleNode) this.jjtGetChild(0);
