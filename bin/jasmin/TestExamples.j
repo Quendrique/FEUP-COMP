@@ -27,10 +27,15 @@
 
 .method public static main([Ljava/lang/String;)V
   .limit stack 20
-  .limit locals 2
+  .limit locals 3
   iconst_1
   istore_2
+  iload_2
+  iconst_1
+  iand
   istore_1
+  iconst_1
+  iand
   istore_1
   istore_0
   istore_0
@@ -49,6 +54,14 @@
   iload_2
   iadd
   istore_2
+  iconst_1
+  iconst_0
+  iand
+  istore 4
+  iconst_1
+  iconst_1
+  isub
+  istore 4
   iconst_1
   iconst_1
   iadd

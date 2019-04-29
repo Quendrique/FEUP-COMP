@@ -254,6 +254,7 @@ public class Generator {
       case JmmTreeConstants.JJTNEW:
         break;
       case JmmTreeConstants.JJTBOOLEANLITERAL:
+        genBooleanLiteral(node);
         break;
       case JmmTreeConstants.JJTINTEGERLITERAL:
         genIntegerLiteral(node);
@@ -266,12 +267,26 @@ public class Generator {
   }
 
   public void genLogicOp(SimpleNode node) {
+    String op = "";
     switch(node.getId()) {
       case JmmTreeConstants.JJTAND:
+        op = "&&";
         break;
       case JmmTreeConstants.JJTLESSTHAN:
-        break;
+        op = "<";
     }
+
+    SimpleNode lhs = (SimpleNode) node.jjtGetChild(0), rhs = (SimpleNode) node.jjtGetChild(1);
+    genExpression(lhs);
+    genExpression(rhs);
+
+    switch(op) {
+      case "&&":
+        appendLine("  iand");
+        break;
+      case "<":
+        appendLine("  isub");
+    } 
      
   }
 
@@ -286,7 +301,6 @@ public class Generator {
         break;
     }
 
-    // 1 + 1
     SimpleNode lhs = (SimpleNode) node.jjtGetChild(0), rhs = (SimpleNode) node.jjtGetChild(1);
     genExpression(lhs);
     genExpression(rhs);
@@ -403,6 +417,15 @@ public class Generator {
       appendLine("  sipush " + value);
     else
       appendLine("  ldc " + value);
+  }
+
+  public void genBooleanLiteral (SimpleNode node) {
+    String value = ((ASTBooleanLiteral) node).getBooleanValue();
+    if (value.equals("true")) {
+      appendLine("  iconst_1");
+    } else {
+      appendLine("  iconst_0");
+    }
   }
 
   public void genIdentifierLoad (SimpleNode node) {
