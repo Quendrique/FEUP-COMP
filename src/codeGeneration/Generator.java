@@ -53,9 +53,6 @@ public class Generator {
   private void appendLine(String line) {
 		builder.append(line + "\n");
   }
-  
-
-  //Generator Functions
 
   public void generate() {
     genClass(this.root.getName());
@@ -76,11 +73,11 @@ public class Generator {
 			SimpleNode childRoot = (SimpleNode) root.jjtGetChild(i);
 
 			if (childRoot.getId() == JmmTreeConstants.JJTVARDECLARATION)
-        genVarDeclaration((ASTVarDeclaration) childRoot);
+        genVarGlobal((ASTVarDeclaration) childRoot);
 		}
   }
 
-  public void genVarDeclaration(ASTVarDeclaration dec){
+  public void genVarGlobal(ASTVarDeclaration dec){
     String varName, varType = "";
     
     varName = dec.getIdentifier();
@@ -95,7 +92,6 @@ public class Generator {
       return;
     }
 		
-
 		appendLine(".field static " + varName + varType);
     
   }
@@ -159,16 +155,30 @@ public class Generator {
       }
     }
 
-    //invokevirtual (class name).(method name)(args all together)(return type)
+    /*
+    iload_1
+    iload 3
+    invokevirtual (class name).(method name)(args all together)(return type)
+    */
 
   }
 
-  public void genVarDeclarations(ASTVarDeclaration var) {
-    String identifier, type, value = "";
-
+  public void genVarDeclaration(ASTVarDeclaration var) {
+    STO variable = SimpleNode.getSymbolTable().doesSymbolExist(var.getIdentifier(), var.getScope());
+    switch(variable.getType()) {
+      case "int":
+        appendLine("  istore" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
+        break;
+      case "int[]":
+        //TODO
+        break;
+      case "boolean":
+        //TODO
+        break;
+      default:
+        //TODO
+    }
   }
-
-
   
   public void genMethodBody(SimpleNode method) {
 
@@ -190,7 +200,6 @@ public class Generator {
 
       int nSts = method.jjtGetNumChildren();
       //get function scope and corresponding stfunction object
-      //go through params in the function and add them to the invocation
   
       SimpleNode child;
       
@@ -198,6 +207,9 @@ public class Generator {
         child = (SimpleNode) method.jjtGetChild(i);
 
         switch (child.getId()) {
+          case JmmTreeConstants.JJTVARDECLARATION:
+            genVarDeclaration((ASTVarDeclaration) child);
+            break;
           case JmmTreeConstants.JJTASSIGN:
             //generateAssign(functionChild);
             break;
