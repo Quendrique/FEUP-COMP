@@ -179,8 +179,11 @@ public class Generator {
     iconst_1
     invokevirtual (class name).(method name)(arg types all together)(return type)
     */
-
-    appendLine("  invokevirtual " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
+    if (((ASTCall) call).isStatic()) {
+      appendLine("  invokestatic " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
+    } else {
+      appendLine("  invokevirtual " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
+    }
 
   }
   
@@ -211,12 +214,16 @@ public class Generator {
           case JmmTreeConstants.JJTVARDECLARATION: //not needed
             break;
           case JmmTreeConstants.JJTASSIGN:
+            genAssign(child);
             break;
           case JmmTreeConstants.JJTARRAYASSIGN:
+            //genArrayAssign(child);
             break;
           case JmmTreeConstants.JJTIF:
+            //genIf(child);
             break;
           case JmmTreeConstants.JJTWHILE:
+            //genWhile(child);
             break;
           default:
             genExpression(child);
@@ -301,7 +308,33 @@ public class Generator {
   }
 
   public void genAssign(SimpleNode node){
-    //TODO
+    
+    STO lhs = SimpleNode.getSymbolTable().doesSymbolExist(((ASTAssign) node).getLhs(), node.getScope());
+    if (lhs == null) {
+      lhs = SimpleNode.getSymbolTable().doesSymbolExist(((ASTAssign) node).getLhs(), "global");
+    }
+
+    SimpleNode rhs = (SimpleNode) node.jjtGetChild(0);
+    genExpression(rhs);
+
+    if (lhs != null) {
+      String type = lhs.getType();
+      int index = lhs.getIndex();
+      switch(type) {
+        case "int":
+          appendLine("  istore" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
+          break;
+        case "int[]":
+          //??
+          break;
+        case "boolean":
+          appendLine("  istore" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
+          break;
+        default:
+          appendLine("  astore" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
+      }
+    }
+
   }
 
   public void genArrayAssign(SimpleNode node){

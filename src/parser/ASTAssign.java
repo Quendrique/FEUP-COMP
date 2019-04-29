@@ -17,6 +17,10 @@ class ASTAssign extends SimpleNode {
     super(p, id);
   }
 
+  public String getLhs() {
+    return this.lhsIdentifier;
+  }
+
   @Override
   public void checkNodeSemantic() {
     //check if rhs variable exists

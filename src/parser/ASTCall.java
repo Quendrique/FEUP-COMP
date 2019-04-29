@@ -9,13 +9,16 @@ class ASTCall extends SimpleNode {
 
   protected String value;
   protected String className;
+  protected boolean isStatic;
 
   public ASTCall(int id) {
     super(id);
+    this.isStatic = false;
   }
 
   public ASTCall(Jmm p, int id) {
     super(p, id);
+    this.isStatic = false;
   }
 
   public String getValue() {
@@ -24,6 +27,10 @@ class ASTCall extends SimpleNode {
 
   public void setValue(String value) {
     this.value = value;
+  }
+
+  public boolean isStatic() {
+    return this.isStatic;
   }
 
   @Override
@@ -60,8 +67,12 @@ class ASTCall extends SimpleNode {
       STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(this.value);
       if (((SimpleNode) this.parent).getId() == JmmTreeConstants.JJTIDENTIFIER) {
         STO parentSymbol = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) this.parent).getIdentifier(), ((ASTIdentifier) this.parent).getScope());
-        if (parentSymbol != null && !parentSymbol.isInitialized()) {
-          super.printSemanticError("Variable " + ((ASTIdentifier) this.parent).getIdentifier() + " not initialized");
+        if (parentSymbol != null) {
+          if (!parentSymbol.isInitialized()) {
+            super.printSemanticError("Variable " + ((ASTIdentifier) this.parent).getIdentifier() + " not initialized");
+          }
+        } else {
+          this.isStatic = true;
         }
       }
   

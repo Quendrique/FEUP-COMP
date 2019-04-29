@@ -7,13 +7,16 @@ import semantic.*;
 public class ASTIdentifier extends SimpleNode {
 
   protected String identifier;
+  protected boolean isArrayAccess;
 
   public ASTIdentifier(int id) {
     super(id);
+    this.isArrayAccess = false;
   }
 
   public ASTIdentifier(Jmm p, int id) {
     super(p, id);
+    this.isArrayAccess = false;
   }
 
   public String getIdentifier() {
@@ -30,6 +33,8 @@ public class ASTIdentifier extends SimpleNode {
       STO symbol = SimpleNode.symbolTable.doesSymbolExist(this.identifier, ((SimpleNode) this.parent).scope);
       if (symbol != null) {
         this.actualReturnType = symbol.getType();
+      } else {
+        this.actualReturnType = this.identifier;
       }
     }
     return this.actualReturnType;
@@ -48,6 +53,9 @@ public class ASTIdentifier extends SimpleNode {
     //check if node has children
     if (this.jjtGetNumChildren() > 0) {
       SimpleNode child = (SimpleNode) this.jjtGetChild(0);
+      if (child.getId() == JmmTreeConstants.JJTARRAYINDEX) {
+        this.isArrayAccess = true;
+      }
       return child.getReturnType();
       //if function call external to the class, return null ??
     } else {
