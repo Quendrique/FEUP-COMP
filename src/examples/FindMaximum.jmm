@@ -27,7 +27,7 @@ class FindMaximum {
 		i = i.test_array_index_type_int() + 1;
 		i = testClass.get_array().length * 1; //TODO 
 		i = (i.get_array()).length + 1; // TODO
-		i = (testClass).get_array().length + 1; //TODO 
+		i = testClass.get_array().length + 1; //TODO 
 
 		// boolean && boolean
 

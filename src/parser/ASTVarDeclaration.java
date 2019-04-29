@@ -27,8 +27,6 @@ class ASTVarDeclaration extends SimpleNode {
     return this.identifier;
   }
 
-
-
   public void setType(String type) {
     this.type = type;
   }

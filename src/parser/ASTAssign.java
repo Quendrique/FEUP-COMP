@@ -29,6 +29,8 @@ class ASTAssign extends SimpleNode {
       super.printSemanticError("Variable types not compatible");
     }
 
+    lhs.initialize();
+
   }
 
   public void dump(String prefix) {

@@ -17,7 +17,7 @@ public class STFunction extends Object {
     this.returnDescriptor = null;
     this.params = new LinkedHashMap<String, STO>();
     this.locals = new LinkedHashMap<String, STO>();
-    this.index = 0;
+    this.index = 1;
     this.numLocals = 0;
   }
 

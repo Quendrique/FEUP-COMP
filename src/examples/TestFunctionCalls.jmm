@@ -1,0 +1,16 @@
+class TestFunctionCalls {
+
+	int t;
+	boolean b;
+	int[] p;
+
+  public int testIntReturn() {
+    return 1;
+  }
+
+	public static void main(String[] args) {
+		TestFunctionCalls var;
+    var = new TestFunctionCalls();
+    var.testIntReturn();
+	}
+}

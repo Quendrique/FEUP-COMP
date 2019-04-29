@@ -8,6 +8,7 @@ public
 class ASTCall extends SimpleNode {
 
   protected String value;
+  protected String className;
 
   public ASTCall(int id) {
     super(id);
@@ -55,6 +56,12 @@ class ASTCall extends SimpleNode {
     if (this.parent != null) {
       String parentReturnType = ((SimpleNode) this.parent).getActualReturnType();
       STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(this.value);
+      if (((SimpleNode) this.parent).getId() == JmmTreeConstants.JJTIDENTIFIER) {
+        STO parentSymbol = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) this.parent).getIdentifier(), ((ASTIdentifier) this.parent).getScope());
+        if (parentSymbol != null && !parentSymbol.isInitialized()) {
+          super.printSemanticError("Variable " + ((ASTIdentifier) this.parent).getIdentifier() + " not initialized");
+        }
+      }
   
       if (parentReturnType.equals(SimpleNode.className) || parentReturnType.equals("this")) {
         if (functionCalled != null) {
