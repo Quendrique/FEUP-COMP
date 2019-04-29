@@ -49,8 +49,11 @@ class ASTCall extends SimpleNode {
     STFunction func = SimpleNode.symbolTable.doesFunctionExist(this.value);
     if(func != null)
       this.actualReturnType = func.getReturn().getType();
+    else
+      this.actualReturnType = "void";
     //followed by call or length
-    if (this.jjtGetNumChildren() > 0) {
+    if (this.jjtGetNumChildren() > 1
+        || (this.jjtGetNumChildren() == 1 && this.jjtGetChild(0).getId() != JmmTreeConstants.JJTARGS)) {
       SimpleNode child = (SimpleNode) this.jjtGetChild(0);
       return child.getReturnType();
       //if function call external to the class, return null ??

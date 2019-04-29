@@ -23,13 +23,14 @@ class ASTAssign extends SimpleNode {
 
   @Override
   public void checkNodeSemantic() {
-    //check if rhs variable exists
+
     STO lhs = SimpleNode.symbolTable.doesSymbolExist(this.lhsIdentifier, this.scope);
     if (lhs == null) {
       super.printSemanticError("Variable " + this.lhsIdentifier + " was not declared");
     }
     
-    if(!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals(lhs.getType())) {
+    SimpleNode rhs = (SimpleNode) this.jjtGetChild(0);
+    if(!rhs.getReturnType().equals(lhs.getType()) && !rhs.getReturnType().equals("void")) {
       super.printSemanticError("Variable types not compatible");
     }
 
