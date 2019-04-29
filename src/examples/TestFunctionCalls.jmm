@@ -4,13 +4,19 @@ class TestFunctionCalls {
 	boolean b;
 	int[] p;
 
-  public int testIntReturn() {
+  public int testIntReturn(int i, int j) {
     return 1;
   }
 
 	public static void main(String[] args) {
-		TestFunctionCalls var;
+		TestExternal var;
+    int i;
+    i = 1;
+    i + 1;
+    2+1;
+    i+i;
+    i = (1+1) + (2+3);
     var = new TestFunctionCalls();
-    var.testIntReturn();
+    var.test(i, i);
 	}
 }
