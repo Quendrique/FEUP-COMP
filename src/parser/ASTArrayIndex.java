@@ -3,6 +3,7 @@
 package parser;
 
 import org.w3c.dom.Node;
+import semantic.*;
 
 public
 class ASTArrayIndex extends SimpleNode {
@@ -26,6 +27,15 @@ class ASTArrayIndex extends SimpleNode {
     }
     if(!((SimpleNode) this.parent).getActualReturnType().equals("int[]")) {
       super.printSemanticError("Variable must be of type int[] in order to access an array position");
+    }
+    if (((SimpleNode) this.parent).getId() == JmmTreeConstants.JJTIDENTIFIER) {
+      STO parentSymbol = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) this.parent).getIdentifier(), ((ASTIdentifier) this.parent).getScope());
+      if (parentSymbol == null) {
+        parentSymbol = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) this.parent).getIdentifier(), "global");
+      } 
+      if (parentSymbol != null && !parentSymbol.isInitialized()) {
+        super.printSemanticError("Variable " + ((ASTIdentifier) this.parent).getIdentifier() + " not initialized");
+      }
     }
   }
 

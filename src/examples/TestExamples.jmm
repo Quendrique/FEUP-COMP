@@ -16,20 +16,31 @@ class TestExamples {
 		TestExternal var;
     int i;
     int i;
+    int[] array;
     boolean b_main;
     i = 1;
 
     b = i && true;
     b = 1 && p;
+    b = true && true;
 
     t=p.length;
     t=b.length;
+    t=array.length;
+    a=0;
 
-    var.call();
+    var.call(); //TODO
 
     b = !1;
+    b = !true;
 
     if(b){
+      b = !b;
+    } else {
+      b;
+    }
+
+    if(i){
       b = !b;
     } else {
       b;
@@ -60,8 +71,13 @@ class TestExamples {
     b_main = 1 < 1;
 
     i = (1+1) + (2+3);
-    var = new TestExamples();
+    var = new TestExamples(); //TODO
     var.test(i, i);
     a = 0;
+
+    i = array[true];
+    i = array;
+    i = array[1];
+    
 	}
 }

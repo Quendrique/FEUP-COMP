@@ -31,7 +31,7 @@ class ASTAssign extends SimpleNode {
     }
     
     SimpleNode rhs = (SimpleNode) this.jjtGetChild(0);
-    if(!rhs.getReturnType().equals(lhs.getType()) && !rhs.getReturnType().equals("void")) {
+    if (!rhs.getReturnType().equals(lhs.getType()) && !rhs.getReturnType().equals("void")) {
       super.printSemanticError("Variable types not compatible");
     }
 

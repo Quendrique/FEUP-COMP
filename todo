@@ -35,5 +35,10 @@ length kinda being checked now
 
 array access return type wrong
 
+- array access
+- chained calls
+- parenthesis - parser
+- static calls
+
 
 
