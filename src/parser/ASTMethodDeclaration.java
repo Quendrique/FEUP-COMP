@@ -30,7 +30,7 @@ class ASTMethodDeclaration extends SimpleNode {
 
   @Override
   public void checkNodeSemantic() {
-    this.scope = this.name;
+    this.scope = this.name; //TODO
   }
 
   public void dump(String prefix) {

@@ -151,17 +151,8 @@ public class Generator {
       SimpleNode child;
       for(int i = 0; i < args.jjtGetNumChildren(); i++) {
         child = (SimpleNode) args.jjtGetChild(0);
-        switch(child.getId()) {
-          case JmmTreeConstants.JJTINTEGERLITERAL:
-            genIntegerLiteral(child);
-            paramTypes += "I";
-            break;
-          case JmmTreeConstants.JJTIDENTIFIER:
-            genIdentifierLoad(child);
-            paramTypes += parseReturnType(((ASTIdentifier) child).getReturnType());
-            break;
-          default: //TODO missing cases
-        }
+        genExpression(child);
+        paramTypes += parseReturnType(((ASTIdentifier) child).getReturnType());
       }
     }
 
@@ -252,6 +243,7 @@ public class Generator {
         genIdentifierLoad(node);
         break;
       case JmmTreeConstants.JJTNEW:
+        genNew(node);
         break;
       case JmmTreeConstants.JJTBOOLEANLITERAL:
         genBooleanLiteral(node);
@@ -261,7 +253,7 @@ public class Generator {
         break;
       case JmmTreeConstants.JJTNOT:
         break;
-      default: // TODO missing cases
+      default: // todo
         break;
     }
   }
@@ -345,7 +337,8 @@ public class Generator {
           appendLine("  astore" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
       }
     } else {
-      lhs = SimpleNode.getSymbolTable().doesSymbolExist(((ASTAssign) node).getLhs(), "global");
+      System.out.println(((ASTAssign) node).getLhs());
+      lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTAssign) node).getLhs());
       if (lhs != null) {
         int index = lhs.getIndex();
         appendLine("  putfield " + SimpleNode.getClassName() + "/" + lhs.getIndex());
@@ -358,6 +351,12 @@ public class Generator {
     //TODO
   }
 
+  public void genNew(SimpleNode node) {
+    appendLine("  new " + ((ASTNew) node).getActualReturnType());
+    appendLine("  dup");
+    appendLine("  invokespecial " + ((ASTNew) node).getActualReturnType() + "<init>()V");
+  }
+
   public void genMethodFooter(SimpleNode method){
 
     STFunction function;
@@ -365,6 +364,11 @@ public class Generator {
       function = SimpleNode.getSymbolTable().doesFunctionExist("main");
     } else {
       function = SimpleNode.getSymbolTable().doesFunctionExist(((ASTMethodDeclaration) method).getName());
+    }
+
+    SimpleNode returnNode = (SimpleNode) method.jjtGetChild(method.jjtGetNumChildren()-1);
+    if (returnNode.getId() == JmmTreeConstants.JJTRETURN) {
+      genExpression(((SimpleNode) returnNode.jjtGetChild(0)));
     }
 
     String returnType = "void";
@@ -441,7 +445,6 @@ public class Generator {
         //TODO
       }
     } else if (variable != null) {
-      if (variable != null) {
         switch(variable.getType()) {
           case "int":
           appendLine("  iload" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
@@ -470,7 +473,7 @@ public class Generator {
           }
         }
       }
-    }
+    
     /**
      * aload_0
         aload_0

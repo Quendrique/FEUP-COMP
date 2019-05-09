@@ -48,7 +48,9 @@ public class STFunction extends Object {
     if (isParam) {
       if (this.params.get(identifier) == null) {
         symbol.index = this.index;
+        this.numLocals++;
         this.params.put(identifier, symbol);
+        this.index++;
       } else {
         System.out.println("Semantic error: Variable " + identifier + " already declared.");
       }
@@ -57,11 +59,11 @@ public class STFunction extends Object {
         symbol.index = this.index;
         this.numLocals++;
         this.locals.put(identifier, symbol);
+        this.index++;
       } else {
         System.out.println("Semantic error: Variable " + identifier + " already declared.");
       }
     }
-    this.index++;
   }
 
   public STO doesSymbolExist(String identifier) {

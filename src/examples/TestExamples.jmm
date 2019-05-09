@@ -14,25 +14,27 @@ class TestExamples {
 
 	public static void main(String[] args) {
 		TestExternal var;
+    TestExamples testClass;
     int i;
     int i;
     int[] array;
     boolean b_main;
-    i = 1;
 
-    b = i && true;
-    b = 1 && p;
-    b = true && true;
+    i = 1; // works
+    testClass = new TestExamples(); // works
+    b = i && true; // works
+    b = 1 && p; // todo
+    b = true && true; // works
 
-    t=p.length;
-    t=b.length;
-    t=array.length;
-    a=0;
+    t=p.length; // todo
+    t=b.length; // todo 
+    t=array.length; // todo
+    a=0; // todo
 
-    var.call(); //TODO
+    var.call(); // works ? 
 
-    b = !1;
-    b = !true;
+    b = !1; // todo
+    b = !true; // todo
 
     if(b){
       b = !b;
@@ -52,7 +54,7 @@ class TestExamples {
       b;
     }
 
-    notDeclared = 5;
+    notDeclared = 5; // shouldn't work
 
     while(i < 5){
       i;
@@ -62,22 +64,22 @@ class TestExamples {
       i;
     }
     
-    i + 1;
-    2+1;
-    i+i;
-    i = i + p;
+    i + 1; // works
+    2+1; // works
+    i+i; // works
+    i = i + p; // todo
 
-    b_main = true && false;
-    b_main = 1 < 1;
+    b_main = true && false; // works
+    b_main = 1 < 1; // works
 
-    i = (1+1) + (2+3);
-    var = new TestExamples(); //TODO
+    i = (1+1) + (2+3); // works
+    var = new TestExamples(); // works
     var.test(i, i);
     a = 0;
 
-    i = array[true];
-    i = array;
-    i = array[1];
-    
+    i = array[true]; // todo
+    i = array; // todo 
+    i = array[1]; // todo 
+    i = (testClass).get_array().length + 1; // todo 
 	}
 }

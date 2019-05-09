@@ -146,8 +146,7 @@ public class SimpleNode implements Node {
         if (nodeType.equals("MethodDeclaration") || nodeType.equals("MainDeclaration")) {
           analyzeMethodDeclaration(node);
         } else if (nodeType.equals("VarDeclaration")) {
-          //kinda esparguete, besides deve haver uma entrada especial para a tabela global
-          globalTable.addSymbol(((ASTVarDeclaration) node).getIdentifier(), new STO(((ASTVarDeclaration) node).type), true); 
+          this.symbolTable.addGlobal(((ASTVarDeclaration) node).getIdentifier(), new STO(((ASTVarDeclaration) node).type)); 
         }
       }
     }
