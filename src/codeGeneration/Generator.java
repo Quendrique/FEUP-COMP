@@ -373,11 +373,11 @@ public class Generator {
   public void genNew(SimpleNode node) {
     if (node.jjtGetNumChildren() > 0) { // new array
       genExpression((SimpleNode) node.jjtGetChild(0));
-      appendLine("  newarray");
+      appendLine("  newarray int");
     } else {
       appendLine("  new " + ((ASTNew) node).getActualReturnType());
       appendLine("  dup");
-      appendLine("  invokespecial " + ((ASTNew) node).getActualReturnType() + "<init>()V");
+      appendLine("  invokespecial " + ((ASTNew) node).getActualReturnType() + "/<init>()V");
     }
   }
 

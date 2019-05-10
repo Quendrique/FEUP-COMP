@@ -70,6 +70,7 @@ public class JJTJmmState {
       popNode();
     }
     mk = marks.remove(marks.size()-1);
+    ((SimpleNode)n).setBeginLine(Jmm.getToken(1).beginLine);
   }
 
 

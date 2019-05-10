@@ -1,0 +1,31 @@
+class TestNoErrors {
+
+	int global_int;
+  boolean global_boolean;
+  int[] global_array;
+  Test global_external;
+
+	public static void main(String[] args) {
+		int i;
+    boolean b;
+
+    //assigns
+		i=0;
+    b=true;
+    global_int = 2;
+    global_array = new int[5];
+    global_external = new Test();
+
+    //arithmetic/logic ops, no variables
+    1+1;
+    true && true;
+
+    //arithmetic/logic ops, with variables
+    i+1;
+    i+i;
+    global_array[1]+global_array[1];
+    global_array[7]+global_array[1];
+    global_array.length;
+
+	}
+}

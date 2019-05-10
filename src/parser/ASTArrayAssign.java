@@ -37,10 +37,12 @@ class ASTArrayAssign extends SimpleNode {
   public void checkNodeSemantic() {
     STO lhs = SimpleNode.symbolTable.doesSymbolExist(this.lhsIdentifier, this.scope);
     if (lhs == null) {
+      super.flagError();
       super.printSemanticError("Variable " + this.lhsIdentifier + " was not declared");
     }
     
     if(!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals("int")) {
+      super.flagError();
       super.printSemanticError("Variable types not compatible");
     }
   }

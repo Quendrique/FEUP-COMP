@@ -31,13 +31,14 @@ public class ST extends Object {
     this.functionTable.get(functionIdentifier).addSymbol(symbolIdentifier, symbol, isParam);
   }
 
-  public void addGlobal(String identifier, STO symbol) {
+  public boolean addGlobal(String identifier, STO symbol) {
     if (this.globalVariables.get(identifier) == null) {
       symbol.index = this.numGlobalVariables;
       this.numGlobalVariables++;
       this.globalVariables.put(identifier, symbol);
+      return false;
     } else {
-      System.out.println("Semantic error: Variable " + identifier + " already declared."); //TODO
+      return true;
     }
   }
 

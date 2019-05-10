@@ -20,6 +20,7 @@ class ASTLength extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
     if (this.parent != null && !((SimpleNode) this.parent).getActualReturnType().equals("int[]")) {
+      super.flagError();
       super.printSemanticError("The length property can only be accessed in objects of type int[]");
     }
   }

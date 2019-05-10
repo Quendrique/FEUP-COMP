@@ -35,6 +35,7 @@ class ASTMultDiv extends SimpleNode {
     SimpleNode lhs, rhs;
     lhs = (SimpleNode) this.jjtGetChild(0); rhs = (SimpleNode) this.jjtGetChild(1);
     if (lhs.getReturnType() != "int" || rhs.getReturnType() != "int") {
+      super.flagError();
       super.printSemanticError("Both sides of a " + this.op + " operation should be of type int");
     }
   }

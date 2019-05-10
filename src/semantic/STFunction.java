@@ -44,15 +44,16 @@ public class STFunction extends Object {
     return this.locals;
   }
 
-  public void addSymbol(String identifier, STO symbol, boolean isParam) {
+  public boolean addSymbol(String identifier, STO symbol, boolean isParam) {
     if (isParam) {
       if (this.params.get(identifier) == null) {
         symbol.index = this.index;
         this.numLocals++;
         this.params.put(identifier, symbol);
         this.index++;
+        return false;
       } else {
-        System.out.println("Semantic error: Variable " + identifier + " already declared.");
+        return true;
       }
     } else {
       if (this.locals.get(identifier) == null && this.params.get(identifier) == null) {
@@ -60,8 +61,9 @@ public class STFunction extends Object {
         this.numLocals++;
         this.locals.put(identifier, symbol);
         this.index++;
+        return false;
       } else {
-        System.out.println("Semantic error: Variable " + identifier + " already declared.");
+        return true;
       }
     }
   }

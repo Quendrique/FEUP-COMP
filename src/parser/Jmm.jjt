@@ -40,9 +40,14 @@ public class Jmm {
     root.checkSemantics();
     root.symbolTable.dump();
 
-    System.out.println("\n\nEntering code Generation");
-    Generator codeGenerator = new Generator(root);
-    codeGenerator.generate();
+    if (root.errorDetected()) {
+        System.out.println("Exiting...");
+        return;
+        } else {
+        System.out.println("Entering code Generation");
+        Generator codeGenerator = new Generator(root);
+        codeGenerator.generate();
+    }
 
  }
     
@@ -179,7 +184,7 @@ void MethodArgument(): {String t1; Token t2;}
   t1 = Type() t2 = <IDENTIFIER> {jjtThis.setIdentifier(t2.image); jjtThis.type = t1; } 
 }
 
-//LOOKAHEAD 2
+//LOOKAHEAD 2 - CAN BE REMOVED
 String Type() #void: {Token t; String returnValue;}
 {
     (
@@ -206,21 +211,20 @@ void Statement() #void: {}
     |
     While()
     |
-    ( 
-        LOOKAHEAD(2)
-        Assign()
-        |
-        LOOKAHEAD(2)
-        ArrayAssign()
-        |
-        Expression() <SCM>
-    )
+    LOOKAHEAD(<IDENTIFIER> <EQLS>)
+    Assign()
+    |
+    LOOKAHEAD(<OSQB> Expression() <CSQB> <EQLS>)
+    ArrayAssign()
+    |
+    Expression() <SCM>
     
 }
 
+
 void Assign(): {Token t;}
 {
-    t=<IDENTIFIER> {jjtThis.lhsIdentifier = t.image;} <EQLS> Expression() <SCM>
+    t=<IDENTIFIER> {jjtThis.lhsIdentifier = t.image;} ( <EQLS> Expression() <SCM>)
 }
 
 void ArrayAssign(): {Token t;}
@@ -298,12 +302,14 @@ void Literal() #void: {Token t;}
     |
     <NOT> Expression() #Not LiteralNR()
     |
-    <OPRNT> Expression() <CPRNT> LiteralNR()
+    <OPRNT> Expression() #Expression(1) <CPRNT> LiteralNR()
 }
 
 void LiteralNR() #void: {Token t;}
 {
-    <OSQB> Expression() #ArrayIndex <CSQB> LiteralNR()   
+    Expression()
+    |
+    <OSQB> Expression() #ArrayIndex <CSQB>   
     |
     <PNT> MethodOrLength()
     |
@@ -312,7 +318,7 @@ void LiteralNR() #void: {Token t;}
 
 void MethodOrLength() #void: {}
 {
-	<LENGTH> #Length LiteralNR()
+	<LENGTH> #Length 
 	|
 	Call()
 }
@@ -321,7 +327,7 @@ void New() : {Token t;}
 {
 	<INT> <OSQB> Expression() <CSQB> LiteralNR() {jjtThis.actualReturnType="int[]";}
 	|
-	t=<IDENTIFIER> <OPRNT> <CPRNT> LiteralNR() {jjtThis.actualReturnType=t.image; jjtThis.identifier = t.image}
+	t=<IDENTIFIER> <OPRNT> <CPRNT> LiteralNR() {jjtThis.actualReturnType=t.image; jjtThis.identifier = t.image;}
 }
 
 void Call(): {Token t;}

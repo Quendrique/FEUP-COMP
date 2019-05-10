@@ -1,0 +1,1 @@
+java -jar ../../jasmin-2.4/jasmin.jar -d ../bin/jasmin -g ../bin/jasmin/*.j

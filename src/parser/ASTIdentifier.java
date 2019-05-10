@@ -68,6 +68,7 @@ public class ASTIdentifier extends SimpleNode {
     STO symbol = SimpleNode.symbolTable.doesSymbolExist(this.identifier, this.scope);
     if (symbol == null) {
       if (this.jjtGetNumChildren() > 0 && this.jjtGetChild(0).getId() != JmmTreeConstants.JJTCALL) {
+        super.flagError();
         super.printSemanticError("Variable " + this.identifier + " was not declared");
       }
     } else {

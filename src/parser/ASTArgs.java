@@ -29,6 +29,7 @@ public class ASTArgs extends SimpleNode {
         numArguments = ((SimpleNode) this).children.length;
       }
       if (paramsNeeded.size() != numArguments) {
+        super.flagError();
         super.printSemanticError("No function signature for identifier " + this.value + " and specified number of arguments found");
         return;
       }
@@ -42,6 +43,7 @@ public class ASTArgs extends SimpleNode {
         //System.out.println(((SimpleNode) this.children[0]).children.length);
         Map.Entry<String, STO> symbol = it.next();
         if (!symbol.getValue().getType().equals(((SimpleNode) (((SimpleNode) this).children[count])).getReturnType())) {
+          super.flagError();
           super.printSemanticError("No function signature for identifier " + this.value + " and specified arguments found");
           return;
         }

@@ -72,6 +72,7 @@ class ASTCall extends SimpleNode {
         STO parentSymbol = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) this.parent).getIdentifier(), ((ASTIdentifier) this.parent).getScope());
         if (parentSymbol != null) {
           if (!parentSymbol.isInitialized()) {
+            super.flagError();
             super.printSemanticError("Variable " + ((ASTIdentifier) this.parent).getIdentifier() + " not initialized");
           }
         } else {
@@ -83,9 +84,11 @@ class ASTCall extends SimpleNode {
         if (functionCalled != null) {
           this.actualReturnType = functionCalled.getReturn().getType();
         } else {
+          super.flagError();
           super.printSemanticError("Invalid call to method (method not found in this class)");
         }
       } else if (parentReturnType.equals("int") || parentReturnType.equals("int[]") || parentReturnType.equals("boolean")  ) {
+        super.flagError();
         super.printSemanticError("Invalid call to method (can't invoke methods on primitives)");
       }
     }

@@ -17,6 +17,7 @@ public class SimpleNode implements Node {
   protected String returnType = "";
   protected String actualReturnType = "";
   protected int beginLine;
+  protected boolean errorDetected = false;
   public void setBeginLine( int line ) { beginLine = line ;}
   public int getBeginLine() { return beginLine ; }
 
@@ -111,6 +112,14 @@ public class SimpleNode implements Node {
   public String getActualReturnType() {
     return "";
   }
+
+  public final void flagError() {
+    this.errorDetected = true;
+  }
+
+  public boolean errorDetected() {
+    return this.errorDetected;
+  }
   
   public void checkSemantics() {
 
@@ -166,6 +175,8 @@ public class SimpleNode implements Node {
     } else {
       stFunctionName = "main";
       stFunction.setReturn(new STO("void"));
+      stFunction.isGlobal(); // set index to 0 (main can't have this)
+      stFunction.addSymbol("args", new STO("String"), true);
     }
 
     Node[] children = ((SimpleNode) node).children;
@@ -176,14 +187,20 @@ public class SimpleNode implements Node {
         if (nodeType.equals("MethodArguments")) {
           for(Node methodArg: ((SimpleNode) childNode).children) {
             ((ASTMethodArgument) methodArg).returnType = ((ASTMethodArgument) methodArg).type;
-            stFunction.addSymbol(((ASTMethodArgument) methodArg).getIdentifier(), new STO(((ASTMethodArgument) methodArg).type), true);
+            if (stFunction.addSymbol(((ASTMethodArgument) methodArg).getIdentifier(), new STO(((ASTMethodArgument) methodArg).type), true)) {
+              this.flagError();
+              this.printSemanticError("Variable " + ((ASTVarDeclaration) childNode).getIdentifier() + " not declared");
+            };
           }
         } else {
           if(!nodeType.equals("VarDeclaration")) {
             break;
           } else {
             ((ASTVarDeclaration) childNode).returnType = ((ASTVarDeclaration) childNode).type;
-            stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false);
+            if (stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false)) {
+              this.flagError();
+              this.printSemanticError("Variable " + ((ASTVarDeclaration) childNode).getIdentifier() + " not declared");
+            };
           }
         }
         paramsChecked = true;
@@ -194,7 +211,10 @@ public class SimpleNode implements Node {
         break;
       } else {
         ((ASTVarDeclaration) childNode).returnType = ((ASTVarDeclaration) childNode).type;
-        stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false);
+        if (stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false)) {
+          this.flagError();
+          this.printSemanticError("Variable " + ((ASTVarDeclaration) childNode).getIdentifier() + " not declared");
+        };
       }
 
     }
