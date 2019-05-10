@@ -19,6 +19,10 @@ class ASTArrayAssign extends SimpleNode {
     this.actualReturnType = "int[]";
   }
 
+  public String getIdentifier() {
+    return this.lhsIdentifier;
+  }
+
   @Override
   public String getReturnType() {
     return this.actualReturnType;

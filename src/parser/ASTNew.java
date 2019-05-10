@@ -40,6 +40,7 @@ class ASTNew extends SimpleNode {
   public void dump(String prefix) {
     System.out.println(toString(prefix) + ": " + this.actualReturnType);
     if (children != null) {
+     
       for (int i = 0; i < children.length; ++i) {
         SimpleNode n = (SimpleNode)children[i];
         if (n != null) {

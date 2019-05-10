@@ -32,6 +32,11 @@
   .limit locals 5
   iconst_1
   istore 3
+  iconst_4
+  newarray
+  astore 4
+  iconst_1
+  iastore
   new TestExamples
   dup
   invokespecial TestExamples<init>()V
@@ -39,21 +44,37 @@
   iload 3
   iconst_1
   iand
-  putfield TestExamples/1
+  putfield TestExamples/b Z
+  iconst_1
+  aload_0
+  getfield TestExamples/p [I
+  iand
+  putfield TestExamples/b Z
+  iconst_1
   iconst_1
   iand
-  putfield TestExamples/1
-  iconst_1
-  iconst_1
-  iand
-  putfield TestExamples/1
-  putfield TestExamples/0
-  putfield TestExamples/0
-  putfield TestExamples/0
+  putfield TestExamples/b Z
+  aload_0
+  getfield TestExamples/p [I
+  arraylength
+  putfield TestExamples/t I
+  aload_0
+  getfield TestExamples/b Z
+  arraylength
+  putfield TestExamples/t I
+  aload 4
+  arraylength
+  putfield TestExamples/t I
   iconst_0
   invokevirtual TestExternal/call()V
-  putfield TestExamples/1
-  putfield TestExamples/1
+  iconst_1
+  iconst_1
+  ixor
+  putfield TestExamples/b Z
+  iconst_1
+  iconst_1
+  ixor
+  putfield TestExamples/b Z
   iconst_5
   iload 3
   iconst_1
@@ -65,6 +86,8 @@
   iload 3
   iadd
   iload 3
+  aload_0
+  getfield TestExamples/p [I
   iadd
   istore 3
   iconst_1
@@ -91,8 +114,15 @@
   iload 3
   invokevirtual TestExternal/test(II)V
   iconst_0
+  aload 4
+  iconst_1
+  iaload
   istore 3
+  aload 4
   istore 3
+  aload 4
+  iconst_1
+  iaload
   istore 3
   istore 3
   return

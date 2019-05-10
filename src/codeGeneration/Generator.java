@@ -208,7 +208,7 @@ public class Generator {
             genAssign(child);
             break;
           case JmmTreeConstants.JJTARRAYASSIGN:
-            //genArrayAssign(child);
+            genArrayAssign(child);
             break;
           case JmmTreeConstants.JJTIF:
             //genIf(child);
@@ -252,6 +252,7 @@ public class Generator {
         genIntegerLiteral(node);
         break;
       case JmmTreeConstants.JJTNOT:
+        genNot(node);
         break;
       default: // todo
         break;
@@ -277,7 +278,9 @@ public class Generator {
         appendLine("  iand");
         break;
       case "<":
-        appendLine("  isub");
+        appendLine("  isub"); // TODO
+        
+
     } 
      
   }
@@ -328,7 +331,7 @@ public class Generator {
           appendLine("  istore" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
           break;
         case "int[]":
-          //??
+          appendLine("  astore" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
           break;
         case "boolean":
           appendLine("  istore" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
@@ -337,24 +340,45 @@ public class Generator {
           appendLine("  astore" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
       }
     } else {
-      System.out.println(((ASTAssign) node).getLhs());
       lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTAssign) node).getLhs());
       if (lhs != null) {
         int index = lhs.getIndex();
-        appendLine("  putfield " + SimpleNode.getClassName() + "/" + lhs.getIndex());
+        appendLine("  putfield " + SimpleNode.getClassName() + "/" + ((ASTAssign) node).getLhs() + " " + parseReturnType(lhs.getType())); 
       }
     }
 
   }
 
   public void genArrayAssign(SimpleNode node){
-    //TODO
+
+    STO lhs = SimpleNode.getSymbolTable().doesSymbolExist(((ASTArrayAssign) node).getIdentifier(), node.getScope());
+    
+    SimpleNode rhs = (SimpleNode) node.jjtGetChild(0);
+    genExpression(rhs);
+
+    // array index
+    genExpression((SimpleNode) ((SimpleNode) node.jjtGetChild(0)).jjtGetChild(0));
+    
+    if (lhs == null && (lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTAssign) node).getLhs())) != null) {
+      appendLine("  aload_0");
+      appendLine("  getfield " + SimpleNode.getClassName() + "/" + ((ASTArrayAssign) node).getIdentifier() + " " + parseReturnType(lhs.getType()));
+    }
+
+    if (lhs != null) {
+      appendLine("  iastore");
+    }
+
   }
 
   public void genNew(SimpleNode node) {
-    appendLine("  new " + ((ASTNew) node).getActualReturnType());
-    appendLine("  dup");
-    appendLine("  invokespecial " + ((ASTNew) node).getActualReturnType() + "<init>()V");
+    if (node.jjtGetNumChildren() > 0) { // new array
+      genExpression((SimpleNode) node.jjtGetChild(0));
+      appendLine("  newarray");
+    } else {
+      appendLine("  new " + ((ASTNew) node).getActualReturnType());
+      appendLine("  dup");
+      appendLine("  invokespecial " + ((ASTNew) node).getActualReturnType() + "<init>()V");
+    }
   }
 
   public void genMethodFooter(SimpleNode method){
@@ -435,44 +459,41 @@ public class Generator {
   public void genIdentifierLoad (SimpleNode node) {
 
     STO variable = SimpleNode.getSymbolTable().doesSymbolExist(((ASTIdentifier) node).getIdentifier(), node.getScope());
+    if (variable != null) {
+      switch(variable.getType()) {
+        case "int":
+        appendLine("  iload" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
+        break;
+        case "int[]":
+        appendLine("  aload" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
+        break;
+        case "boolean":
+        appendLine("  iload" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
+        break;
+        default:
+      }
+    } else { 
+      variable = SimpleNode.getSymbolTable().doesGlobalExist(((ASTIdentifier) node).getIdentifier());
+      if (variable != null) {
+        appendLine("  aload_0");
+        appendLine("  getfield " + SimpleNode.getClassName() + "/" + ((ASTIdentifier) node).getIdentifier() + " " + parseReturnType(variable.getType()));
+      }
+    }
+
     if (node.jjtGetNumChildren() > 0) {
       SimpleNode child = ((SimpleNode) node.jjtGetChild(0));
       switch(child.getId()) {
+        case JmmTreeConstants.JJTARRAYINDEX:
+          genExpression((SimpleNode) ((SimpleNode) node).jjtGetChild(0).jjtGetChild(0));
+          appendLine("  iaload");
+          break;
         case JmmTreeConstants.JJTCALL:
           genMethodCall((SimpleNode) node.jjtGetChild(0), node.getActualReturnType());
           break;
         case JmmTreeConstants.JJTLENGTH:
-        //TODO
+          genLength(node);
       }
-    } else if (variable != null) {
-        switch(variable.getType()) {
-          case "int":
-          appendLine("  iload" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
-          break;
-          case "int[]":
-          //TODO
-          break;
-          case "boolean":
-          break;
-          default:
-        }
-      } else { //global variable
-        variable = SimpleNode.getSymbolTable().doesSymbolExist(((ASTIdentifier) node).getIdentifier(), "global");
-        if (variable != null) {
-          appendLine("  aload_0");
-          switch(variable.getType()) {
-            case "int":
-            appendLine("  getfield " + SimpleNode.getClassName() + "/" + variable.getIndex() + " " + parseReturnType(variable.getType()));
-            break;
-            case "int[]":
-            //TODO
-            break;
-            case "boolean":
-            break;
-            default:
-          }
-        }
-      }
+    }
     
     /**
      * aload_0
@@ -483,6 +504,16 @@ public class Generator {
         iadd 
         putfield foo/x
      */
+  }
+
+  public void genLength(SimpleNode node) {
+    appendLine("  arraylength");
+  }
+
+  public void genNot(SimpleNode node) {
+    genExpression((SimpleNode) node.jjtGetChild(0));
+    appendLine("  iconst_1");
+    appendLine("  ixor");
   }
 
   public String parseReturnType(String returnType) {
