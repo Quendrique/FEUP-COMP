@@ -4,12 +4,24 @@ package parser;
 
 public
 class ASTIf extends SimpleNode {
+
+  static int counter = 0;
+  int labelId;
+
   public ASTIf(int id) {
     super(id);
+    this.labelId = counter;
+    counter++;
   }
 
   public ASTIf(Jmm p, int id) {
     super(p, id);
+    this.labelId = counter;
+    counter++;
+  }
+
+  public int getLabelId() {
+    return this.labelId;
   }
 
 }

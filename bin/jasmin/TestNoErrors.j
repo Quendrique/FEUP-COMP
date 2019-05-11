@@ -48,6 +48,15 @@
   iconst_1
   iconst_1
   iand
+  iconst_1
+  iconst_3
+  isub
+  iflt LT_ELSE_0
+  iconst_1
+  goto LT_NEXT_0
+  LT_ELSE_0:
+  iconst_0
+  LT_NEXT_0:
   iload_2
   iconst_1
   iadd
@@ -91,6 +100,23 @@
   putstatic TestNoErrors/global_external LTest;
   getstatic TestNoErrors/global_external LTest;
   invokevirtual Test/getArray()[I
+  iconst_1
+  iconst_2
+  isub
+  iflt LT_ELSE_1
+  iconst_1
+  goto LT_NEXT_1
+  LT_ELSE_1:
+  iconst_0
+  LT_NEXT_1:
+  ifne ELSE_0
+  iconst_1
+  istore_2
+  goto NEXT_0
+  ELSE_0:
+  iconst_2
+  istore_2
+  NEXT_0:
   return
 .end method
 

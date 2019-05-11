@@ -1,3 +1,3 @@
 #!/bin/bash
 cd ../bin
-java parser/Jmm ../src/examples/TestNoErrors.jmm
+java parser/Jmm ../src/examples/Test.jmm

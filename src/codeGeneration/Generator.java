@@ -163,12 +163,7 @@ public class Generator {
     } else {
       returnType = "V";
     }
-    /*
-    iload_1
-    iload 3
-    iconst_1
-    invokevirtual (class name).(method name)(arg types all together)(return type)
-    */
+
     appendLine("  invokevirtual " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
 
   }
@@ -195,28 +190,31 @@ public class Generator {
       SimpleNode child;
       for(int i = 0; i < nSts; i++) {
         child = (SimpleNode) method.jjtGetChild(i);
-
-        switch (child.getId()) {
-          case JmmTreeConstants.JJTVARDECLARATION: //not needed
-            break;
-          case JmmTreeConstants.JJTASSIGN:
-            genAssign(child);
-            break;
-          case JmmTreeConstants.JJTARRAYASSIGN:
-            genArrayAssign(child);
-            break;
-          case JmmTreeConstants.JJTIF:
-            //genIf(child);
-            break;
-          case JmmTreeConstants.JJTWHILE:
-            //genWhile(child);
-            break;
-          default:
-            genExpression(child);
-            break;
-          }
+        genStatement(child);
       }
     }
+  }
+
+  public void genStatement(SimpleNode node) {
+    switch (node.getId()) {
+      case JmmTreeConstants.JJTVARDECLARATION: 
+        break;
+      case JmmTreeConstants.JJTASSIGN:
+        genAssign(node);
+        break;
+      case JmmTreeConstants.JJTARRAYASSIGN:
+        genArrayAssign(node);
+        break;
+      case JmmTreeConstants.JJTIF:
+        genIf(node);
+        break;
+      case JmmTreeConstants.JJTWHILE:
+        //genWhile(node);
+        break;
+      default:
+        genExpression(node);
+        break;
+      }
   }
 
   public void genExpression(SimpleNode node) {
@@ -279,9 +277,13 @@ public class Generator {
         appendLine("  iand");
         break;
       case "<":
-        appendLine("  isub"); // TODO
-        
-
+        appendLine("  isub"); 
+        appendLine("  iflt LT_ELSE_" + ((ASTLessThan) node).getLabelId());
+        appendLine("  iconst_1");
+        appendLine("  goto LT_NEXT_" + ((ASTLessThan) node).getLabelId());
+        appendLine("  LT_ELSE_" + ((ASTLessThan) node).getLabelId() + ":");
+        appendLine("  iconst_0");
+        appendLine("  LT_NEXT_" + ((ASTLessThan) node).getLabelId() + ":");
     } 
      
   }
@@ -533,8 +535,37 @@ public class Generator {
         break;
       case JmmTreeConstants.JJTLENGTH:
         genLength((SimpleNode) node.jjtGetChild(1));
-      default: // todo arrayindex
+        break;
+      case JmmTreeConstants.JJTARRAYINDEX:
+        genExpression(((SimpleNode) ((SimpleNode) node.jjtGetChild(1)).jjtGetChild(0)));
     }
+  }
+  
+  public void genIf(SimpleNode node) {
+    SimpleNode condition = (SimpleNode) ((SimpleNode) node.jjtGetChild(0)).jjtGetChild(0);
+    SimpleNode thenStatement = ((SimpleNode) node.jjtGetChild(1));
+    SimpleNode elseStatement = null;
+    
+    if (((SimpleNode) node.jjtGetChild(0)).jjtGetNumChildren() > 0) {
+      elseStatement = ((SimpleNode) node.jjtGetChild(2));
+    }
+    genExpression(condition);
+    System.out.println(condition.getId());
+    appendLine("  ifne ELSE_"+((ASTIf) node).getLabelId()); // need to avoid multiple labels with the same name TODO
+    SimpleNode child;
+    for(int i = 0; i < thenStatement.jjtGetNumChildren(); i++) {
+      child = (SimpleNode) thenStatement.jjtGetChild(i);
+      genStatement(child);
+    }
+    appendLine("  goto NEXT_"+((ASTIf) node).getLabelId());
+    appendLine("  ELSE_" + +((ASTIf) node).getLabelId() +":");
+    if (elseStatement != null) {
+      for(int i = 0; i < elseStatement.jjtGetNumChildren(); i++) {
+        child = (SimpleNode) elseStatement.jjtGetChild(i);
+        genStatement(child);
+      }
+    }
+    appendLine("  NEXT_" + ((ASTIf) node).getLabelId() + ":");
   }
 
   public String parseReturnType(String returnType) {

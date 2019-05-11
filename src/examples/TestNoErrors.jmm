@@ -28,6 +28,7 @@ class TestNoErrors {
     //arithmetic/logic ops, no variables
     1+1;
     true && true;
+    1 < 3;
 
     //arithmetic/logic ops, with variables
     i+1;
@@ -43,6 +44,15 @@ class TestNoErrors {
     //external calls
     global_external = new Test();
     global_external.getArray();
+
+    //if
+    
+    if (1 < 2) {
+      i = 1;
+    } else {
+      i = 2;
+    }
+    
 
 	}
 }
