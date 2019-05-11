@@ -187,8 +187,7 @@ public class SimpleNode implements Node {
         if (nodeType.equals("MethodArguments")) {
           for(Node methodArg: ((SimpleNode) childNode).children) {
             ((ASTMethodArgument) methodArg).returnType = ((ASTMethodArgument) methodArg).type;
-            if (stFunction.addSymbol(((ASTMethodArgument) methodArg).getIdentifier(), new STO(((ASTMethodArgument) methodArg).type), true)) {
-              this.flagError();
+            if (!stFunction.addSymbol(((ASTMethodArgument) methodArg).getIdentifier(), new STO(((ASTMethodArgument) methodArg).type), true)) {
               this.printSemanticError("Variable " + ((ASTVarDeclaration) childNode).getIdentifier() + " not declared");
             };
           }
@@ -197,8 +196,7 @@ public class SimpleNode implements Node {
             break;
           } else {
             ((ASTVarDeclaration) childNode).returnType = ((ASTVarDeclaration) childNode).type;
-            if (stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false)) {
-              this.flagError();
+            if (!stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false)) {
               this.printSemanticError("Variable " + ((ASTVarDeclaration) childNode).getIdentifier() + " not declared");
             };
           }
@@ -211,8 +209,7 @@ public class SimpleNode implements Node {
         break;
       } else {
         ((ASTVarDeclaration) childNode).returnType = ((ASTVarDeclaration) childNode).type;
-        if (stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false)) {
-          this.flagError();
+        if (!stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false)) {
           this.printSemanticError("Variable " + ((ASTVarDeclaration) childNode).getIdentifier() + " not declared");
         };
       }
@@ -224,6 +221,7 @@ public class SimpleNode implements Node {
   }
 
   public void printSemanticError(String errorMsg) {
+    this.flagError();
     System.out.println("Semantic Error at line " + beginLine + ": " + errorMsg + ".");
   }
 

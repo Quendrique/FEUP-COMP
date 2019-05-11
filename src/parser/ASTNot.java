@@ -27,7 +27,6 @@ class ASTNot extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
     if(!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals("boolean")) {
-      super.flagError();
       super.printSemanticError("The ! operation can only be performed on boolean values");
     }
 

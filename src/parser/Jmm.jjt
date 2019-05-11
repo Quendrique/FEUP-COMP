@@ -302,7 +302,10 @@ void Literal() #void: {Token t;}
     |
     <NOT> Expression() #Not LiteralNR()
     |
-    <OPRNT> Expression() #Expression(1) <CPRNT> LiteralNR()
+    LOOKAHEAD(<OPRNT> Expression() <CPRNT> <PNT> | <OPRNT> Expression() <CPRNT> <OSQB>)
+    (<OPRNT> Expression() <CPRNT> LiteralNR()) #NestedExp
+    |
+    <OPRNT> Expression() <CPRNT> LiteralNR() 
 }
 
 void LiteralNR() #void: {Token t;}

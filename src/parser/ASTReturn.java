@@ -19,7 +19,6 @@ public class ASTReturn extends SimpleNode {
     if (function != null) {
       SimpleNode returnNode = (SimpleNode) this.jjtGetChild(0);
       if (!returnNode.getReturnType().equals(function.getReturn().getType()) ) {
-        super.flagError();
         super.printSemanticError("Return value does not match function signature");
       } 
     }

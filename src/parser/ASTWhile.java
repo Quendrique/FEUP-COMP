@@ -15,7 +15,6 @@ class ASTWhile extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
     if (!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals("boolean")) {
-      super.flagError();
       super.printSemanticError("The while condition must return a boolean value");
     }
   }

@@ -4,6 +4,13 @@ class TestNoErrors {
   boolean global_boolean;
   int[] global_array;
   Test global_external;
+  TestNoErrors global_internal;
+
+  public int[] getArray() {
+    int[] returnValue;
+    returnValue = new int[5];
+    return returnValue;
+  }
 
 	public static void main(String[] args) {
 		int i;
@@ -23,9 +30,10 @@ class TestNoErrors {
     //arithmetic/logic ops, with variables
     i+1;
     i+i;
+    1+1*2+2;
     global_array[1]+global_array[1];
     global_array[7]+global_array[1];
-    global_array.length;
+    (global_internal).getArray();
 
 	}
 }

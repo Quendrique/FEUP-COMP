@@ -29,10 +29,11 @@ public interface JmmTreeConstants
   public int JJTIDENTIFIER = 23;
   public int JJTTHIS = 24;
   public int JJTNOT = 25;
-  public int JJTLENGTH = 26;
-  public int JJTNEW = 27;
-  public int JJTCALL = 28;
-  public int JJTARGS = 29;
+  public int JJTNESTEDEXP = 26;
+  public int JJTLENGTH = 27;
+  public int JJTNEW = 28;
+  public int JJTCALL = 29;
+  public int JJTARGS = 30;
 
 
   public String[] jjtNodeName = {
@@ -62,10 +63,11 @@ public interface JmmTreeConstants
     "Identifier",
     "This",
     "Not",
+    "NestedExp",
     "Length",
     "New",
     "Call",
     "Args",
   };
 }
-/* JavaCC - OriginalChecksum=2519ea0da75c45cd5186950e4dc7d2d6 (do not edit this line) */
+/* JavaCC - OriginalChecksum=dc7995adab06327dcdc22db5c5d042d3 (do not edit this line) */

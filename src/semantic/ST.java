@@ -36,15 +36,15 @@ public class ST extends Object {
       symbol.index = this.numGlobalVariables;
       this.numGlobalVariables++;
       this.globalVariables.put(identifier, symbol);
-      return false;
-    } else {
       return true;
+    } else {
+      return false;
     }
   }
 
   public STO doesSymbolExist(String identifier, String scope) {
     STO returnSymbol;
-    return ((returnSymbol = functionTable.get(scope).doesSymbolExist(identifier)) != null) ? returnSymbol : functionTable.get("global").doesSymbolExist(identifier);
+    return ((returnSymbol = functionTable.get(scope).doesSymbolExist(identifier)) != null) ? returnSymbol : doesGlobalExist(identifier);
   }
 
   public STO doesGlobalExist(String identifier) {

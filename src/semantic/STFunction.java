@@ -51,9 +51,9 @@ public class STFunction extends Object {
         this.numLocals++;
         this.params.put(identifier, symbol);
         this.index++;
-        return false;
-      } else {
         return true;
+      } else {
+        return false;
       }
     } else {
       if (this.locals.get(identifier) == null && this.params.get(identifier) == null) {
@@ -61,9 +61,9 @@ public class STFunction extends Object {
         this.numLocals++;
         this.locals.put(identifier, symbol);
         this.index++;
-        return false;
-      } else {
         return true;
+      } else {
+        return false;
       }
     }
   }

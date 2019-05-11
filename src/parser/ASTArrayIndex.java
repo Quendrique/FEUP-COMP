@@ -23,11 +23,9 @@ class ASTArrayIndex extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
     if(!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals("int")){
-      super.flagError();
       super.printSemanticError("Array index must be of type int");
     }
     if(!((SimpleNode) this.parent).getActualReturnType().equals("int[]")) {
-      super.flagError();
       super.printSemanticError("Variable must be of type int[] in order to access an array position");
     }
     if (((SimpleNode) this.parent).getId() == JmmTreeConstants.JJTIDENTIFIER) {
@@ -36,7 +34,6 @@ class ASTArrayIndex extends SimpleNode {
         parentSymbol = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) this.parent).getIdentifier(), "global");
       } 
       if (parentSymbol != null && !parentSymbol.isInitialized()) {
-        super.flagError();
         super.printSemanticError("Variable " + ((ASTIdentifier) this.parent).getIdentifier() + " not initialized");
       }
     }

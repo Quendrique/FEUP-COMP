@@ -26,14 +26,12 @@ class ASTAssign extends SimpleNode {
 
     STO lhs = SimpleNode.symbolTable.doesSymbolExist(this.lhsIdentifier, this.scope);
     if (lhs == null) {
-      super.flagError();
       super.printSemanticError("Variable " + this.lhsIdentifier + " was not declared");
       return;
     }
     
     SimpleNode rhs = (SimpleNode) this.jjtGetChild(0);
     if (!rhs.getReturnType().equals(lhs.getType()) && !rhs.getReturnType().equals("void")) {
-      super.flagError();
       super.printSemanticError("Variable types not compatible");
     }
 
