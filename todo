@@ -40,5 +40,10 @@ array access return type wrong
 - parenthesis - parser
 - static calls
 
+/***************/
+
+fixed array assign
+
+
 
 

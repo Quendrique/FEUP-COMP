@@ -1595,6 +1595,7 @@ if (jjtc000) {
 
   static private boolean jj_3_6()
  {
+    if (jj_scan_token(IDENTIFIER)) return true;
     if (jj_scan_token(OSQB)) return true;
     if (jj_3R_18()) return true;
     if (jj_scan_token(CSQB)) return true;

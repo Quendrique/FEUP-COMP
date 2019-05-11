@@ -31,7 +31,7 @@ class ASTArrayIndex extends SimpleNode {
     if (((SimpleNode) this.parent).getId() == JmmTreeConstants.JJTIDENTIFIER) {
       STO parentSymbol = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) this.parent).getIdentifier(), ((ASTIdentifier) this.parent).getScope());
       if (parentSymbol == null) {
-        parentSymbol = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) this.parent).getIdentifier(), "global");
+        parentSymbol = SimpleNode.symbolTable.doesGlobalExist(((ASTIdentifier) this.parent).getIdentifier());
       } 
       if (parentSymbol != null && !parentSymbol.isInitialized()) {
         super.printSemanticError("Variable " + ((ASTIdentifier) this.parent).getIdentifier() + " not initialized");

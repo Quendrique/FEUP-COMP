@@ -17,7 +17,7 @@ public class STFunction extends Object {
     this.params = new LinkedHashMap<String, STO>();
     this.locals = new LinkedHashMap<String, STO>();
     this.index = 1;
-    this.numLocals = 0;
+    this.numLocals = 1;
   }
 
   public STO getReturn() {
@@ -26,6 +26,7 @@ public class STFunction extends Object {
 
   public void isGlobal() {
     this.index = 0;
+    this.numLocals = 0;
   }
 
   public int getIndex() {
@@ -48,8 +49,9 @@ public class STFunction extends Object {
     if (isParam) {
       if (this.params.get(identifier) == null) {
         symbol.index = this.index;
-        this.numLocals++;
+        symbol.initialize();
         this.params.put(identifier, symbol);
+        this.numLocals++;
         this.index++;
         return true;
       } else {
@@ -58,8 +60,8 @@ public class STFunction extends Object {
     } else {
       if (this.locals.get(identifier) == null && this.params.get(identifier) == null) {
         symbol.index = this.index;
-        this.numLocals++;
         this.locals.put(identifier, symbol);
+        this.numLocals++;
         this.index++;
         return true;
       } else {

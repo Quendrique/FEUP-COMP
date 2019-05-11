@@ -48,8 +48,6 @@ public class Generator {
 
   }
 
-  
-
   private void appendLine(String line) {
 		builder.append(line + "\n");
   }
@@ -83,25 +81,17 @@ public class Generator {
 
 			if (childRoot.getId() == JmmTreeConstants.JJTVARDECLARATION)
         genVarGlobal((ASTVarDeclaration) childRoot);
-		}
+    }
+    appendLine("\n");
   }
 
   public void genVarGlobal(ASTVarDeclaration dec){
     String varName, varType = "";
     
     varName = dec.getIdentifier();
-
-    if (dec.getType().equals("int[]"))
-				varType = " [I ";
-		else if (dec.getType().equals("int"))
-      varType = " I ";
-    else if (dec.getType().equals("boolean"))
-			varType = " Z ";
-		else{
-      return;
-    }
+    varType = parseReturnType(dec.getType());
 		
-		appendLine(".field static " + varName + varType);
+		appendLine(".field static " + varName + " " + varType);
     
   }
 
@@ -144,7 +134,7 @@ public class Generator {
 
       }
       
-      appendLine(".method public static " + identifier + "(" + funcArgs + ")" + VDMTypeConverter(type));
+      appendLine(".method public " + identifier + "(" + funcArgs + ")" + VDMTypeConverter(type));
       
     }
     
@@ -196,7 +186,7 @@ public class Generator {
     }
 
     STFunction function = SimpleNode.getSymbolTable().doesFunctionExist(methodName);
-    appendLine("  .limit locals " + (function.getNumLocals()+1));
+    appendLine("  .limit locals " + function.getNumLocals());
 
     if(method.getId() != JmmTreeConstants.JJTMETHODDECLARATION && method.getId() != JmmTreeConstants.JJTMAINDECLARATION) return;
     if (method.jjtGetNumChildren() > 0) {
@@ -354,7 +344,9 @@ public class Generator {
       lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTAssign) node).getLhs());
       if (lhs != null) {
         int index = lhs.getIndex();
-        appendLine("  putfield " + SimpleNode.getClassName() + "/" + ((ASTAssign) node).getLhs() + " " + parseReturnType(lhs.getType())); 
+        appendLine("  aload_0");
+        appendLine("  swap");
+        appendLine("  putstatic " + SimpleNode.getClassName() + "/" + ((ASTAssign) node).getLhs() + " " + parseReturnType(lhs.getType())); 
       }
     }
 
@@ -364,16 +356,18 @@ public class Generator {
 
     STO lhs = SimpleNode.getSymbolTable().doesSymbolExist(((ASTArrayAssign) node).getIdentifier(), node.getScope());
     
-    SimpleNode rhs = (SimpleNode) node.jjtGetChild(0);
-    genExpression(rhs);
+    if (lhs != null) {
+      appendLine("  aload" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
+    } else if ((lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTArrayAssign) node).getIdentifier())) != null) {
+      appendLine("  getstatic " + SimpleNode.getClassName() + "/" + ((ASTArrayAssign) node).getIdentifier() + " " + parseReturnType(lhs.getType()));
+    }
 
     // array index
     genExpression((SimpleNode) ((SimpleNode) node.jjtGetChild(0)).jjtGetChild(0));
     
-    if (lhs == null && (lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTAssign) node).getLhs())) != null) {
-      appendLine("  aload_0");
-      appendLine("  getfield " + SimpleNode.getClassName() + "/" + ((ASTArrayAssign) node).getIdentifier() + " " + parseReturnType(lhs.getType()));
-    }
+    // rhs expression
+    SimpleNode rhs = (SimpleNode) node.jjtGetChild(1);
+    genExpression(rhs);
 
     if (lhs != null) {
       appendLine("  iastore");
@@ -487,8 +481,7 @@ public class Generator {
     } else { 
       variable = SimpleNode.getSymbolTable().doesGlobalExist(((ASTIdentifier) node).getIdentifier());
       if (variable != null) {
-        appendLine("  aload_0");
-        appendLine("  getfield " + SimpleNode.getClassName() + "/" + ((ASTIdentifier) node).getIdentifier() + " " + parseReturnType(variable.getType()));
+        appendLine("  getstatic " + SimpleNode.getClassName() + "/" + ((ASTIdentifier) node).getIdentifier() + " " + parseReturnType(variable.getType()));
       }
     }
 
@@ -553,7 +546,7 @@ public class Generator {
       case "boolean":
         return "Z";
       default:
-        return "L" + returnType;
+        return "L" + returnType + ";";
     }
   }
 

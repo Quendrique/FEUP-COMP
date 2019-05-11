@@ -16,13 +16,15 @@ class TestNoErrors {
 		int i;
     boolean b;
 
+
     //assigns
 		i=0;
     b=true;
+    
     global_int = 2;
+    
     global_array = new int[5];
     
-
     //arithmetic/logic ops, no variables
     1+1;
     true && true;
@@ -35,6 +37,7 @@ class TestNoErrors {
     global_array[1]+global_array[1];
 
     //function calls
+    global_internal = new TestNoErrors();
     (global_internal).getArray();
 
     //external calls

@@ -214,7 +214,7 @@ void Statement() #void: {}
     LOOKAHEAD(<IDENTIFIER> <EQLS>)
     Assign()
     |
-    LOOKAHEAD(<OSQB> Expression() <CSQB> <EQLS>)
+    LOOKAHEAD(<IDENTIFIER> <OSQB> Expression() <CSQB> <EQLS>)
     ArrayAssign()
     |
     Expression() <SCM>

@@ -175,7 +175,7 @@ public class SimpleNode implements Node {
     } else {
       stFunctionName = "main";
       stFunction.setReturn(new STO("void"));
-      stFunction.isGlobal(); // set index to 0 (main can't have this)
+      //stFunction.isGlobal(); // set index to 0 (main can't have this) ?? cant it? 
       stFunction.addSymbol("args", new STO("String"), true);
     }
 
