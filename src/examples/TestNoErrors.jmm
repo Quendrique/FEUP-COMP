@@ -21,7 +21,7 @@ class TestNoErrors {
     b=true;
     global_int = 2;
     global_array = new int[5];
-    global_external = new Test();
+    
 
     //arithmetic/logic ops, no variables
     1+1;
@@ -32,7 +32,7 @@ class TestNoErrors {
     i+i;
     1+1*2+2;
     global_array[1]+global_array[1];
-    global_array[7]+global_array[1];
+    global_array[1]+global_array[1];
     (global_internal).getArray();
 
 	}

@@ -57,7 +57,8 @@ public class Generator {
   public void generate() {
     genClass(this.root.getName());
     genGlobals();
-
+    
+    genInitializer();
     genMethods();
 
     out.println(builder);
@@ -66,6 +67,14 @@ public class Generator {
 
   public void genClass(String className) {
     appendLine(".class public " + className + "\n.super java/lang/Object");
+  }
+
+  public void genInitializer() {
+    appendLine(".method public <init>()V");
+    appendLine("  aload_0");
+    appendLine("  invokenonvirtual java/lang/Object/<init>()V");
+    appendLine("  return");
+    appendLine(".end method");
   }
 
   public void genGlobals() {
@@ -191,7 +200,7 @@ public class Generator {
     }
 
     STFunction function = SimpleNode.getSymbolTable().doesFunctionExist(methodName);
-    appendLine("  .limit locals " + function.getNumLocals());
+    appendLine("  .limit locals " + (function.getNumLocals()+1));
 
     if(method.getId() != JmmTreeConstants.JJTMETHODDECLARATION && method.getId() != JmmTreeConstants.JJTMAINDECLARATION) return;
     if (method.jjtGetNumChildren() > 0) {

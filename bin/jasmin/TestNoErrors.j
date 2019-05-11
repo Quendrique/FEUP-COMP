@@ -3,11 +3,16 @@
 .field static global_int I 
 .field static global_boolean Z 
 .field static global_array [I 
+.method public <init>()V
+  aload_0
+  invokenonvirtual java/lang/Object/<init>()V
+  return
+.end method
 
 
 .method public static getArray()[I
   .limit stack 20
-  .limit locals 1
+  .limit locals 2
   iconst_5
   newarray int
   astore_1
@@ -19,7 +24,7 @@
 
 .method public static main([Ljava/lang/String;)V
   .limit stack 20
-  .limit locals 3
+  .limit locals 4
   iconst_0
   istore_1
   iconst_1
@@ -29,10 +34,6 @@
   iconst_5
   newarray int
   astore_2
-  new Test
-  dup
-  invokespecial Test/<init>()V
-  astore 3
   iconst_1
   iconst_1
   iadd
@@ -60,7 +61,7 @@
   iaload
   iadd
   aload_2
-  bipush 7
+  iconst_1
   iaload
   aload_2
   iconst_1
