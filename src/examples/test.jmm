@@ -1,4 +1,4 @@
-class Fac extends Test {
+class Test {
 
 	int t;
 	boolean b;
@@ -9,5 +9,11 @@ class Fac extends Test {
 
 		i=0;
 
+	}
+
+	public int[] getArray() {
+		int[] array;
+		array = new int[3];
+		return array;
 	}
 }

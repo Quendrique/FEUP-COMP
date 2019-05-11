@@ -5,7 +5,7 @@
 .field static global_array [I 
 .method public <init>()V
   aload_0
-  invokenonvirtual java/lang/Object/<init>()V
+  invokespecial java/lang/Object/<init>()V
   return
 .end method
 
@@ -30,10 +30,10 @@
   iconst_1
   istore_2
   iconst_2
-  istore_0
+  putfield TestNoErrors/global_int I
   iconst_5
   newarray int
-  astore_2
+  putfield TestNoErrors/global_array [I
   iconst_1
   iconst_1
   iadd
@@ -53,20 +53,34 @@
   iadd
   iconst_2
   iadd
-  aload_2
+  aload_0
+  getfield TestNoErrors/global_array [I
   iconst_1
   iaload
-  aload_2
-  iconst_1
-  iaload
-  iadd
-  aload_2
-  iconst_1
-  iaload
-  aload_2
+  aload_0
+  getfield TestNoErrors/global_array [I
   iconst_1
   iaload
   iadd
+  aload_0
+  getfield TestNoErrors/global_array [I
+  iconst_1
+  iaload
+  aload_0
+  getfield TestNoErrors/global_array [I
+  iconst_1
+  iaload
+  iadd
+  aload_0
+  getfield TestNoErrors/global_internal LTestNoErrors
+  invokevirtual TestNoErrors/getArray()[I
+  new Test
+  dup
+  invokespecial Test/<init>()V
+  putfield TestNoErrors/global_external LTest
+  aload_0
+  getfield TestNoErrors/global_external LTest
+  invokevirtual Test/getArray()[I
   return
 .end method
 

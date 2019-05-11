@@ -33,7 +33,13 @@ class TestNoErrors {
     1+1*2+2;
     global_array[1]+global_array[1];
     global_array[1]+global_array[1];
+
+    //function calls
     (global_internal).getArray();
+
+    //external calls
+    global_external = new Test();
+    global_external.getArray();
 
 	}
 }

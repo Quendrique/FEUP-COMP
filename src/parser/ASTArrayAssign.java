@@ -35,8 +35,7 @@ class ASTArrayAssign extends SimpleNode {
 
   @Override
   public void checkNodeSemantic() {
-    STO lhs = SimpleNode.symbolTable.doesSymbolExist(this.lhsIdentifier, this.scope);
-    if (lhs == null) {
+    if (SimpleNode.symbolTable.doesSymbolExist(this.lhsIdentifier, this.scope) == null && SimpleNode.symbolTable.doesGlobalExist(this.lhsIdentifier) == null) {
       super.printSemanticError("Variable " + this.lhsIdentifier + " was not declared");
     }
     

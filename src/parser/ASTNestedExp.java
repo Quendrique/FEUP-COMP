@@ -6,10 +6,28 @@ public
 class ASTNestedExp extends SimpleNode {
   public ASTNestedExp(int id) {
     super(id);
+    this.actualReturnType = "";
   }
 
   public ASTNestedExp(Jmm p, int id) {
     super(p, id);
+    this.actualReturnType = "";
+  }
+
+  @Override
+  public String getActualReturnType() {
+    if (this.actualReturnType.equals("")) {
+      this.actualReturnType = ((SimpleNode) (this.jjtGetChild(1))).getReturnType();
+    }
+    return this.actualReturnType;
+  }
+
+  @Override
+  public String getReturnType() {
+    if (this.actualReturnType.equals("")) {
+      this.actualReturnType = ((SimpleNode) (this.jjtGetChild(1))).getReturnType();
+    }
+    return this.actualReturnType;
   }
 
 }

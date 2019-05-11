@@ -26,6 +26,10 @@ class ASTAssign extends SimpleNode {
 
     STO lhs = SimpleNode.symbolTable.doesSymbolExist(this.lhsIdentifier, this.scope);
     if (lhs == null) {
+      lhs = SimpleNode.symbolTable.doesGlobalExist(this.lhsIdentifier);
+    }
+    
+    if (lhs == null) {
       super.printSemanticError("Variable " + this.lhsIdentifier + " was not declared");
       return;
     }

@@ -43,8 +43,7 @@ public class ST extends Object {
   }
 
   public STO doesSymbolExist(String identifier, String scope) {
-    STO returnSymbol;
-    return ((returnSymbol = functionTable.get(scope).doesSymbolExist(identifier)) != null) ? returnSymbol : doesGlobalExist(identifier);
+    return functionTable.get(scope).doesSymbolExist(identifier);
   }
 
   public STO doesGlobalExist(String identifier) {

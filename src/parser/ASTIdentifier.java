@@ -31,6 +31,9 @@ public class ASTIdentifier extends SimpleNode {
   public String getActualReturnType() {
     if (this.actualReturnType == "") {
       STO symbol = SimpleNode.symbolTable.doesSymbolExist(this.identifier, ((SimpleNode) this.parent).scope);
+      if (symbol == null) {
+        symbol = SimpleNode.symbolTable.doesGlobalExist(this.identifier);
+      } 
       if (symbol != null) {
         this.actualReturnType = symbol.getType();
       } else {
@@ -45,6 +48,9 @@ public class ASTIdentifier extends SimpleNode {
 
     if (this.actualReturnType.equals("")) {
       STO symbol = SimpleNode.symbolTable.doesSymbolExist(this.identifier, ((SimpleNode) this.parent).scope);
+      if (symbol == null) {
+        symbol = SimpleNode.symbolTable.doesGlobalExist(this.identifier);
+      } 
       if (symbol != null) {
         this.actualReturnType = symbol.getType();
       }
@@ -66,6 +72,10 @@ public class ASTIdentifier extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
     STO symbol = SimpleNode.symbolTable.doesSymbolExist(this.identifier, this.scope);
+    if (symbol == null) {
+      symbol = SimpleNode.symbolTable.doesGlobalExist(this.identifier);
+    } 
+    
     if (symbol == null) {
       if (this.jjtGetNumChildren() > 0 && this.jjtGetChild(0).getId() != JmmTreeConstants.JJTCALL) {
         super.printSemanticError("Variable " + this.identifier + " was not declared");

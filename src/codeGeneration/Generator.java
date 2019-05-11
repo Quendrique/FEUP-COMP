@@ -72,7 +72,7 @@ public class Generator {
   public void genInitializer() {
     appendLine(".method public <init>()V");
     appendLine("  aload_0");
-    appendLine("  invokenonvirtual java/lang/Object/<init>()V");
+    appendLine("  invokespecial java/lang/Object/<init>()V");
     appendLine("  return");
     appendLine(".end method");
   }
@@ -179,11 +179,7 @@ public class Generator {
     iconst_1
     invokevirtual (class name).(method name)(arg types all together)(return type)
     */
-    if (((ASTCall) call).isStatic()) {
-      appendLine("  invokestatic " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
-    } else {
-      appendLine("  invokevirtual " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
-    }
+    appendLine("  invokevirtual " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
 
   }
   
@@ -262,6 +258,12 @@ public class Generator {
         break;
       case JmmTreeConstants.JJTNOT:
         genNot(node);
+        break;
+      case JmmTreeConstants.JJTTHIS:
+        genThis(node); 
+        break;
+      case JmmTreeConstants.JJTNESTEDEXP:
+        genNestedExp(node); 
         break;
       default: // todo
         break;
@@ -469,6 +471,7 @@ public class Generator {
 
     STO variable = SimpleNode.getSymbolTable().doesSymbolExist(((ASTIdentifier) node).getIdentifier(), node.getScope());
     if (variable != null) {
+      System.out.println(((ASTIdentifier) node).getIdentifier());
       switch(variable.getType()) {
         case "int":
         appendLine("  iload" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
@@ -523,6 +526,22 @@ public class Generator {
     genExpression((SimpleNode) node.jjtGetChild(0));
     appendLine("  iconst_1");
     appendLine("  ixor");
+  }
+
+  public void genThis(SimpleNode node) {
+    appendLine("  aload_0");
+  }
+
+  public void genNestedExp(SimpleNode node) {
+    genExpression((SimpleNode) node.jjtGetChild(0));
+    switch(((SimpleNode) node.jjtGetChild(1)).getId()) {
+      case JmmTreeConstants.JJTCALL:
+        genMethodCall((SimpleNode) node.jjtGetChild(1), ((SimpleNode) node.jjtGetChild(0)).getReturnType());
+        break;
+      case JmmTreeConstants.JJTLENGTH:
+        genLength((SimpleNode) node.jjtGetChild(1));
+      default: // todo arrayindex
+    }
   }
 
   public String parseReturnType(String returnType) {
