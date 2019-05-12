@@ -346,8 +346,6 @@ public class Generator {
       lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTAssign) node).getLhs());
       if (lhs != null) {
         int index = lhs.getIndex();
-        appendLine("  aload_0");
-        appendLine("  swap");
         appendLine("  putstatic " + SimpleNode.getClassName() + "/" + ((ASTAssign) node).getLhs() + " " + parseReturnType(lhs.getType())); 
       }
     }

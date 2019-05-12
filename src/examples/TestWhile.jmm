@@ -1,0 +1,10 @@
+class TestWhile {
+	public static void main(String[] args) {
+		int i;
+    i = 0;
+
+    while(i < 6) {
+      i = i + 1;
+    }
+	}
+}
