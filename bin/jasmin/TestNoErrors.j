@@ -32,7 +32,7 @@
   iconst_0
   istore_2
   iconst_1
-  istore 3
+  istore_3
   iconst_2
   aload_0
   swap
@@ -117,6 +117,25 @@
   iconst_2
   istore_2
   NEXT_0:
+  iconst_0
+  istore_2
+  WHILE_0:
+  iload_2
+  bipush 6
+  isub
+  iflt LT_ELSE_2
+  iconst_1
+  goto LT_NEXT_2
+  LT_ELSE_2:
+  iconst_0
+  LT_NEXT_2:
+  ifeq WHILE_NEXT_0
+  iload_2
+  iconst_1
+  iadd
+  istore_2
+  goto WHILE_0
+  WHILE_NEXT_0:
   return
 .end method
 

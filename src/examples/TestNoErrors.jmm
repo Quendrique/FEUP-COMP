@@ -52,6 +52,13 @@ class TestNoErrors {
     } else {
       i = 2;
     }
+
+    //while
+
+    i = 0;
+    while(i < 6) {
+      i = i + 1;
+    }
     
 
 	}

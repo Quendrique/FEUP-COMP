@@ -209,7 +209,7 @@ public class Generator {
         genIf(node);
         break;
       case JmmTreeConstants.JJTWHILE:
-        //genWhile(node);
+        genWhile(node);
         break;
       default:
         genExpression(node);
@@ -331,16 +331,16 @@ public class Generator {
       int index = lhs.getIndex();
       switch(type) {
         case "int":
-          appendLine("  istore" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
+          appendLine("  istore" + ((lhs.getIndex() <= 3) ? "_" : " ") + lhs.getIndex());
           break;
         case "int[]":
-          appendLine("  astore" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
+          appendLine("  astore" + ((lhs.getIndex() <= 3) ? "_" : " ") + lhs.getIndex());
           break;
         case "boolean":
-          appendLine("  istore" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
+          appendLine("  istore" + ((lhs.getIndex() <= 3) ? "_" : " ") + lhs.getIndex());
           break;
         default:
-          appendLine("  astore" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
+          appendLine("  astore" + ((lhs.getIndex() <= 3) ? "_" : " ") + lhs.getIndex());
       }
     } else {
       lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTAssign) node).getLhs());
@@ -359,7 +359,7 @@ public class Generator {
     STO lhs = SimpleNode.getSymbolTable().doesSymbolExist(((ASTArrayAssign) node).getIdentifier(), node.getScope());
     
     if (lhs != null) {
-      appendLine("  aload" + ((lhs.getIndex() < 3) ? "_" : " ") + lhs.getIndex());
+      appendLine("  aload" + ((lhs.getIndex() <= 3) ? "_" : " ") + lhs.getIndex());
     } else if ((lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTArrayAssign) node).getIdentifier())) != null) {
       appendLine("  getstatic " + SimpleNode.getClassName() + "/" + ((ASTArrayAssign) node).getIdentifier() + " " + parseReturnType(lhs.getType()));
     }
@@ -470,13 +470,13 @@ public class Generator {
       System.out.println(((ASTIdentifier) node).getIdentifier());
       switch(variable.getType()) {
         case "int":
-        appendLine("  iload" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
+        appendLine("  iload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
         break;
         case "int[]":
-        appendLine("  aload" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
+        appendLine("  aload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
         break;
         case "boolean":
-        appendLine("  iload" + ((variable.getIndex() < 3) ? "_" : " ") + variable.getIndex());
+        appendLine("  iload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
         break;
         default:
       }
@@ -551,7 +551,7 @@ public class Generator {
     }
     genExpression(condition);
     System.out.println(condition.getId());
-    appendLine("  ifne ELSE_"+((ASTIf) node).getLabelId()); // need to avoid multiple labels with the same name TODO
+    appendLine("  ifne ELSE_"+((ASTIf) node).getLabelId()); 
     SimpleNode child;
     for(int i = 0; i < thenStatement.jjtGetNumChildren(); i++) {
       child = (SimpleNode) thenStatement.jjtGetChild(i);
@@ -566,6 +566,19 @@ public class Generator {
       }
     }
     appendLine("  NEXT_" + ((ASTIf) node).getLabelId() + ":");
+  }
+
+  public void genWhile(SimpleNode node) {
+    SimpleNode condition = (SimpleNode) node.jjtGetChild(0);
+
+    appendLine("  WHILE_" + ((ASTWhile) node).getLabelId() + ":");
+    genExpression(condition);
+    appendLine("  ifeq WHILE_NEXT_" + ((ASTWhile) node).getLabelId()); 
+    for(int i = 1; i < node.jjtGetNumChildren(); i++) {
+      genStatement((SimpleNode) node.jjtGetChild(i));
+    }
+    appendLine("  goto WHILE_" + ((ASTWhile) node).getLabelId());
+    appendLine("  WHILE_NEXT_" + ((ASTWhile) node).getLabelId() + ":");
   }
 
   public String parseReturnType(String returnType) {

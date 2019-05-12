@@ -4,12 +4,24 @@ package parser;
 
 public
 class ASTWhile extends SimpleNode {
+
+  static int count = 0;
+  int labelId;
+
   public ASTWhile(int id) {
     super(id);
+    this.labelId = count;
+    count++;
   }
 
   public ASTWhile(Jmm p, int id) {
     super(p, id);
+    this.labelId = count;
+    count++;
+  }
+
+  public int getLabelId() {
+    return this.labelId;
   }
 
   @Override
