@@ -164,7 +164,11 @@ public class Generator {
       returnType = "V";
     }
 
-    appendLine("  invokevirtual " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
+    if (((ASTCall) call).isStatic()) {
+      appendLine("  invokestatic " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
+    } else {
+      appendLine("  invokevirtual " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
+    }
 
   }
   
@@ -269,16 +273,24 @@ public class Generator {
     }
 
     SimpleNode lhs = (SimpleNode) node.jjtGetChild(0), rhs = (SimpleNode) node.jjtGetChild(1);
-    genExpression(lhs);
-    genExpression(rhs);
 
     switch(op) {
       case "&&":
+        genExpression(lhs);
+        appendLine("  ifne AND_" + ((ASTAnd) node).getLabelId());
+        appendLine("  iconst_0");
+        appendLine("  goto AND_NEXT_" + ((ASTAnd) node).getLabelId());
+        appendLine("  AND_" + ((ASTAnd) node).getLabelId() + ":");
+        appendLine("  iconst_1");
+        genExpression(rhs);
         appendLine("  iand");
+        appendLine("  AND_NEXT_" + ((ASTAnd) node).getLabelId() + ":");
         break;
       case "<":
+        genExpression(lhs);
+        genExpression(rhs);
         appendLine("  isub"); 
-        appendLine("  iflt LT_ELSE_" + ((ASTLessThan) node).getLabelId());
+        appendLine("  ifgt LT_ELSE_" + ((ASTLessThan) node).getLabelId());
         appendLine("  iconst_1");
         appendLine("  goto LT_NEXT_" + ((ASTLessThan) node).getLabelId());
         appendLine("  LT_ELSE_" + ((ASTLessThan) node).getLabelId() + ":");
@@ -409,10 +421,10 @@ public class Generator {
         appendLine("  ireturn");
         break;
       case "int[]":
-        appendLine("  areturn"); //??
+        appendLine("  areturn"); 
         break;
       case "boolean":
-        appendLine("  ireturn"); //??
+        appendLine("  ireturn"); 
         break;
       case "void":
         appendLine("  return");
@@ -477,6 +489,7 @@ public class Generator {
         appendLine("  iload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
         break;
         default:
+        appendLine("  aload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
       }
     } else { 
       variable = SimpleNode.getSymbolTable().doesGlobalExist(((ASTIdentifier) node).getIdentifier());

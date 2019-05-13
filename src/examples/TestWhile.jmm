@@ -1,9 +1,19 @@
 class TestWhile {
 	public static void main(String[] args) {
-		int i;
-    i = 0;
+		int[] arr;
+    int i;
 
-    while(i < 6) {
+    i = 0;
+    arr = new int[6];
+
+    if (false && true) {
+      i = 0;
+    } else {
+      i = 0;
+    }
+
+    while(i < 10) {
+      arr[i] = 1;
       i = i + 1;
     }
 	}

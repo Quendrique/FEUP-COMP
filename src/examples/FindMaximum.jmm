@@ -1,5 +1,6 @@
 class FindMaximum {
 	int[] test_arr;
+	int global_int;
 
 	public int find_maximum(int[] arr) {
 		int i;

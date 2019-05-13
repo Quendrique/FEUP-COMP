@@ -9,16 +9,16 @@ class ASTCall extends SimpleNode {
 
   protected String value;
   protected String className;
-  protected boolean isExternal;
+  protected boolean isStatic;
 
   public ASTCall(int id) {
     super(id);
-    this.isExternal = false;
+    this.isStatic = false;
   }
 
   public ASTCall(Jmm p, int id) {
     super(p, id);
-    this.isExternal = false;
+    this.isStatic = false;
   }
 
   public String getValue() {
@@ -29,8 +29,8 @@ class ASTCall extends SimpleNode {
     this.value = value;
   }
 
-  public boolean isExternal() {
-    return this.isExternal;
+  public boolean isStatic() {
+    return this.isStatic;
   }
 
   @Override
@@ -81,7 +81,7 @@ class ASTCall extends SimpleNode {
             super.printSemanticError("Variable " + ((ASTIdentifier) this.parent).getIdentifier() + " not initialized");
           }
         } else {
-          this.isExternal = true;
+          this.isStatic = true;
         }
       }
   

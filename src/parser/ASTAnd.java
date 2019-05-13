@@ -4,14 +4,25 @@ package parser;
 
 public class ASTAnd extends SimpleNode {
 
+  static int count = 0;
+  int labelId;
+
   public ASTAnd(int id) {
     super(id);
     this.actualReturnType = "boolean";
+    this.labelId = count;
+    count++;
   }
 
   public ASTAnd(Jmm p, int id) {
     super(p, id);
     this.actualReturnType = "boolean";
+    this.labelId = count;
+    count++;
+  }
+
+  public int getLabelId() {
+    return this.labelId;
   }
 
   @Override
