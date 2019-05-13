@@ -45,10 +45,6 @@
   iconst_0
   LT_NEXT_0:
   ifeq WHILE_NEXT_0
-  aload_1
-  iload_2
-  iconst_1
-  iastore
   iload_2
   iconst_1
   iadd

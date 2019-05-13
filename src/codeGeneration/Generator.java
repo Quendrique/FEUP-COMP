@@ -91,7 +91,7 @@ public class Generator {
     varName = dec.getIdentifier();
     varType = parseReturnType(dec.getType());
 		
-		appendLine(".field static " + varName + " " + varType);
+		appendLine(".field private " + varName + " " + varType);
     
   }
 
@@ -216,7 +216,15 @@ public class Generator {
         genWhile(node);
         break;
       default:
-        genExpression(node);
+        if (node.getId() == JmmTreeConstants.JJTIDENTIFIER
+          && node.jjtGetNumChildren() > 0
+          && (((SimpleNode) node.jjtGetChild(0)).getId() == JmmTreeConstants.JJTCALL || ((SimpleNode) node.jjtGetChild(0)).getId() == JmmTreeConstants.JJTLENGTH)) {
+            genExpression(node);
+        }
+        if (node.getId() == JmmTreeConstants.JJTNESTEDEXP
+          && (((SimpleNode) node.jjtGetChild(1)).getId() == JmmTreeConstants.JJTCALL || ((SimpleNode) node.jjtGetChild(1)).getId() == JmmTreeConstants.JJTLENGTH)) {
+            genExpression(node);
+        }
         break;
       }
   }
@@ -257,7 +265,7 @@ public class Generator {
       case JmmTreeConstants.JJTNESTEDEXP:
         genNestedExp(node); 
         break;
-      default: // todo
+      default: 
         break;
     }
   }
@@ -494,7 +502,8 @@ public class Generator {
     } else { 
       variable = SimpleNode.getSymbolTable().doesGlobalExist(((ASTIdentifier) node).getIdentifier());
       if (variable != null) {
-        appendLine("  getstatic " + SimpleNode.getClassName() + "/" + ((ASTIdentifier) node).getIdentifier() + " " + parseReturnType(variable.getType()));
+        appendLine("  aload_0");
+        appendLine("  getfield " + SimpleNode.getClassName() + "/" + ((ASTIdentifier) node).getIdentifier() + " " + parseReturnType(variable.getType()));
       }
     }
 
@@ -513,15 +522,6 @@ public class Generator {
       }
     }
     
-    /**
-     * aload_0
-        aload_0
-        getfield foo/y I
-        aload_0
-        getfield foo/z I
-        iadd 
-        putfield foo/x
-     */
   }
 
   public void genLength(SimpleNode node) {
