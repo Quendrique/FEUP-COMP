@@ -6,7 +6,7 @@ public
 class ASTClassDeclaration extends SimpleNode {
 
   protected String name;
-  protected String extendsIdent;
+  protected String extendsIdent = "";
 
   public ASTClassDeclaration(int id) {
     super(id);

@@ -1,10 +1,10 @@
 .class public TestWhile
-.super java/lang/Object
+.super ioPlus
 
 
 .method public <init>()V
   aload_0
-  invokespecial java/lang/Object/<init>()V
+  invokespecial ioPlus/<init>()V
   return
 .end method
 

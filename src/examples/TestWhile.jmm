@@ -1,4 +1,4 @@
-class TestWhile {
+class TestWhile extends ioPlus{
 	public static void main(String[] args) {
 		int[] arr;
     int i;

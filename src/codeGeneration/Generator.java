@@ -53,7 +53,7 @@ public class Generator {
   }
 
   public void generate() {
-    genClass(this.root.getName());
+    genClass();
     genGlobals();
     
     genInitializer();
@@ -63,14 +63,23 @@ public class Generator {
     out.close();
   }
 
-  public void genClass(String className) {
-    appendLine(".class public " + className + "\n.super java/lang/Object");
+  public void genClass() {
+    appendLine(".class public " + this.root.getName());
+    if (!this.root.getExtends().equals("")) {
+      appendLine(".super " + this.root.getExtends());
+    } else {
+      appendLine(".super java/lang/Object");
+    }
   }
 
   public void genInitializer() {
     appendLine(".method public <init>()V");
     appendLine("  aload_0");
-    appendLine("  invokespecial java/lang/Object/<init>()V");
+    if (!this.root.getExtends().equals("")) {
+      appendLine("  invokespecial " + this.root.getExtends() + "/<init>()V");
+    } else {
+      appendLine("  invokespecial java/lang/Object/<init>()V");
+    }
     appendLine("  return");
     appendLine(".end method");
   }
