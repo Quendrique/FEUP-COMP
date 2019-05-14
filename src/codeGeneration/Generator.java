@@ -185,14 +185,14 @@ public class Generator {
 
     System.out.println(" Gen Body: " + JmmTreeConstants.jjtNodeName[method.getId()]);
 
-    appendLine("  .limit stack 20"); //TODO
     String methodName = "";
     if (method instanceof ASTMethodDeclaration) {
       methodName = ((ASTMethodDeclaration) method).getName();
     } else {
       methodName = "main";
     }
-
+    appendLine("  .limit stack 20"); //TODO field currMaxStack reset at every function generated
+    
     STFunction function = SimpleNode.getSymbolTable().doesFunctionExist(methodName);
     appendLine("  .limit locals " + function.getNumLocals());
 
@@ -307,7 +307,7 @@ public class Generator {
         genExpression(lhs);
         genExpression(rhs);
         appendLine("  isub"); 
-        appendLine("  ifgt LT_ELSE_" + ((ASTLessThan) node).getLabelId());
+        appendLine("  ifge LT_ELSE_" + ((ASTLessThan) node).getLabelId());
         appendLine("  iconst_1");
         appendLine("  goto LT_NEXT_" + ((ASTLessThan) node).getLabelId());
         appendLine("  LT_ELSE_" + ((ASTLessThan) node).getLabelId() + ":");
@@ -375,7 +375,9 @@ public class Generator {
       lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTAssign) node).getLhs());
       if (lhs != null) {
         int index = lhs.getIndex();
-        appendLine("  putstatic " + SimpleNode.getClassName() + "/" + ((ASTAssign) node).getLhs() + " " + parseReturnType(lhs.getType())); 
+        appendLine("  aload_0");
+        appendLine("  swap");
+        appendLine("  putfield " + SimpleNode.getClassName() + "/" + ((ASTAssign) node).getLhs() + " " + parseReturnType(lhs.getType())); 
       }
     }
 
@@ -388,7 +390,8 @@ public class Generator {
     if (lhs != null) {
       appendLine("  aload" + ((lhs.getIndex() <= 3) ? "_" : " ") + lhs.getIndex());
     } else if ((lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTArrayAssign) node).getIdentifier())) != null) {
-      appendLine("  getstatic " + SimpleNode.getClassName() + "/" + ((ASTArrayAssign) node).getIdentifier() + " " + parseReturnType(lhs.getType()));
+      appendLine("  aload_0");
+      appendLine("  getfield " + SimpleNode.getClassName() + "/" + ((ASTArrayAssign) node).getIdentifier() + " " + parseReturnType(lhs.getType()));
     }
 
     // array index
@@ -571,7 +574,7 @@ public class Generator {
     }
     genExpression(condition);
     System.out.println(condition.getId());
-    appendLine("  ifne ELSE_"+((ASTIf) node).getLabelId()); 
+    appendLine("  ifeq ELSE_"+((ASTIf) node).getLabelId()); 
     SimpleNode child;
     for(int i = 0; i < thenStatement.jjtGetNumChildren(); i++) {
       child = (SimpleNode) thenStatement.jjtGetChild(i);
