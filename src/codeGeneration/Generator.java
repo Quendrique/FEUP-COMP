@@ -3,7 +3,12 @@ package codeGeneration;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
+
 import java.util.List;
+
 import parser.*;
 import semantic.*;
 
@@ -13,6 +18,8 @@ public class Generator {
 
   private StringBuilder builder;
   private PrintWriter out;
+
+  private int stackCounter = 0;
 
   public Generator(SimpleNode root) throws IOException {
 
@@ -191,7 +198,7 @@ public class Generator {
     } else {
       methodName = "main";
     }
-    appendLine("  .limit stack 20"); //TODO field currMaxStack reset at every function generated
+    appendLine("  .limit stack_" + methodName); //TODO field currMaxStack reset at every function generated
     
     STFunction function = SimpleNode.getSymbolTable().doesFunctionExist(methodName);
     appendLine("  .limit locals " + function.getNumLocals());
@@ -206,6 +213,10 @@ public class Generator {
         genStatement(child);
       }
     }
+
+
+
+    this.stackCounter = 0;
   }
 
   public void genStatement(SimpleNode node) {
@@ -615,6 +626,32 @@ public class Generator {
       default:
         return "L" + returnType + ";";
     }
+  }
+
+  public void writeStackLimit(String methodName) {
+    try {
+
+      File dir = new File("jasmin");
+      if (!dir.exists())
+          dir.mkdirs();
+
+      File file = new File("jasmin/" + this.root.getName() + ".j");
+
+      if (!file.exists()) {
+        file.createNewFile();
+      }
+
+      Path path = file.toPath();
+      Charset charset = StandardCharsets.UTF_8;
+  
+      String content = new String(Files.readAllBytes(path), charset);
+      content = content.replace("stack_"+methodName, this.stackCounter+"");
+      Files.write(path, content.getBytes(charset));
+      
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
+    }
+
   }
 
   public SimpleNode getRoot(){
