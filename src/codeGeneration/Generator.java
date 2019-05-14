@@ -19,7 +19,6 @@ public class Generator {
   private StringBuilder builder;
   private PrintWriter out;
 
-  private int stackCounter = 0;
 
   public Generator(SimpleNode root) throws IOException {
 
@@ -124,8 +123,9 @@ public class Generator {
 
   public void genMethod(SimpleNode method) {
     genMethodSignature(method);
-    genMethodBody(method);
-    genMethodFooter(method);
+    StackController stack = new StackController();
+    genMethodBody(method, stack);
+    genMethodFooter(method, stack);
     
   }
   
@@ -156,7 +156,7 @@ public class Generator {
     
   }
 
-  public void genMethodCall(SimpleNode call, String variableType) {
+  public void genMethodCall(SimpleNode call, String variableType, StackController stack) {
 
     String paramTypes = "";
     if (call.jjtGetNumChildren() > 0 && ((SimpleNode) call.jjtGetChild(0)).getId() == JmmTreeConstants.JJTARGS) {
@@ -166,7 +166,7 @@ public class Generator {
       SimpleNode child;
       for(int i = 0; i < args.jjtGetNumChildren(); i++) {
         child = (SimpleNode) args.jjtGetChild(0);
-        genExpression(child);
+        genExpression(child, stack);
         paramTypes += parseReturnType(((ASTIdentifier) child).getReturnType());
       }
     }
@@ -188,7 +188,7 @@ public class Generator {
 
   }
   
-  public void genMethodBody(SimpleNode method) {
+  public void genMethodBody(SimpleNode method, StackController stack) {
 
     System.out.println(" Gen Body: " + JmmTreeConstants.jjtNodeName[method.getId()]);
 
@@ -198,7 +198,7 @@ public class Generator {
     } else {
       methodName = "main";
     }
-    appendLine("  .limit stack_" + methodName); //TODO field currMaxStack reset at every function generated
+    appendLine("  .limit stack_" + methodName);
     
     STFunction function = SimpleNode.getSymbolTable().doesFunctionExist(methodName);
     appendLine("  .limit locals " + function.getNumLocals());
@@ -210,87 +210,85 @@ public class Generator {
       SimpleNode child;
       for(int i = 0; i < nSts; i++) {
         child = (SimpleNode) method.jjtGetChild(i);
-        genStatement(child);
+        genStatement(child, stack);
       }
     }
 
-
-
-    this.stackCounter = 0;
+    writeStackLimit(methodName);
   }
 
-  public void genStatement(SimpleNode node) {
+  public void genStatement(SimpleNode node, StackController stack) {
     switch (node.getId()) {
       case JmmTreeConstants.JJTVARDECLARATION: 
         break;
       case JmmTreeConstants.JJTASSIGN:
-        genAssign(node);
+        genAssign(node, stack);
         break;
       case JmmTreeConstants.JJTARRAYASSIGN:
-        genArrayAssign(node);
+        genArrayAssign(node, stack);
         break;
       case JmmTreeConstants.JJTIF:
-        genIf(node);
+        genIf(node, stack);
         break;
       case JmmTreeConstants.JJTWHILE:
-        genWhile(node);
+        genWhile(node, stack);
         break;
       default:
         if (node.getId() == JmmTreeConstants.JJTIDENTIFIER
           && node.jjtGetNumChildren() > 0
           && (((SimpleNode) node.jjtGetChild(0)).getId() == JmmTreeConstants.JJTCALL || ((SimpleNode) node.jjtGetChild(0)).getId() == JmmTreeConstants.JJTLENGTH)) {
-            genExpression(node);
+            genExpression(node, stack);
         }
         if (node.getId() == JmmTreeConstants.JJTNESTEDEXP
           && (((SimpleNode) node.jjtGetChild(1)).getId() == JmmTreeConstants.JJTCALL || ((SimpleNode) node.jjtGetChild(1)).getId() == JmmTreeConstants.JJTLENGTH)) {
-            genExpression(node);
+            genExpression(node, stack);
         }
         break;
       }
   }
 
-  public void genExpression(SimpleNode node) {
+  public void genExpression(SimpleNode node, StackController stack) {
     String expression = JmmTreeConstants.jjtNodeName[node.getId()];
     switch (node.getId()) {
       case JmmTreeConstants.JJTAND:
-        genLogicOp(node);
+        genLogicOp(node, stack);
         break;
       case JmmTreeConstants.JJTLESSTHAN:
-        genLogicOp(node);
+        genLogicOp(node, stack);
         break;
       case JmmTreeConstants.JJTADDSUB:
-        genArithmeticOp(node);
+        genArithmeticOp(node, stack);
         break;
       case JmmTreeConstants.JJTMULTDIV:
-        genArithmeticOp(node);
+        genArithmeticOp(node, stack);
         break;
       case JmmTreeConstants.JJTIDENTIFIER:
-        genIdentifierLoad(node);
+        genIdentifierLoad(node, stack);
         break;
       case JmmTreeConstants.JJTNEW:
-        genNew(node);
+        genNew(node, stack);
         break;
       case JmmTreeConstants.JJTBOOLEANLITERAL:
-        genBooleanLiteral(node);
+        genBooleanLiteral(node, stack);
         break;
       case JmmTreeConstants.JJTINTEGERLITERAL:
-        genIntegerLiteral(node);
+        genIntegerLiteral(node, stack);
         break;
       case JmmTreeConstants.JJTNOT:
-        genNot(node);
+        genNot(node, stack);
         break;
       case JmmTreeConstants.JJTTHIS:
-        genThis(node); 
+        genThis(node, stack); 
         break;
       case JmmTreeConstants.JJTNESTEDEXP:
-        genNestedExp(node); 
+        genNestedExp(node, stack); 
         break;
       default: 
         break;
     }
   }
 
-  public void genLogicOp(SimpleNode node) {
+  public void genLogicOp(SimpleNode node, StackController stack) {
     String op = "";
     switch(node.getId()) {
       case JmmTreeConstants.JJTAND:
@@ -304,19 +302,19 @@ public class Generator {
 
     switch(op) {
       case "&&":
-        genExpression(lhs);
+        genExpression(lhs, stack);
         appendLine("  ifne AND_" + ((ASTAnd) node).getLabelId());
         appendLine("  iconst_0");
         appendLine("  goto AND_NEXT_" + ((ASTAnd) node).getLabelId());
         appendLine("  AND_" + ((ASTAnd) node).getLabelId() + ":");
         appendLine("  iconst_1");
-        genExpression(rhs);
+        genExpression(rhs, stack);
         appendLine("  iand");
         appendLine("  AND_NEXT_" + ((ASTAnd) node).getLabelId() + ":");
         break;
       case "<":
-        genExpression(lhs);
-        genExpression(rhs);
+        genExpression(lhs, stack);
+        genExpression(rhs, stack);
         appendLine("  isub"); 
         appendLine("  ifge LT_ELSE_" + ((ASTLessThan) node).getLabelId());
         appendLine("  iconst_1");
@@ -328,7 +326,7 @@ public class Generator {
      
   }
 
-  public void genArithmeticOp(SimpleNode node) {
+  public void genArithmeticOp(SimpleNode node, StackController stack) {
     String op = "";
     switch(node.getId()) {
       case JmmTreeConstants.JJTADDSUB:
@@ -340,8 +338,8 @@ public class Generator {
     }
 
     SimpleNode lhs = (SimpleNode) node.jjtGetChild(0), rhs = (SimpleNode) node.jjtGetChild(1);
-    genExpression(lhs);
-    genExpression(rhs);
+    genExpression(lhs, stack);
+    genExpression(rhs, stack);
 
     switch(op) {
       case "+":
@@ -359,12 +357,12 @@ public class Generator {
 
   }
 
-  public void genAssign(SimpleNode node){
+  public void genAssign(SimpleNode node, StackController stack){
     
     STO lhs = SimpleNode.getSymbolTable().doesSymbolExist(((ASTAssign) node).getLhs(), node.getScope());
 
     SimpleNode rhs = (SimpleNode) node.jjtGetChild(0);
-    genExpression(rhs);
+    genExpression(rhs, stack);
 
     if (lhs != null) {
       String type = lhs.getType();
@@ -394,7 +392,7 @@ public class Generator {
 
   }
 
-  public void genArrayAssign(SimpleNode node){
+  public void genArrayAssign(SimpleNode node, StackController stack){
 
     STO lhs = SimpleNode.getSymbolTable().doesSymbolExist(((ASTArrayAssign) node).getIdentifier(), node.getScope());
     
@@ -406,11 +404,11 @@ public class Generator {
     }
 
     // array index
-    genExpression((SimpleNode) ((SimpleNode) node.jjtGetChild(0)).jjtGetChild(0));
+    genExpression((SimpleNode) ((SimpleNode) node.jjtGetChild(0)).jjtGetChild(0), stack);
     
     // rhs expression
     SimpleNode rhs = (SimpleNode) node.jjtGetChild(1);
-    genExpression(rhs);
+    genExpression(rhs, stack);
 
     if (lhs != null) {
       appendLine("  iastore");
@@ -418,9 +416,9 @@ public class Generator {
 
   }
 
-  public void genNew(SimpleNode node) {
+  public void genNew(SimpleNode node, StackController stack) {
     if (node.jjtGetNumChildren() > 0) { // new array
-      genExpression((SimpleNode) node.jjtGetChild(0));
+      genExpression((SimpleNode) node.jjtGetChild(0), stack);
       appendLine("  newarray int");
     } else {
       appendLine("  new " + ((ASTNew) node).getActualReturnType());
@@ -429,7 +427,7 @@ public class Generator {
     }
   }
 
-  public void genMethodFooter(SimpleNode method){
+  public void genMethodFooter(SimpleNode method, StackController stack){
 
     STFunction function;
     if (method.getId() == JmmTreeConstants.JJTMAINDECLARATION) {
@@ -440,7 +438,7 @@ public class Generator {
 
     SimpleNode returnNode = (SimpleNode) method.jjtGetChild(method.jjtGetNumChildren()-1);
     if (returnNode.getId() == JmmTreeConstants.JJTRETURN) {
-      genExpression(((SimpleNode) returnNode.jjtGetChild(0)));
+      genExpression(((SimpleNode) returnNode.jjtGetChild(0)), stack);
     }
 
     String returnType = "void";
@@ -483,7 +481,7 @@ public class Generator {
     }
   } 
 
-  public void genIntegerLiteral (SimpleNode node) {
+  public void genIntegerLiteral (SimpleNode node, StackController stack) {
     int value = ((ASTIntegerLiteral) node).getValue();
     if (value <= 5)
       appendLine("  iconst_" + value);
@@ -495,7 +493,7 @@ public class Generator {
       appendLine("  ldc " + value);
   }
 
-  public void genBooleanLiteral (SimpleNode node) {
+  public void genBooleanLiteral (SimpleNode node, StackController stack) {
     String value = ((ASTBooleanLiteral) node).getBooleanValue();
     if (value.equals("true")) {
       appendLine("  iconst_1");
@@ -504,7 +502,7 @@ public class Generator {
     }
   }
 
-  public void genIdentifierLoad (SimpleNode node) {
+  public void genIdentifierLoad (SimpleNode node, StackController stack) {
 
     STO variable = SimpleNode.getSymbolTable().doesSymbolExist(((ASTIdentifier) node).getIdentifier(), node.getScope());
     if (variable != null) {
@@ -534,48 +532,48 @@ public class Generator {
       SimpleNode child = ((SimpleNode) node.jjtGetChild(0));
       switch(child.getId()) {
         case JmmTreeConstants.JJTARRAYINDEX:
-          genExpression((SimpleNode) ((SimpleNode) node).jjtGetChild(0).jjtGetChild(0));
+          genExpression((SimpleNode) ((SimpleNode) node).jjtGetChild(0).jjtGetChild(0), stack);
           appendLine("  iaload");
           break;
         case JmmTreeConstants.JJTCALL:
-          genMethodCall((SimpleNode) node.jjtGetChild(0), node.getActualReturnType());
+          genMethodCall((SimpleNode) node.jjtGetChild(0), node.getActualReturnType(), stack);
           break;
         case JmmTreeConstants.JJTLENGTH:
-          genLength(node);
+          genLength(node, stack);
       }
     }
     
   }
 
-  public void genLength(SimpleNode node) {
+  public void genLength(SimpleNode node, StackController stack) {
     appendLine("  arraylength");
   }
 
-  public void genNot(SimpleNode node) {
-    genExpression((SimpleNode) node.jjtGetChild(0));
+  public void genNot(SimpleNode node, StackController stack) {
+    genExpression((SimpleNode) node.jjtGetChild(0), stack);
     appendLine("  iconst_1");
     appendLine("  ixor");
   }
 
-  public void genThis(SimpleNode node) {
+  public void genThis(SimpleNode node, StackController stack) {
     appendLine("  aload_0");
   }
 
-  public void genNestedExp(SimpleNode node) {
-    genExpression((SimpleNode) node.jjtGetChild(0));
+  public void genNestedExp(SimpleNode node, StackController stack) {
+    genExpression((SimpleNode) node.jjtGetChild(0), stack);
     switch(((SimpleNode) node.jjtGetChild(1)).getId()) {
       case JmmTreeConstants.JJTCALL:
-        genMethodCall((SimpleNode) node.jjtGetChild(1), ((SimpleNode) node.jjtGetChild(0)).getReturnType());
+        genMethodCall((SimpleNode) node.jjtGetChild(1), ((SimpleNode) node.jjtGetChild(0)).getReturnType(), stack);
         break;
       case JmmTreeConstants.JJTLENGTH:
-        genLength((SimpleNode) node.jjtGetChild(1));
+        genLength((SimpleNode) node.jjtGetChild(1), stack);
         break;
       case JmmTreeConstants.JJTARRAYINDEX:
-        genExpression(((SimpleNode) ((SimpleNode) node.jjtGetChild(1)).jjtGetChild(0)));
+        genExpression(((SimpleNode) ((SimpleNode) node.jjtGetChild(1)).jjtGetChild(0)), stack);
     }
   }
   
-  public void genIf(SimpleNode node) {
+  public void genIf(SimpleNode node, StackController stack) {
     SimpleNode condition = (SimpleNode) ((SimpleNode) node.jjtGetChild(0)).jjtGetChild(0);
     SimpleNode thenStatement = ((SimpleNode) node.jjtGetChild(1));
     SimpleNode elseStatement = null;
@@ -583,33 +581,33 @@ public class Generator {
     if (((SimpleNode) node.jjtGetChild(0)).jjtGetNumChildren() > 0) {
       elseStatement = ((SimpleNode) node.jjtGetChild(2));
     }
-    genExpression(condition);
+    genExpression(condition, stack);
     System.out.println(condition.getId());
     appendLine("  ifeq ELSE_"+((ASTIf) node).getLabelId()); 
     SimpleNode child;
     for(int i = 0; i < thenStatement.jjtGetNumChildren(); i++) {
       child = (SimpleNode) thenStatement.jjtGetChild(i);
-      genStatement(child);
+      genStatement(child, stack);
     }
     appendLine("  goto NEXT_"+((ASTIf) node).getLabelId());
     appendLine("  ELSE_" + +((ASTIf) node).getLabelId() +":");
     if (elseStatement != null) {
       for(int i = 0; i < elseStatement.jjtGetNumChildren(); i++) {
         child = (SimpleNode) elseStatement.jjtGetChild(i);
-        genStatement(child);
+        genStatement(child, stack);
       }
     }
     appendLine("  NEXT_" + ((ASTIf) node).getLabelId() + ":");
   }
 
-  public void genWhile(SimpleNode node) {
+  public void genWhile(SimpleNode node, StackController stack) {
     SimpleNode condition = (SimpleNode) node.jjtGetChild(0);
 
     appendLine("  WHILE_" + ((ASTWhile) node).getLabelId() + ":");
-    genExpression(condition);
+    genExpression(condition, stack);
     appendLine("  ifeq WHILE_NEXT_" + ((ASTWhile) node).getLabelId()); 
     for(int i = 1; i < node.jjtGetNumChildren(); i++) {
-      genStatement((SimpleNode) node.jjtGetChild(i));
+      genStatement((SimpleNode) node.jjtGetChild(i), stack);
     }
     appendLine("  goto WHILE_" + ((ASTWhile) node).getLabelId());
     appendLine("  WHILE_NEXT_" + ((ASTWhile) node).getLabelId() + ":");
@@ -645,13 +643,12 @@ public class Generator {
       Charset charset = StandardCharsets.UTF_8;
   
       String content = new String(Files.readAllBytes(path), charset);
-      content = content.replace("stack_"+methodName, this.stackCounter+"");
+      content = content.replace("stack_"+methodName, 20+""); //TODO
       Files.write(path, content.getBytes(charset));
       
     } catch (IOException e) {
       System.out.println(e.getMessage());
     }
-
   }
 
   public SimpleNode getRoot(){
