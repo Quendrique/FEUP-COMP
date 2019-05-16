@@ -126,7 +126,14 @@ public class Generator {
     StackController stack = new StackController();
     genMethodBody(method, stack);
     System.out.println("Current max stack: " + stack.getMaxStack());
-    genMethodFooter(method, stack);    
+    genMethodFooter(method, stack);
+    String methodName = "";
+    if (method instanceof ASTMethodDeclaration) {
+      methodName = ((ASTMethodDeclaration) method).getName();
+    } else {
+      methodName = "main";
+    }
+    writeStackLimit(methodName, stack);    
   }
   
   public void genMethodSignature(SimpleNode method) {
@@ -206,7 +213,9 @@ public class Generator {
     STFunction function = SimpleNode.getSymbolTable().doesFunctionExist(methodName);
     appendLine("  .limit locals " + function.getNumLocals());
 
-    if(method.getId() != JmmTreeConstants.JJTMETHODDECLARATION && method.getId() != JmmTreeConstants.JJTMAINDECLARATION) return;
+    if(method.getId() != JmmTreeConstants.JJTMETHODDECLARATION 
+      && method.getId() != JmmTreeConstants.JJTMAINDECLARATION) 
+      return;
     if (method.jjtGetNumChildren() > 0) {
 
       int nSts = method.jjtGetNumChildren();  
@@ -216,8 +225,6 @@ public class Generator {
         genStatement(child, stack);
       }
     }
-
-    writeStackLimit(methodName, stack);
   }
 
   public void genStatement(SimpleNode node, StackController stack) {
@@ -410,11 +417,10 @@ public class Generator {
 
     STO lhs = SimpleNode.getSymbolTable().doesSymbolExist(((ASTArrayAssign) node).getIdentifier(), node.getScope());
     
+    stack.addInstruction(Instructions.ALOAD, 0);
     if (lhs != null) {
-      stack.addInstruction(Instructions.ALOAD, 0);
       appendLine("  aload" + ((lhs.getIndex() <= 3) ? "_" : " ") + lhs.getIndex());
     } else if ((lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTArrayAssign) node).getIdentifier())) != null) {
-      stack.addInstruction(Instructions.ALOAD, 0);
       appendLine("  aload_0");
       stack.addInstruction(Instructions.GETFIELD, 0);
       appendLine("  getfield " + SimpleNode.getClassName() + "/" + ((ASTArrayAssign) node).getIdentifier() + " " + parseReturnType(lhs.getType()));
@@ -542,7 +548,6 @@ public class Generator {
 
     STO variable = SimpleNode.getSymbolTable().doesSymbolExist(((ASTIdentifier) node).getIdentifier(), node.getScope());
     if (variable != null) {
-      System.out.println(((ASTIdentifier) node).getIdentifier());
       switch(variable.getType()) {
         case "int":
         stack.addInstruction(Instructions.ILOAD, 0);

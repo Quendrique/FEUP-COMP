@@ -125,7 +125,7 @@
 
 
 .method public get_array()[I
-  .limit stack 0
+  .limit stack 1
   .limit locals 1
   aload_0
   getfield FindMaximum/test_arr [I
