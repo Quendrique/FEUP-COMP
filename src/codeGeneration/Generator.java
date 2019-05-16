@@ -688,7 +688,7 @@ public class Generator {
 
       System.out.println(methodName);
       int index = this.builder.indexOf("stack_" + methodName);
-      this.builder.replace(index, index + methodName.length() + 6, "stack " + stack.getMaxStack());
+      this.builder.replace(index, index + methodName.length() + 6, "stack " + stack.getMaxStack()); // 6 - "stack_"
       
     } catch (IOException e) {
       System.out.println(e.getMessage());
