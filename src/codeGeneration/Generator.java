@@ -125,8 +125,8 @@ public class Generator {
     genMethodSignature(method);
     StackController stack = new StackController();
     genMethodBody(method, stack);
-    genMethodFooter(method, stack);
-    
+    System.out.println("Current max stack: " + stack.getMaxStack());
+    genMethodFooter(method, stack);    
   }
   
   public void genMethodSignature(SimpleNode method) {
@@ -159,8 +159,9 @@ public class Generator {
   public void genMethodCall(SimpleNode call, String variableType, StackController stack) {
 
     String paramTypes = "";
+    SimpleNode args = null;
     if (call.jjtGetNumChildren() > 0 && ((SimpleNode) call.jjtGetChild(0)).getId() == JmmTreeConstants.JJTARGS) {
-      SimpleNode args = (SimpleNode) call.jjtGetChild(0);
+      args = (SimpleNode) call.jjtGetChild(0);
       //get function scope and corresponding stfunction object
       //go through params in the function and add them to the invocation
       SimpleNode child;
@@ -181,8 +182,10 @@ public class Generator {
     }
 
     if (((ASTCall) call).isStatic()) {
+      stack.addInstruction(Instructions.INVOKESTATIC, ((args != null) ? args.jjtGetNumChildren() : 0));
       appendLine("  invokestatic " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
     } else {
+      stack.addInstruction(Instructions.INVOKEVIRTUAL, ((args != null) ? args.jjtGetNumChildren() : 0));
       appendLine("  invokevirtual " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
     }
 
@@ -214,7 +217,7 @@ public class Generator {
       }
     }
 
-    writeStackLimit(methodName);
+    writeStackLimit(methodName, stack);
   }
 
   public void genStatement(SimpleNode node, StackController stack) {
@@ -308,20 +311,24 @@ public class Generator {
         appendLine("  goto AND_NEXT_" + ((ASTAnd) node).getLabelId());
         appendLine("  AND_" + ((ASTAnd) node).getLabelId() + ":");
         appendLine("  iconst_1");
+        stack.addInstruction(Instructions.ICONST, 0);
         genExpression(rhs, stack);
         appendLine("  iand");
+        stack.addInstruction(Instructions.OP, 0);
         appendLine("  AND_NEXT_" + ((ASTAnd) node).getLabelId() + ":");
         break;
-      case "<":
+        case "<":
         genExpression(lhs, stack);
         genExpression(rhs, stack);
         appendLine("  isub"); 
+        stack.addInstruction(Instructions.OP, 0);
         appendLine("  ifge LT_ELSE_" + ((ASTLessThan) node).getLabelId());
         appendLine("  iconst_1");
         appendLine("  goto LT_NEXT_" + ((ASTLessThan) node).getLabelId());
         appendLine("  LT_ELSE_" + ((ASTLessThan) node).getLabelId() + ":");
         appendLine("  iconst_0");
         appendLine("  LT_NEXT_" + ((ASTLessThan) node).getLabelId() + ":");
+        stack.addInstruction(Instructions.ICONST, 0);
     } 
      
   }
@@ -341,16 +348,17 @@ public class Generator {
     genExpression(lhs, stack);
     genExpression(rhs, stack);
 
+    stack.addInstruction(Instructions.OP, 0);
     switch(op) {
       case "+":
         appendLine("  iadd");
-        break;
+      break;
       case "-":
         appendLine("  isub");
-        break;
+      break;
       case "/":
         appendLine("  idiv");
-        break;
+      break;
       case "*":
         appendLine("  imul");
     } 
@@ -369,23 +377,29 @@ public class Generator {
       int index = lhs.getIndex();
       switch(type) {
         case "int":
+          stack.addInstruction(Instructions.ISTORE, 0);
           appendLine("  istore" + ((lhs.getIndex() <= 3) ? "_" : " ") + lhs.getIndex());
           break;
         case "int[]":
+          stack.addInstruction(Instructions.ASTORE, 0);
           appendLine("  astore" + ((lhs.getIndex() <= 3) ? "_" : " ") + lhs.getIndex());
           break;
         case "boolean":
+          stack.addInstruction(Instructions.ISTORE, 0);
           appendLine("  istore" + ((lhs.getIndex() <= 3) ? "_" : " ") + lhs.getIndex());
           break;
         default:
+          stack.addInstruction(Instructions.ASTORE, 0);
           appendLine("  astore" + ((lhs.getIndex() <= 3) ? "_" : " ") + lhs.getIndex());
       }
     } else {
       lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTAssign) node).getLhs());
       if (lhs != null) {
         int index = lhs.getIndex();
+        stack.addInstruction(Instructions.ALOAD, 0);
         appendLine("  aload_0");
         appendLine("  swap");
+        stack.addInstruction(Instructions.PUTFIELD, 0);
         appendLine("  putfield " + SimpleNode.getClassName() + "/" + ((ASTAssign) node).getLhs() + " " + parseReturnType(lhs.getType())); 
       }
     }
@@ -397,9 +411,12 @@ public class Generator {
     STO lhs = SimpleNode.getSymbolTable().doesSymbolExist(((ASTArrayAssign) node).getIdentifier(), node.getScope());
     
     if (lhs != null) {
+      stack.addInstruction(Instructions.ALOAD, 0);
       appendLine("  aload" + ((lhs.getIndex() <= 3) ? "_" : " ") + lhs.getIndex());
     } else if ((lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTArrayAssign) node).getIdentifier())) != null) {
+      stack.addInstruction(Instructions.ALOAD, 0);
       appendLine("  aload_0");
+      stack.addInstruction(Instructions.GETFIELD, 0);
       appendLine("  getfield " + SimpleNode.getClassName() + "/" + ((ASTArrayAssign) node).getIdentifier() + " " + parseReturnType(lhs.getType()));
     }
 
@@ -411,6 +428,7 @@ public class Generator {
     genExpression(rhs, stack);
 
     if (lhs != null) {
+      stack.addInstruction(Instructions.IASTORE, 0);
       appendLine("  iastore");
     }
 
@@ -419,10 +437,14 @@ public class Generator {
   public void genNew(SimpleNode node, StackController stack) {
     if (node.jjtGetNumChildren() > 0) { // new array
       genExpression((SimpleNode) node.jjtGetChild(0), stack);
+      stack.addInstruction(Instructions.NEWARRAY, 0);
       appendLine("  newarray int");
     } else {
+      stack.addInstruction(Instructions.NEW, 0);
       appendLine("  new " + ((ASTNew) node).getActualReturnType());
+      stack.addInstruction(Instructions.DUP, 0);
       appendLine("  dup");
+      stack.addInstruction(Instructions.INVOKESPECIAL, 0);
       appendLine("  invokespecial " + ((ASTNew) node).getActualReturnType() + "/<init>()V");
     }
   }
@@ -447,18 +469,23 @@ public class Generator {
     }
     switch(returnType) {
       case "int":
+        stack.addInstruction(Instructions.IRETURN, 0);
         appendLine("  ireturn");
         break;
       case "int[]":
+        stack.addInstruction(Instructions.ARETURN, 0);
         appendLine("  areturn"); 
         break;
       case "boolean":
+        stack.addInstruction(Instructions.IRETURN, 0);
         appendLine("  ireturn"); 
         break;
       case "void":
+        stack.addInstruction(Instructions.RETURN, 0);
         appendLine("  return");
         break;
       default:
+        stack.addInstruction(Instructions.ARETURN, 0);
         appendLine("  areturn");
 
     }
@@ -483,18 +510,27 @@ public class Generator {
 
   public void genIntegerLiteral (SimpleNode node, StackController stack) {
     int value = ((ASTIntegerLiteral) node).getValue();
-    if (value <= 5)
+    if (value <= 5) {
+      stack.addInstruction(Instructions.ICONST, 0);
       appendLine("  iconst_" + value);
-    else if(value <= 127)
+    }
+    else if(value <= 127) {
+      stack.addInstruction(Instructions.BIPUSH, 0);
       appendLine("  bipush " + value);
-    else if(value <= 32767)
+    }
+    else if(value <= 32767) {
+      stack.addInstruction(Instructions.SIPUSH, 0);
       appendLine("  sipush " + value);
-    else
+    }
+    else {
+      stack.addInstruction(Instructions.LDC, 0);
       appendLine("  ldc " + value);
+    }
   }
 
   public void genBooleanLiteral (SimpleNode node, StackController stack) {
     String value = ((ASTBooleanLiteral) node).getBooleanValue();
+    stack.addInstruction(Instructions.ICONST, 0);
     if (value.equals("true")) {
       appendLine("  iconst_1");
     } else {
@@ -509,21 +545,27 @@ public class Generator {
       System.out.println(((ASTIdentifier) node).getIdentifier());
       switch(variable.getType()) {
         case "int":
+        stack.addInstruction(Instructions.ILOAD, 0);
         appendLine("  iload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
         break;
         case "int[]":
+        stack.addInstruction(Instructions.ALOAD, 0);
         appendLine("  aload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
         break;
         case "boolean":
+        stack.addInstruction(Instructions.ILOAD, 0);
         appendLine("  iload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
         break;
         default:
+        stack.addInstruction(Instructions.ALOAD, 0);
         appendLine("  aload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
       }
     } else { 
       variable = SimpleNode.getSymbolTable().doesGlobalExist(((ASTIdentifier) node).getIdentifier());
       if (variable != null) {
+        stack.addInstruction(Instructions.ALOAD, 0);
         appendLine("  aload_0");
+        stack.addInstruction(Instructions.GETFIELD, 0);
         appendLine("  getfield " + SimpleNode.getClassName() + "/" + ((ASTIdentifier) node).getIdentifier() + " " + parseReturnType(variable.getType()));
       }
     }
@@ -533,6 +575,7 @@ public class Generator {
       switch(child.getId()) {
         case JmmTreeConstants.JJTARRAYINDEX:
           genExpression((SimpleNode) ((SimpleNode) node).jjtGetChild(0).jjtGetChild(0), stack);
+          stack.addInstruction(Instructions.IALOAD, 0);
           appendLine("  iaload");
           break;
         case JmmTreeConstants.JJTCALL:
@@ -546,16 +589,20 @@ public class Generator {
   }
 
   public void genLength(SimpleNode node, StackController stack) {
+    stack.addInstruction(Instructions.ARRAYLENGTH, 0);
     appendLine("  arraylength");
   }
 
   public void genNot(SimpleNode node, StackController stack) {
     genExpression((SimpleNode) node.jjtGetChild(0), stack);
+    stack.addInstruction(Instructions.ICONST, 0);
     appendLine("  iconst_1");
+    stack.addInstruction(Instructions.OP, 0);
     appendLine("  ixor");
   }
 
   public void genThis(SimpleNode node, StackController stack) {
+    stack.addInstruction(Instructions.ALOAD, 0);
     appendLine("  aload_0");
   }
 
@@ -626,7 +673,7 @@ public class Generator {
     }
   }
 
-  public void writeStackLimit(String methodName) {
+  public void writeStackLimit(String methodName, StackController stack) {
     try {
 
       File dir = new File("jasmin");
@@ -639,12 +686,9 @@ public class Generator {
         file.createNewFile();
       }
 
-      Path path = file.toPath();
-      Charset charset = StandardCharsets.UTF_8;
-  
-      String content = new String(Files.readAllBytes(path), charset);
-      content = content.replace("stack_"+methodName, 20+""); //TODO
-      Files.write(path, content.getBytes(charset));
+      System.out.println(methodName);
+      int index = this.builder.indexOf("stack_" + methodName);
+      this.builder.replace(index, index + methodName.length() + 6, "stack " + stack.getMaxStack());
       
     } catch (IOException e) {
       System.out.println(e.getMessage());

@@ -4,20 +4,6 @@ import java.util.HashMap;
 
 public class StackController {
 
-  public static enum Instructions {
-    ILOAD,
-    ICONST,
-    ALOAD,
-    GETSTATIC,
-    ISTORE,
-    ASTORE,
-    IALOAD,
-    IASTORE,
-    PUTSTATIC,
-    BIPUSH,
-    SIPUSH,
-    LDC,
-  }
   private static HashMap<Instructions, Integer> stackCosts;
 
   static {
@@ -34,6 +20,19 @@ public class StackController {
     stackCosts.put(Instructions.BIPUSH, 1);
     stackCosts.put(Instructions.SIPUSH, 1);
     stackCosts.put(Instructions.LDC, 1);
+    stackCosts.put(Instructions.INVOKESTATIC, 0); //TODO can return void
+    stackCosts.put(Instructions.INVOKEVIRTUAL, 1); //TODO can return void
+    stackCosts.put(Instructions.INVOKESPECIAL, 1); //constructor, always returns obj ref ?
+    stackCosts.put(Instructions.ARRAYLENGTH, 0);
+    stackCosts.put(Instructions.OP, -1);
+    stackCosts.put(Instructions.DUP, 1);
+    stackCosts.put(Instructions.NEW, 1);
+    stackCosts.put(Instructions.NEWARRAY, 0);
+    stackCosts.put(Instructions.ARETURN, -1);
+    stackCosts.put(Instructions.IRETURN, -1);
+    stackCosts.put(Instructions.RETURN, 0);
+    stackCosts.put(Instructions.GETFIELD, 0);
+    stackCosts.put(Instructions.PUTFIELD, -2);
   }
 
   private int maxStack;
@@ -44,8 +43,9 @@ public class StackController {
     this.currentSize = 0;
   }
 
-  public void addInstruction(Instructions instruction) {
-    this.currentSize += stackCosts.get(instruction);
+  public void addInstruction(Instructions instruction, int args) {
+      this.currentSize += stackCosts.get(instruction);
+      this.currentSize -= args;
 
     if(this.currentSize < 0) {
       this.currentSize = 0;
