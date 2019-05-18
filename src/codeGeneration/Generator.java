@@ -169,13 +169,11 @@ public class Generator {
     SimpleNode args = null;
     if (call.jjtGetNumChildren() > 0 && ((SimpleNode) call.jjtGetChild(0)).getId() == JmmTreeConstants.JJTARGS) {
       args = (SimpleNode) call.jjtGetChild(0);
-      //get function scope and corresponding stfunction object
-      //go through params in the function and add them to the invocation
       SimpleNode child;
       for(int i = 0; i < args.jjtGetNumChildren(); i++) {
-        child = (SimpleNode) args.jjtGetChild(0);
+        child = (SimpleNode) args.jjtGetChild(i);
         genExpression(child, stack);
-        paramTypes += parseReturnType(((ASTIdentifier) child).getReturnType());
+        paramTypes += parseReturnType(((SimpleNode) child).getReturnType());
       }
     }
 
@@ -607,6 +605,9 @@ public class Generator {
   public void genThis(SimpleNode node, StackController stack) {
     stack.addInstruction(Instructions.ALOAD, 0);
     appendLine("  aload_0");
+    if (node.jjtGetNumChildren() > 0 && ((SimpleNode) node.jjtGetChild(0)).getId() == JmmTreeConstants.JJTCALL) {
+      genMethodCall((SimpleNode) node.jjtGetChild(0), node.getActualReturnType(), stack);
+    }
   }
 
   public void genNestedExp(SimpleNode node, StackController stack) {
