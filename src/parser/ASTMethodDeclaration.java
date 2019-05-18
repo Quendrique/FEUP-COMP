@@ -7,6 +7,7 @@ class ASTMethodDeclaration extends SimpleNode {
 
   protected String name;
   public String type;
+  String stIdentifier;
 
   public ASTMethodDeclaration(int id) {
     super(id);
@@ -30,7 +31,18 @@ class ASTMethodDeclaration extends SimpleNode {
 
   @Override
   public void checkNodeSemantic() {
-    this.scope = this.name; //TODO
+    this.scope = this.name; 
+    //go through node's children
+    if (this.jjtGetNumChildren() > 0 && ((SimpleNode) this.jjtGetChild(0)).getId() == JmmTreeConstants.JJTMETHODARGUMENTS) {
+      ASTMethodArguments args = ((ASTMethodArguments) this.jjtGetChild(0));
+      for (int i = 0; i < args.jjtGetNumChildren(); i++) {
+        if (((ASTMethodArgument) args.jjtGetChild(i)).getId() != JmmTreeConstants.JJTMETHODARGUMENT) {
+          break;
+        } else {
+          this.scope += ((ASTMethodArgument) args.jjtGetChild(i)).type;
+        }
+      }
+    }
   }
 
   public void dump(String prefix) {

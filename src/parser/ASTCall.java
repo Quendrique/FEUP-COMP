@@ -10,6 +10,7 @@ class ASTCall extends SimpleNode {
   protected String value;
   protected String className;
   protected boolean isStatic;
+  protected String simpleName; //identifier only, no arg type
 
   public ASTCall(int id) {
     super(id);
@@ -31,6 +32,10 @@ class ASTCall extends SimpleNode {
 
   public boolean isStatic() {
     return this.isStatic;
+  }
+
+  public String getSimpleName() {
+    return this.simpleName;
   }
 
   @Override
@@ -65,6 +70,8 @@ class ASTCall extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
 
+    this.simpleName = this.value;
+
     if (this.parent != null) {
 
       String parentReturnType;
@@ -73,7 +80,6 @@ class ASTCall extends SimpleNode {
       } else {
         parentReturnType = ((SimpleNode) this.parent).getActualReturnType();
       }
-      STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(this.value);
       if (((SimpleNode) this.parent).getId() == JmmTreeConstants.JJTIDENTIFIER) {
         STO parentSymbol = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) this.parent).getIdentifier(), ((ASTIdentifier) this.parent).getScope());
         if (parentSymbol != null) {
@@ -84,23 +90,9 @@ class ASTCall extends SimpleNode {
           this.isStatic = true;
         }
       }
-  
-      if (parentReturnType.equals(SimpleNode.className) || parentReturnType.equals("this")) {
-        if (functionCalled != null) {
-          this.actualReturnType = functionCalled.getReturn().getType();
-        } else {
-          super.printSemanticError("Invalid call to method (method not found in this class)");
-        }
-      } else if (parentReturnType.equals("int") || parentReturnType.equals("int[]") || parentReturnType.equals("boolean")  ) {
-        super.printSemanticError("Invalid call to method (can't invoke methods on primitives)");
-      }
+    
     }
-    //System.out.println("checking if function " + this.value + " exists in function table");
 
-    /*
-      FindMaximum fm;
-      fm.get_array(); -> should work, isn't
-    */
   }
 
   public void dump(String prefix) {

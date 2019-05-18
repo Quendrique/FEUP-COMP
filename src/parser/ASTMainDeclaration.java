@@ -27,7 +27,9 @@ public class ASTMainDeclaration extends SimpleNode {
 
   @Override
   public void checkNodeSemantic() {
-    this.scope = "main";
+    this.scope = "main" + "String[]"; 
+    //go through node's children
+    
   }
 
   public void dump(String prefix) {

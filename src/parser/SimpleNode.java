@@ -173,13 +173,14 @@ public class SimpleNode implements Node {
       stFunctionName = ((ASTMethodDeclaration) node).getName();
       stFunction.setReturn(new STO(((ASTMethodDeclaration) node).type));
     } else {
-      stFunctionName = "main";
+      stFunctionName = "main" + "String[]";
       stFunction.setReturn(new STO("void"));
       stFunction.isGlobal(); // set index to 0 (main is static) 
       stFunction.addSymbol("args", new STO("String"), true);
     }
 
     Node[] children = ((SimpleNode) node).children;
+    String args = "";
     
     for(Node childNode : children) {
       nodeType = ((SimpleNode) childNode).toString();
@@ -187,6 +188,7 @@ public class SimpleNode implements Node {
         if (nodeType.equals("MethodArguments")) {
           for(Node methodArg: ((SimpleNode) childNode).children) {
             ((ASTMethodArgument) methodArg).returnType = ((ASTMethodArgument) methodArg).type;
+            args += ((ASTMethodArgument) methodArg).type;
             if (!stFunction.addSymbol(((ASTMethodArgument) methodArg).getIdentifier(), new STO(((ASTMethodArgument) methodArg).type), true)) {
               this.printSemanticError("Variable " + ((ASTVarDeclaration) childNode).getIdentifier() + " not declared");
             };
@@ -196,6 +198,7 @@ public class SimpleNode implements Node {
             break;
           } else {
             ((ASTVarDeclaration) childNode).returnType = ((ASTVarDeclaration) childNode).type;
+            args += ((ASTVarDeclaration) childNode).type;
             if (!stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false)) {
               this.printSemanticError("Variable " + ((ASTVarDeclaration) childNode).getIdentifier() + " not declared");
             };
@@ -216,7 +219,13 @@ public class SimpleNode implements Node {
 
     }
 
-    SimpleNode.symbolTable.addFunction(stFunctionName, stFunction);
+    if (((SimpleNode) node).getId() == JmmTreeConstants.JJTMETHODDECLARATION) {
+      stFunctionName += args;
+    }
+
+    if (!SimpleNode.symbolTable.addFunction(stFunctionName, stFunction)) {
+      this.printSemanticError("Function " + stFunctionName + " already declared");
+    }
   
   }
 

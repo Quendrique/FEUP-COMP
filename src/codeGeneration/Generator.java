@@ -129,9 +129,9 @@ public class Generator {
     genMethodFooter(method, stack);
     String methodName = "";
     if (method instanceof ASTMethodDeclaration) {
-      methodName = ((ASTMethodDeclaration) method).getName();
+      methodName = ((ASTMethodDeclaration) method).getScope();
     } else {
-      methodName = "main";
+      methodName = "mainString[]";
     }
     writeStackLimit(methodName, stack);    
   }
@@ -190,10 +190,10 @@ public class Generator {
 
     if (((ASTCall) call).isStatic()) {
       stack.addInstruction(Instructions.INVOKESTATIC, ((args != null) ? args.jjtGetNumChildren() : 0));
-      appendLine("  invokestatic " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
+      appendLine("  invokestatic " + variableType + "/" + ((ASTCall) call).getSimpleName() + "(" + paramTypes + ")" + returnType);
     } else {
       stack.addInstruction(Instructions.INVOKEVIRTUAL, ((args != null) ? args.jjtGetNumChildren() : 0));
-      appendLine("  invokevirtual " + variableType + "/" + methodName + "(" + paramTypes + ")" + returnType);
+      appendLine("  invokevirtual " + variableType + "/" + ((ASTCall) call).getSimpleName() + "(" + paramTypes + ")" + returnType);
     }
 
   }
@@ -201,12 +201,13 @@ public class Generator {
   public void genMethodBody(SimpleNode method, StackController stack) {
 
     System.out.println(" Gen Body: " + JmmTreeConstants.jjtNodeName[method.getId()]);
-
+    
     String methodName = "";
     if (method instanceof ASTMethodDeclaration) {
-      methodName = ((ASTMethodDeclaration) method).getName();
+      System.out.println("generator: " + ((ASTMethodDeclaration) method).getScope());
+      methodName = ((ASTMethodDeclaration) method).getScope();
     } else {
-      methodName = "main";
+      methodName = "mainString[]";
     }
     appendLine("  .limit stack_" + methodName);
     
@@ -314,13 +315,10 @@ public class Generator {
       case "&&":
         genExpression(lhs, stack);
         appendLine("  ifne AND_" + ((ASTAnd) node).getLabelId());
-        appendLine("  iconst_0");
         appendLine("  goto AND_NEXT_" + ((ASTAnd) node).getLabelId());
         appendLine("  AND_" + ((ASTAnd) node).getLabelId() + ":");
-        appendLine("  iconst_1");
         stack.addInstruction(Instructions.ICONST, 0);
         genExpression(rhs, stack);
-        appendLine("  iand");
         stack.addInstruction(Instructions.OP, 0);
         appendLine("  AND_NEXT_" + ((ASTAnd) node).getLabelId() + ":");
         break;
@@ -461,7 +459,7 @@ public class Generator {
     if (method.getId() == JmmTreeConstants.JJTMAINDECLARATION) {
       function = SimpleNode.getSymbolTable().doesFunctionExist("main");
     } else {
-      function = SimpleNode.getSymbolTable().doesFunctionExist(((ASTMethodDeclaration) method).getName());
+      function = SimpleNode.getSymbolTable().doesFunctionExist(((ASTMethodDeclaration) method).getScope());
     }
 
     SimpleNode returnNode = (SimpleNode) method.jjtGetChild(method.jjtGetNumChildren()-1);

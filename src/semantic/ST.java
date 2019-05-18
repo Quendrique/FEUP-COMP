@@ -1,5 +1,6 @@
 package semantic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import parser.*;
 
@@ -23,8 +24,13 @@ public class ST extends Object {
     return this.globalVariables;
   }
 
-  public void addFunction(String identifier, STFunction function) {
-    this.functionTable.put(identifier, function);
+  public boolean addFunction(String identifier, STFunction function) {
+    if (this.functionTable.get(identifier) == null) {
+      this.functionTable.put(identifier, function);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public void addSymbolToFunction(String symbolIdentifier, STO symbol, String functionIdentifier, boolean isParam) {

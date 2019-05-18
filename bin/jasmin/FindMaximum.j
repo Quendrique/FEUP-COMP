@@ -64,22 +64,8 @@
 
 
 .method public build_test_arr()I
-  .limit stack 7
-  .limit locals 2
-  iconst_1
-  iconst_2
-  iconst_3
-  iconst_4
-  iconst_5
-  bipush 6
-  bipush 7
-  iadd
-  iadd
-  iadd
-  iadd
-  iadd
-  iadd
-  istore_1
+  .limit stack 4
+  .limit locals 1
   iconst_5
   newarray int
   aload_0
@@ -95,9 +81,7 @@
   aload_0
   getfield FindMaximum/test_arr [I
   iconst_1
-  iconst_0
   bipush 28
-  isub
   iastore
   aload_0
   getfield FindMaximum/test_arr [I
