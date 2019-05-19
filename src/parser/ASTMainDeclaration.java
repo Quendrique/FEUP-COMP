@@ -26,6 +26,12 @@ public class ASTMainDeclaration extends SimpleNode {
   }
 
   @Override
+  public String getActualReturnType() {
+    return "void";
+  }
+
+
+  @Override
   public void checkNodeSemantic() {
     this.scope = "main" + "String[]"; 
     //go through node's children

@@ -180,17 +180,17 @@ public class Generator {
       }
     }
 
+    SimpleNode parent = (SimpleNode) call.jjtGetParent();
+    SimpleNode grandparent = (SimpleNode) parent.jjtGetParent();
     String methodName = ((ASTCall) call).getValue();
     STFunction function = SimpleNode.getSymbolTable().doesFunctionExist(methodName);
     String returnType = "";
     if (function != null) {
       returnType = parseReturnType(function.getReturn().getType());
     } else {
-      returnType = "V";
+      returnType = parseReturnType(grandparent.getActualReturnType());
     }
     
-    SimpleNode parent = (SimpleNode) call.jjtGetParent();
-    SimpleNode grandparent = (SimpleNode) parent.jjtGetParent();
     if (((ASTCall) call).isStatic()) {
       stack.addInstruction(Instructions.INVOKESTATIC, ((args != null) ? args.jjtGetNumChildren() : 0));
       if (grandparent.getId() == JmmTreeConstants.JJTASSIGN) {
@@ -714,6 +714,10 @@ public class Generator {
         return "[I";
       case "boolean":
         return "Z";
+      case "void":
+        return "V";
+      case "":
+        return "V";
       default:
         return "L" + returnType + ";";
     }

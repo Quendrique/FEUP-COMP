@@ -30,6 +30,11 @@ class ASTMethodDeclaration extends SimpleNode {
   }
 
   @Override
+  public String getActualReturnType() {
+    return "void";
+  }
+
+  @Override
   public void checkNodeSemantic() {
     this.scope = this.name; 
     if (this.jjtGetNumChildren() > 0 && ((SimpleNode) this.jjtGetChild(0)).getId() == JmmTreeConstants.JJTMETHODARGUMENTS) {

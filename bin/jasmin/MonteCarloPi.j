@@ -10,19 +10,25 @@
 
 
 .method public performSingleEstimate()Z
-  .limit stack 3
-  .limit locals 5
+  .limit stack 7
+  .limit locals 6
+  new MathUtils
+  dup
+  invokespecial MathUtils/<init>()V
+  astore 5
+  aload 5
   iconst_0
   bipush 100
   isub
   bipush 100
-  invokestatic MathUtils/random(II)I
+  invokevirtual MathUtils/random(II)I
   istore_1
+  aload 5
   iconst_0
   bipush 100
   isub
   bipush 100
-  invokestatic MathUtils/random(II)I
+  invokevirtual MathUtils/random(II)I
   istore_2
   iload_1
   iload_1

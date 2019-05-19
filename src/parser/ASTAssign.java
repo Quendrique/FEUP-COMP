@@ -22,6 +22,18 @@ class ASTAssign extends SimpleNode {
   }
 
   @Override
+  public String getActualReturnType() {
+    if (this.actualReturnType.equals("")) {
+      STO lhs = SimpleNode.symbolTable.doesSymbolExist(this.lhsIdentifier, this.scope);
+      if (lhs == null) {
+        lhs = SimpleNode.symbolTable.doesGlobalExist(this.lhsIdentifier);
+      }
+      this.actualReturnType = lhs.getType();
+    }
+    return this.actualReturnType;
+  }
+
+  @Override
   public void checkNodeSemantic() {
 
     STO lhs = SimpleNode.symbolTable.doesSymbolExist(this.lhsIdentifier, this.scope);
