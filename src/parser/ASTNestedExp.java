@@ -17,6 +17,7 @@ class ASTNestedExp extends SimpleNode {
   @Override
   public String getActualReturnType() {
     if (this.actualReturnType.equals("")) {
+      ((SimpleNode) (this.jjtGetChild(1))).scope = this.scope;
       this.actualReturnType = ((SimpleNode) (this.jjtGetChild(1))).getReturnType();
     }
     return this.actualReturnType;
@@ -25,6 +26,7 @@ class ASTNestedExp extends SimpleNode {
   @Override
   public String getReturnType() {
     if (this.actualReturnType.equals("")) {
+      ((SimpleNode) (this.jjtGetChild(1))).scope = this.scope;
       this.actualReturnType = ((SimpleNode) (this.jjtGetChild(1))).getReturnType();
     }
     return this.actualReturnType;

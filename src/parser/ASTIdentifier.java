@@ -62,6 +62,7 @@ public class ASTIdentifier extends SimpleNode {
       if (child.getId() == JmmTreeConstants.JJTARRAYINDEX) {
         this.isArrayAccess = true;
       }
+      child.scope = this.scope;
       return child.getReturnType();
       //if function call external to the class, return null ??
     } else {

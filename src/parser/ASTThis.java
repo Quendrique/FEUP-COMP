@@ -19,17 +19,26 @@ class ASTThis extends SimpleNode {
   public String getActualReturnType() {
     return this.actualReturnType;
   }
+  
 
   @Override
   public String getReturnType() {
     //check if node has children
+    if (this.actualReturnType.equals("this")) {
+      this.actualReturnType = SimpleNode.className;
+    }
     if (this.jjtGetNumChildren() > 0) {
       SimpleNode child = (SimpleNode) this.jjtGetChild(0);
+      child.scope = this.scope;
       return child.getReturnType();
-      //if function call external to the class, return null ??
     } else {
       return this.actualReturnType;
     }
+  }
+
+  @Override
+  public void checkNodeSemantic() {
+    this.actualReturnType = SimpleNode.className;
   }
 
 }

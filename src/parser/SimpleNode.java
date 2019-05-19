@@ -138,7 +138,7 @@ public class SimpleNode implements Node {
     }
 
   }
-
+  
   public void buildSymbolTable() {
 
     if (parent == null && this.symbolTable == null) { //root node 
@@ -198,7 +198,6 @@ public class SimpleNode implements Node {
             break;
           } else {
             ((ASTVarDeclaration) childNode).returnType = ((ASTVarDeclaration) childNode).type;
-            args += ((ASTVarDeclaration) childNode).type;
             if (!stFunction.addSymbol(((ASTVarDeclaration) childNode).getIdentifier(), new STO(((ASTVarDeclaration) childNode).type), false)) {
               this.printSemanticError("Variable " + ((ASTVarDeclaration) childNode).getIdentifier() + " not declared");
             };

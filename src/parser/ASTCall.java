@@ -11,6 +11,7 @@ class ASTCall extends SimpleNode {
   protected String className;
   protected boolean isStatic;
   protected String simpleName; //identifier only, no arg type
+  protected boolean fixed;
 
   public ASTCall(int id) {
     super(id);
@@ -41,6 +42,18 @@ class ASTCall extends SimpleNode {
   @Override
   public String getActualReturnType() {
     if (this.actualReturnType == "") {
+      if (!this.fixed) {
+        this.simpleName = this.value;
+        if (this.jjtGetNumChildren() > 0 && ((SimpleNode) this.jjtGetChild(0)).getId() == JmmTreeConstants.JJTMETHODARGUMENTS) {
+          SimpleNode args = ((SimpleNode) this.jjtGetChild(0));
+          args.scope = this.scope;
+          for (int i = 0; i < args.jjtGetNumChildren(); i++) {
+            ((SimpleNode) args.jjtGetChild(i)).scope = this.scope;
+            this.value += ((SimpleNode) args.jjtGetChild(i)).getReturnType();
+          }
+        }
+        this.fixed = true;
+      }
       STFunction function = SimpleNode.symbolTable.doesFunctionExist(this.value);
       if (function != null) {
         this.actualReturnType = function.getReturn().getType();
@@ -51,6 +64,18 @@ class ASTCall extends SimpleNode {
 
   @Override
   public String getReturnType() {
+    if (!this.fixed) {
+      this.simpleName = this.value;
+      if (this.jjtGetNumChildren() > 0 && ((SimpleNode) this.jjtGetChild(0)).getId() == JmmTreeConstants.JJTARGS) {
+        SimpleNode args = ((SimpleNode) this.jjtGetChild(0));
+        args.scope = this.scope;
+        for (int i = 0; i < args.jjtGetNumChildren(); i++) {
+          ((SimpleNode) args.jjtGetChild(i)).scope = this.scope;
+          this.value += ((SimpleNode) args.jjtGetChild(i)).getReturnType();
+        }
+      }
+      this.fixed = true;
+    }
     STFunction func = SimpleNode.symbolTable.doesFunctionExist(this.value);
     if(func != null)
       this.actualReturnType = func.getReturn().getType();
@@ -60,6 +85,7 @@ class ASTCall extends SimpleNode {
     if (this.jjtGetNumChildren() > 1
         || (this.jjtGetNumChildren() == 1 && this.jjtGetChild(0).getId() != JmmTreeConstants.JJTARGS)) {
       SimpleNode child = (SimpleNode) this.jjtGetChild(0);
+      child.scope = this.scope;
       return child.getReturnType();
       //if function call external to the class, return null ??
     } else {
@@ -70,16 +96,22 @@ class ASTCall extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
 
-    this.simpleName = this.value;
+    
+    if (!this.fixed) {
+      this.simpleName = this.value;
+      if (this.jjtGetNumChildren() > 0 && ((SimpleNode) this.jjtGetChild(0)).getId() == JmmTreeConstants.JJTARGS) {
+        SimpleNode args = ((SimpleNode) this.jjtGetChild(0));
+        args.scope = this.scope;
+        for (int i = 0; i < args.jjtGetNumChildren(); i++) {
+          ((SimpleNode) args.jjtGetChild(i)).scope = this.scope;
+          this.value += ((SimpleNode) args.jjtGetChild(i)).getReturnType();
+        }
+      }
+      this.fixed = true;
+    }
 
     if (this.parent != null) {
 
-      String parentReturnType;
-      if (((SimpleNode) this.parent).getId() == JmmTreeConstants.JJTNESTEDEXP) {
-        parentReturnType = ((SimpleNode) ((SimpleNode) this.parent).jjtGetChild(0)).getActualReturnType();
-      } else {
-        parentReturnType = ((SimpleNode) this.parent).getActualReturnType();
-      }
       if (((SimpleNode) this.parent).getId() == JmmTreeConstants.JJTIDENTIFIER) {
         STO parentSymbol = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) this.parent).getIdentifier(), ((ASTIdentifier) this.parent).getScope());
         if (parentSymbol != null) {

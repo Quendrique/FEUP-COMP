@@ -18,6 +18,7 @@ public class ASTReturn extends SimpleNode {
     STFunction function = SimpleNode.symbolTable.doesFunctionExist(((ASTMethodDeclaration) this.parent).getName());
     if (function != null) {
       SimpleNode returnNode = (SimpleNode) this.jjtGetChild(0);
+      returnNode.scope = this.scope;
       if (!returnNode.getReturnType().equals(function.getReturn().getType()) ) {
         super.printSemanticError("Return value does not match function signature");
       } 

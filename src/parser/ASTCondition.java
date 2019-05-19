@@ -14,6 +14,7 @@ class ASTCondition extends SimpleNode {
 
   @Override
   public void checkNodeSemantic() {
+    ((SimpleNode) this.jjtGetChild(0)).scope = this.scope;
     if(!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals("boolean")) {
       super.printSemanticError("An if condition must return a boolean value");
     }

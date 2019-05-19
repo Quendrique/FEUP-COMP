@@ -49,9 +49,11 @@
   aload_3
   aload_1
   invokevirtual Quicksort/quicksort([I)Z
+  pop
   aload_3
   aload_1
   invokevirtual Quicksort/printL([I)Z
+  pop
   return
 .end method
 
@@ -100,7 +102,7 @@
   arraylength
   iconst_1
   isub
-  invokevirtual this/quicksort([III)Z
+  invokevirtual Quicksort/quicksort([III)Z
   ireturn
 .end method
 
@@ -123,7 +125,7 @@
   aload_1
   iload_2
   iload_3
-  invokevirtual this/partition([III)I
+  invokevirtual Quicksort/partition([III)I
   istore 4
   goto NEXT_0
   ELSE_0:

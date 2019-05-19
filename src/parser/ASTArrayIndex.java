@@ -22,6 +22,7 @@ class ASTArrayIndex extends SimpleNode {
 
   @Override
   public void checkNodeSemantic() {
+    ((SimpleNode) this.jjtGetChild(0)).scope = this.scope;
     if(!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals("int")){
       super.printSemanticError("Array index must be of type int");
     }

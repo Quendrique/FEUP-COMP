@@ -1043,7 +1043,7 @@ ASTNot jjtn006 = new ASTNot(JJTNOT);
             boolean jjtc006 = true;
             jjtree.openNodeScope(jjtn006);
       try {
-        Expression();
+        Literal();
       } catch (Throwable jjte006) {
 if (jjtc006) {
               jjtree.clearNodeScope(jjtn006);
@@ -1685,7 +1685,7 @@ if (jjtc000) {
   static private boolean jj_3R_33()
  {
     if (jj_scan_token(NOT)) return true;
-    if (jj_3R_18()) return true;
+    if (jj_3R_22()) return true;
     if (jj_3R_39()) return true;
     return false;
   }

@@ -105,6 +105,9 @@ public class Generator {
     
     varName = dec.getIdentifier();
     varType = parseReturnType(dec.getType());
+    if (varName.equals("field")) {
+      varName = "'field'";
+    }
 		
 		appendLine(".field private " + varName + " " + varType);
     
@@ -185,13 +188,27 @@ public class Generator {
     } else {
       returnType = "V";
     }
-
+    
+    SimpleNode parent = (SimpleNode) call.jjtGetParent();
+    SimpleNode grandparent = (SimpleNode) parent.jjtGetParent();
     if (((ASTCall) call).isStatic()) {
       stack.addInstruction(Instructions.INVOKESTATIC, ((args != null) ? args.jjtGetNumChildren() : 0));
+      if (grandparent.getId() == JmmTreeConstants.JJTASSIGN) {
+        returnType = parseReturnType(SimpleNode.getSymbolTable().doesSymbolExist(((ASTAssign) grandparent).getLhs(), call.getScope()).getType());
+      } else if (grandparent.getId() == JmmTreeConstants.JJTARRAYASSIGN) {
+        returnType = "I";
+      }
       appendLine("  invokestatic " + variableType + "/" + ((ASTCall) call).getSimpleName() + "(" + paramTypes + ")" + returnType);
     } else {
       stack.addInstruction(Instructions.INVOKEVIRTUAL, ((args != null) ? args.jjtGetNumChildren() : 0));
       appendLine("  invokevirtual " + variableType + "/" + ((ASTCall) call).getSimpleName() + "(" + paramTypes + ")" + returnType);
+    }
+
+    if ((grandparent.getId() == JmmTreeConstants.JJTWHILE || grandparent.getId() == JmmTreeConstants.JJTELSE 
+      || grandparent.getId() == JmmTreeConstants.JJTIF || grandparent.getId() == JmmTreeConstants.JJTTHEN
+      || grandparent.getId() == JmmTreeConstants.JJTMETHODDECLARATION || grandparent.getId() == JmmTreeConstants.JJTMAINDECLARATION)
+      && !returnType.equals("V")) {
+        appendLine("  pop");
     }
 
   }
@@ -223,6 +240,20 @@ public class Generator {
         child = (SimpleNode) method.jjtGetChild(i);
         genStatement(child, stack);
       }
+    }
+  }
+
+  public void genLiteralNR(SimpleNode node, StackController stack) {
+    switch (node.getId()) {
+      case JmmTreeConstants.JJTARRAYINDEX:
+        genExpression(node, stack); 
+        break;
+      case JmmTreeConstants.JJTCALL:
+        System.out.println("generator: " + node.getActualReturnType());
+        genMethodCall(node, ((SimpleNode) node.jjtGetParent()).getActualReturnType(), stack);
+          break;  
+      case JmmTreeConstants.JJTLENGTH:
+        genLength(node, stack);
     }
   }
 
@@ -313,6 +344,7 @@ public class Generator {
       case "&&":
         genExpression(lhs, stack);
         appendLine("  ifne AND_" + ((ASTAnd) node).getLabelId());
+        appendLine("  iconst_0");
         appendLine("  goto AND_NEXT_" + ((ASTAnd) node).getLabelId());
         appendLine("  AND_" + ((ASTAnd) node).getLabelId() + ":");
         stack.addInstruction(Instructions.ICONST, 0);
@@ -437,7 +469,7 @@ public class Generator {
   }
 
   public void genNew(SimpleNode node, StackController stack) {
-    if (node.jjtGetNumChildren() > 0) { // new array
+    if (node.jjtGetNumChildren() > 0 && ((SimpleNode) node.jjtGetChild(0)).getId() != JmmTreeConstants.JJTCALL) { // new array
       genExpression((SimpleNode) node.jjtGetChild(0), stack);
       stack.addInstruction(Instructions.NEWARRAY, 0);
       appendLine("  newarray int");
@@ -449,6 +481,11 @@ public class Generator {
       stack.addInstruction(Instructions.INVOKESPECIAL, 0);
       appendLine("  invokespecial " + ((ASTNew) node).getActualReturnType() + "/<init>()V");
     }
+
+    if (node.jjtGetNumChildren() > 0 && ((SimpleNode) node.jjtGetChild(0)).getId() == JmmTreeConstants.JJTCALL) {
+      genLiteralNR((SimpleNode) node.jjtGetChild(0), stack);
+    }
+
   }
 
   public void genMethodFooter(SimpleNode method, StackController stack){
@@ -605,8 +642,8 @@ public class Generator {
   public void genThis(SimpleNode node, StackController stack) {
     stack.addInstruction(Instructions.ALOAD, 0);
     appendLine("  aload_0");
-    if (node.jjtGetNumChildren() > 0 && ((SimpleNode) node.jjtGetChild(0)).getId() == JmmTreeConstants.JJTCALL) {
-      genMethodCall((SimpleNode) node.jjtGetChild(0), node.getActualReturnType(), stack);
+    if (node.jjtGetNumChildren() > 0) {
+      genLiteralNR((SimpleNode) node.jjtGetChild(0), stack);
     }
   }
 

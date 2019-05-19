@@ -39,6 +39,7 @@ class ASTArrayAssign extends SimpleNode {
       super.printSemanticError("Variable " + this.lhsIdentifier + " was not declared");
     }
     
+    ((SimpleNode) this.jjtGetChild(0)).scope = this.scope;
     if(!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals("int")) {
       super.printSemanticError("Variable types not compatible");
     }

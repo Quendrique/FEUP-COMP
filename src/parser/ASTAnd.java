@@ -35,6 +35,7 @@ public class ASTAnd extends SimpleNode {
   public void checkNodeSemantic() {
     SimpleNode lhs, rhs;
     lhs = (SimpleNode) this.jjtGetChild(0); rhs = (SimpleNode) this.jjtGetChild(1);
+    lhs.scope = this.scope; rhs.scope = this.scope;
     if (lhs.getReturnType() != "boolean" || rhs.getReturnType() != "boolean") {
       super.printSemanticError("Both sides of a && operation should be of type boolean");
     }

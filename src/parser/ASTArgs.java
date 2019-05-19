@@ -19,14 +19,9 @@ public class ASTArgs extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
 
-    for (int i = 0; i < this.jjtGetNumChildren(); i++) {
-      ((ASTCall) this.parent).value += ((SimpleNode) this.jjtGetChild(i)).getReturnType();
-    }
-
     // fixing call node
     SimpleNode call = (SimpleNode) this.parent;
     SimpleNode callParent = (SimpleNode) call.parent;
-    System.out.println("astargs: " + callParent.getId());
     String parentReturnType = callParent.getActualReturnType();
     STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(((ASTCall) this.parent).value);
     if (parentReturnType.equals(SimpleNode.className) || parentReturnType.equals("this")) {
@@ -63,6 +58,7 @@ public class ASTArgs extends SimpleNode {
       while (it.hasNext() && count < ((SimpleNode) this).children.length) {
         //System.out.println(((SimpleNode) this.children[0]).children.length);
         Map.Entry<String, STO> symbol = it.next();
+        ((SimpleNode) this.children[count]).scope = this.scope;
         if (!symbol.getValue().getType().equals(((SimpleNode) this.children[count]).getReturnType())) {
           super.printSemanticError("No function signature for identifier " + this.value + " and specified arguments found");
           return;

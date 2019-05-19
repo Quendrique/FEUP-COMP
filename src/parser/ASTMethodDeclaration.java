@@ -32,7 +32,6 @@ class ASTMethodDeclaration extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
     this.scope = this.name; 
-    //go through node's children
     if (this.jjtGetNumChildren() > 0 && ((SimpleNode) this.jjtGetChild(0)).getId() == JmmTreeConstants.JJTMETHODARGUMENTS) {
       ASTMethodArguments args = ((ASTMethodArguments) this.jjtGetChild(0));
       for (int i = 0; i < args.jjtGetNumChildren(); i++) {
@@ -43,6 +42,7 @@ class ASTMethodDeclaration extends SimpleNode {
         }
       }
     }
+
   }
 
   public void dump(String prefix) {
