@@ -283,8 +283,13 @@ public class Generator {
           && (((SimpleNode) node.jjtGetChild(1)).getId() == JmmTreeConstants.JJTCALL || ((SimpleNode) node.jjtGetChild(1)).getId() == JmmTreeConstants.JJTLENGTH)) {
             genExpression(node, stack);
         }
-        break;
+        if (node.getId() == JmmTreeConstants.JJTTHIS
+          && node.jjtGetNumChildren() > 0
+          && (((SimpleNode) node.jjtGetChild(0)).getId() == JmmTreeConstants.JJTCALL)) {
+            genExpression(node, stack);
+        }
       }
+      
   }
 
   public void genExpression(SimpleNode node, StackController stack) {

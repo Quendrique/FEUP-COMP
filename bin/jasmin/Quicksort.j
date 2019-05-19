@@ -109,7 +109,7 @@
 
 
 .method public quicksort([III)Z
-  .limit stack 6
+  .limit stack 9
   .limit locals 5
   iload_2
   iload_3
@@ -127,6 +127,22 @@
   iload_3
   invokevirtual Quicksort/partition([III)I
   istore 4
+  aload_0
+  aload_1
+  iload_2
+  iload 4
+  iconst_1
+  isub
+  invokevirtual Quicksort/quicksort([III)Z
+  pop
+  aload_0
+  aload_1
+  iload 4
+  iconst_1
+  iadd
+  iload_3
+  invokevirtual Quicksort/quicksort([III)Z
+  pop
   goto NEXT_0
   ELSE_0:
   NEXT_0:
