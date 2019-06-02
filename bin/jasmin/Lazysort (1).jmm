@@ -2,7 +2,7 @@ class Lazysort extends Quicksort {
     public static void main(String[] a) {
         int[] L;
         int i;
-        boolean d;
+		boolean d;
         Quicksort q;
 
         L = new int[10];
@@ -10,11 +10,10 @@ class Lazysort extends Quicksort {
         i = 0;
         while (i < L.length) {
             L[i] = L.length - i;
-
             i = i + 1;
         }
 
-        q = new Lazysort(); 
+        q = new Lazysort();
 
         q.quicksort(L);
         d = q.printL(L);
@@ -22,7 +21,7 @@ class Lazysort extends Quicksort {
 
     public boolean quicksort(int[] L) {
         boolean lazy;
-        if ( MathUtils.random(0, 5) < 4 ) { 
+        if ( MathUtils.random(0, 5) < 4 ) {
             this.beLazy(L);
             lazy = true;
         }

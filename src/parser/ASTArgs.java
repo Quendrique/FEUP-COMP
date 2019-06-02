@@ -27,14 +27,14 @@ public class ASTArgs extends SimpleNode {
     if (parentReturnType.equals(SimpleNode.className) || parentReturnType.equals("this")) {
       if (functionCalled != null) {
         ((SimpleNode) this.parent).actualReturnType = functionCalled.getReturn().getType();
-      } else {
+      } else if (parentReturnType.equals("this")) {
         super.printSemanticError("Invalid call to method (method not found in this class)");
       }
     } else if (parentReturnType.equals("int") || parentReturnType.equals("int[]") || parentReturnType.equals("boolean")  ) {
       super.printSemanticError("Invalid call to method (can't invoke methods on primitives)");
     }
 
-    //end
+    //end fixing call node
     
     if (functionCalled != null) {
       LinkedHashMap<String, STO> paramsNeeded = functionCalled.getParams();

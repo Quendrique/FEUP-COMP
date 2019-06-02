@@ -31,6 +31,12 @@ public class ASTAnd extends SimpleNode {
     return this.actualReturnType;
   }
 
+  @Override
+  public String getActualReturnType() {
+    //logic operations can only return boolean
+    return this.actualReturnType;
+  }
+
   @Override  
   public void checkNodeSemantic() {
     SimpleNode lhs, rhs;

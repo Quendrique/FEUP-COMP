@@ -195,8 +195,11 @@ public class Generator {
       stack.addInstruction(Instructions.INVOKESTATIC, ((args != null) ? args.jjtGetNumChildren() : 0));
       if (grandparent.getId() == JmmTreeConstants.JJTASSIGN) {
         returnType = parseReturnType(SimpleNode.getSymbolTable().doesSymbolExist(((ASTAssign) grandparent).getLhs(), call.getScope()).getType());
-      } else if (grandparent.getId() == JmmTreeConstants.JJTARRAYASSIGN) {
+      } else if (grandparent.getId() == JmmTreeConstants.JJTARRAYASSIGN || grandparent.getId() == JmmTreeConstants.JJTADDSUB || grandparent.getId() == JmmTreeConstants.JJTMULTDIV 
+      || grandparent.getId() == JmmTreeConstants.JJTLESSTHAN) {
         returnType = "I";
+      } else if (grandparent.getId() == JmmTreeConstants.JJTAND) {
+        returnType = "Z";
       }
       appendLine("  invokestatic " + variableType + "/" + ((ASTCall) call).getSimpleName() + "(" + paramTypes + ")" + returnType);
     } else {

@@ -11,7 +11,7 @@
 
 .method public static main([Ljava/lang/String;)V
   .limit stack 8
-  .limit locals 4
+  .limit locals 5
   bipush 10
   newarray int
   astore_1
@@ -45,14 +45,15 @@
   new Lazysort
   dup
   invokespecial Lazysort/<init>()V
-  astore_3
-  aload_3
+  astore 4
+  aload 4
   aload_1
   invokevirtual Quicksort/quicksort([I)Z
   pop
-  aload_3
+  aload 4
   aload_1
-  invokevirtual Quicksort/printL([I)V
+  invokevirtual Quicksort/printL([I)Z
+  istore_3
   return
 .end method
 
@@ -63,7 +64,7 @@
   .limit locals 3
   iconst_0
   iconst_5
-  invokestatic MathUtils/random(II)V
+  invokestatic MathUtils/random(II)I
   iconst_4
   isub
   ifge LT_ELSE_1
@@ -156,7 +157,7 @@
   iload_3
   iconst_0
   bipush 10
-  invokestatic MathUtils/random(II)V
+  invokestatic MathUtils/random(II)I
   iconst_1
   iadd
   iastore

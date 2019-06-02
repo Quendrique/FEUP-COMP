@@ -30,12 +30,17 @@ class ASTMultDiv extends SimpleNode {
     return this.actualReturnType;
   }
 
+  @Override
+  public String getActualReturnType() {
+    return this.actualReturnType;
+  }
+
   @Override  
   public void checkNodeSemantic() {
     SimpleNode lhs, rhs;
     lhs = (SimpleNode) this.jjtGetChild(0); rhs = (SimpleNode) this.jjtGetChild(1);
     lhs.scope = this.scope; rhs.scope = this.scope;
-    if (lhs.getReturnType() != "int" || rhs.getReturnType() != "int") {
+    if ((lhs.getReturnType() != "int" && !lhs.getReturnType().equals("void")) || (rhs.getReturnType() != "int" && !rhs.getReturnType().equals("void"))) {
       super.printSemanticError("Both sides of a " + this.op + " operation should be of type int");
     }
   }
