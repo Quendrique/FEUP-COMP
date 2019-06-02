@@ -19,10 +19,13 @@ public class Generator {
   private StringBuilder builder;
   private PrintWriter out;
 
+  private boolean optimizationO = false;
+
 
   public Generator(SimpleNode root) throws IOException {
 
     this.root = (ASTClassDeclaration) root.jjtGetChild(0);
+    this.optimizationO = root.getOptimizationO();
 
     String fileName = this.root.getName() + ".j";
 
@@ -416,6 +419,28 @@ public class Generator {
     genExpression(rhs, stack);
 
     if (lhs != null) {
+      
+      if (this.optimizationO) {
+        if (rhs.getId() == JmmTreeConstants.JJTINTEGERLITERAL) {
+          lhs.setValue(((ASTIntegerLiteral) rhs).getValue());
+          lhs.setConstant(true);
+        } else if (rhs.getId() == JmmTreeConstants.JJTIDENTIFIER) {
+          STO rhsSymbol = SimpleNode.getSymbolTable().doesSymbolExist(((ASTIdentifier) rhs).getIdentifier(), rhs.getScope());
+          if (rhsSymbol == null) {
+            rhsSymbol = SimpleNode.getSymbolTable().doesGlobalExist(((ASTIdentifier) rhs).getIdentifier());
+          }
+          
+          if (rhsSymbol.getConstant()) {
+            lhs.setConstant(true);
+            lhs.setValue(rhsSymbol.getValue());
+          } else {
+            lhs.setConstant(false);
+          }
+        } else {
+          lhs.setConstant(false);
+        }
+      }
+
       String type = lhs.getType();
       int index = lhs.getIndex();
       switch(type) {
@@ -438,6 +463,14 @@ public class Generator {
     } else {
       lhs = SimpleNode.getSymbolTable().doesGlobalExist(((ASTAssign) node).getLhs());
       if (lhs != null) {
+
+        if (this.optimizationO) {
+          if (rhs.getId() == JmmTreeConstants.JJTINTEGERLITERAL) {
+            lhs.setValue(((ASTIntegerLiteral) rhs).getValue());
+            lhs.setConstant(true);
+          }
+        }
+
         int index = lhs.getIndex();
         stack.addInstruction(Instructions.ALOAD, 0);
         appendLine("  aload_0");
@@ -556,7 +589,10 @@ public class Generator {
   } 
 
   public void genIntegerLiteral (SimpleNode node, StackController stack) {
-    int value = ((ASTIntegerLiteral) node).getValue();
+    parseNumValue(((ASTIntegerLiteral) node).getValue(), stack);
+  }
+
+  public void parseNumValue(int value, StackController stack) {
     if (value <= 5) {
       stack.addInstruction(Instructions.ICONST, 0);
       appendLine("  iconst_" + value);
@@ -589,30 +625,38 @@ public class Generator {
 
     STO variable = SimpleNode.getSymbolTable().doesSymbolExist(((ASTIdentifier) node).getIdentifier(), node.getScope());
     if (variable != null) {
-      switch(variable.getType()) {
-        case "int":
-        stack.addInstruction(Instructions.ILOAD, 0);
-        appendLine("  iload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
-        break;
-        case "int[]":
-        stack.addInstruction(Instructions.ALOAD, 0);
-        appendLine("  aload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
-        break;
-        case "boolean":
-        stack.addInstruction(Instructions.ILOAD, 0);
-        appendLine("  iload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
-        break;
-        default:
-        stack.addInstruction(Instructions.ALOAD, 0);
-        appendLine("  aload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
+      if (variable.getConstant() && this.optimizationO) {
+        parseNumValue(variable.getValue(), stack);
+      } else {
+        switch(variable.getType()) {
+          case "int":
+          stack.addInstruction(Instructions.ILOAD, 0);
+          appendLine("  iload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
+          break;
+          case "int[]":
+          stack.addInstruction(Instructions.ALOAD, 0);
+          appendLine("  aload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
+          break;
+          case "boolean":
+          stack.addInstruction(Instructions.ILOAD, 0);
+          appendLine("  iload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
+          break;
+          default:
+          stack.addInstruction(Instructions.ALOAD, 0);
+          appendLine("  aload" + ((variable.getIndex() <= 3) ? "_" : " ") + variable.getIndex());
+        }
       }
     } else { 
       variable = SimpleNode.getSymbolTable().doesGlobalExist(((ASTIdentifier) node).getIdentifier());
       if (variable != null) {
-        stack.addInstruction(Instructions.ALOAD, 0);
-        appendLine("  aload_0");
-        stack.addInstruction(Instructions.GETFIELD, 0);
-        appendLine("  getfield " + SimpleNode.getClassName() + "/" + ((ASTIdentifier) node).getIdentifier() + " " + parseReturnType(variable.getType()));
+        if (variable.getConstant() && this.optimizationO) {
+          parseNumValue(variable.getValue(), stack);
+        } else {
+          stack.addInstruction(Instructions.ALOAD, 0);
+          appendLine("  aload_0");
+          stack.addInstruction(Instructions.GETFIELD, 0);
+          appendLine("  getfield " + SimpleNode.getClassName() + "/" + ((ASTIdentifier) node).getIdentifier() + " " + parseReturnType(variable.getType()));
+        }
       }
     }
 

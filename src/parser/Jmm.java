@@ -29,6 +29,10 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants, JmmConstants {/*@b
 
     Jmm myJmm = new Jmm(br);
     SimpleNode root = myJmm.Program();
+    if (args.length > 1 && args[1].equals("-o")) {
+        root.setOptimizationO(true);
+        System.out.println("Optimization O activated");
+    }
     root.dump("");
 
     root.buildSymbolTable();
@@ -1415,17 +1419,6 @@ if (jjtc000) {
     finally { jj_save(10, xla); }
   }
 
-  static private boolean jj_3R_20()
- {
-    if (jj_3R_21()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_9()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
   static private boolean jj_3_7()
  {
     if (jj_scan_token(AND)) return true;
@@ -1845,6 +1838,17 @@ if (jjtc000) {
  {
     if (jj_scan_token(LS)) return true;
     if (jj_3R_20()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_20()
+ {
+    if (jj_3R_21()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3_9()) { jj_scanpos = xsp; break; }
+    }
     return false;
   }
 

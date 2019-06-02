@@ -11,14 +11,20 @@
 
 .method public static main([Ljava/lang/String;)V
   .limit stack 8
-  .limit locals 5
+  .limit locals 6
+  iconst_5
+  istore 5
+  iconst_5
+  ldc 611111
+  iadd
+  istore_2
   bipush 10
   newarray int
   astore_1
   iconst_0
   istore_2
   WHILE_0:
-  iload_2
+  iconst_0
   aload_1
   arraylength
   isub
@@ -30,13 +36,13 @@
   LT_NEXT_0:
   ifeq WHILE_NEXT_0
   aload_1
-  iload_2
+  iconst_0
   aload_1
   arraylength
-  iload_2
+  iconst_0
   isub
   iastore
-  iload_2
+  iconst_0
   iconst_1
   iadd
   istore_2
@@ -118,7 +124,7 @@
   iconst_0
   istore_3
   WHILE_1:
-  iload_3
+  iconst_0
   iload_2
   iconst_2
   idiv
@@ -131,12 +137,12 @@
   LT_NEXT_2:
   ifeq WHILE_NEXT_1
   aload_1
-  iload_3
+  iconst_0
   iconst_0
   bipush 10
   invokestatic MathUtils/random(II)I
   iastore
-  iload_3
+  iconst_0
   iconst_1
   iadd
   istore_3

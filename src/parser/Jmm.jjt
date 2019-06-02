@@ -34,6 +34,10 @@ public class Jmm {
 
     Jmm myJmm = new Jmm(br);
     SimpleNode root = myJmm.Program();
+    if (args.length > 1 && args[1].equals("-o")) {
+        root.setOptimizationO(true);
+        System.out.println("Optimization O activated");
+    } 
     root.dump("");
 
     root.buildSymbolTable();

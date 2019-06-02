@@ -6,12 +6,26 @@ class Quicksort {
 
         L = new int[10];
 
+/*
         i = 0;
         while (i < L.length) {
             L[i] = L.length - i;
 
             i = i + 1;
         }
+        */
+
+        L[0] = 3;
+        L[1] = 6;
+        L[2] = 1;
+        L[3] = 2;
+        L[4] = 9;
+        L[5] = 10;
+        L[6] = 4;
+        L[7] = 7;
+        L[8] = 5;
+        L[9] = 8;
+
 
         q = new Quicksort();
 

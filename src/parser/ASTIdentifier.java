@@ -84,6 +84,9 @@ public class ASTIdentifier extends SimpleNode {
     } else {
       this.returnType = symbol.getType();
     }
+
+
+
   }
 
   public void dump(String prefix) {

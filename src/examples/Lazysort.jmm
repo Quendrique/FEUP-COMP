@@ -4,6 +4,11 @@ class Lazysort extends Quicksort {
         int i;
         boolean d;
         Quicksort q;
+        int testingOpt;
+
+        testingOpt = 5;
+
+        i = testingOpt + 611111;
 
         L = new int[10];
 

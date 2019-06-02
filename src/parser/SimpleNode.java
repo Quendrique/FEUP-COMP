@@ -19,6 +19,7 @@ public class SimpleNode implements Node {
   protected String actualReturnType = "";
   protected int beginLine;
   protected boolean errorDetected = false;
+  protected boolean optimizationO = false;
   public void setBeginLine( int line ) { beginLine = line ;}
   public int getBeginLine() { return beginLine ; }
 
@@ -102,6 +103,14 @@ public class SimpleNode implements Node {
 
   public static String getClassName() {
     return className;
+  }
+
+  public void setOptimizationO(boolean optimizationO) {
+    this.optimizationO = optimizationO;
+  }
+
+  public boolean getOptimizationO() {
+    return this.optimizationO;
   }
 
   public void checkNodeSemantic() {}; 

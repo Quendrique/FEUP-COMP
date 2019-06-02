@@ -10,38 +10,51 @@
 
 
 .method public static main([Ljava/lang/String;)V
-  .limit stack 8
+  .limit stack 6
   .limit locals 4
   bipush 10
   newarray int
   astore_1
+  aload_1
   iconst_0
-  istore_2
-  WHILE_0:
-  iload_2
-  aload_1
-  arraylength
-  isub
-  ifge LT_ELSE_0
-  iconst_1
-  goto LT_NEXT_0
-  LT_ELSE_0:
-  iconst_0
-  LT_NEXT_0:
-  ifeq WHILE_NEXT_0
-  aload_1
-  iload_2
-  aload_1
-  arraylength
-  iload_2
-  isub
+  iconst_3
   iastore
-  iload_2
+  aload_1
   iconst_1
-  iadd
-  istore_2
-  goto WHILE_0
-  WHILE_NEXT_0:
+  bipush 6
+  iastore
+  aload_1
+  iconst_2
+  iconst_1
+  iastore
+  aload_1
+  iconst_3
+  iconst_2
+  iastore
+  aload_1
+  iconst_4
+  bipush 9
+  iastore
+  aload_1
+  iconst_5
+  bipush 10
+  iastore
+  aload_1
+  bipush 6
+  iconst_4
+  iastore
+  aload_1
+  bipush 7
+  bipush 7
+  iastore
+  aload_1
+  bipush 8
+  iconst_5
+  iastore
+  aload_1
+  bipush 9
+  bipush 8
+  iastore
   new Quicksort
   dup
   invokespecial Quicksort/<init>()V
@@ -64,18 +77,18 @@
   .limit locals 3
   iconst_0
   istore_2
-  WHILE_1:
+  WHILE_0:
   iload_2
   aload_1
   arraylength
   isub
-  ifge LT_ELSE_1
+  ifge LT_ELSE_0
   iconst_1
-  goto LT_NEXT_1
-  LT_ELSE_1:
+  goto LT_NEXT_0
+  LT_ELSE_0:
   iconst_0
-  LT_NEXT_1:
-  ifeq WHILE_NEXT_1
+  LT_NEXT_0:
+  ifeq WHILE_NEXT_0
   aload_1
   iload_2
   iaload
@@ -84,8 +97,8 @@
   iconst_1
   iadd
   istore_2
-  goto WHILE_1
-  WHILE_NEXT_1:
+  goto WHILE_0
+  WHILE_NEXT_0:
   iconst_1
   ireturn
 .end method
@@ -114,12 +127,12 @@
   iload_2
   iload_3
   isub
-  ifge LT_ELSE_2
+  ifge LT_ELSE_1
   iconst_1
-  goto LT_NEXT_2
-  LT_ELSE_2:
+  goto LT_NEXT_1
+  LT_ELSE_1:
   iconst_0
-  LT_NEXT_2:
+  LT_NEXT_1:
   ifeq ELSE_0
   aload_0
   aload_1
@@ -163,9 +176,21 @@
   istore 5
   iload_2
   istore 6
-  WHILE_2:
+  WHILE_1:
   iload 6
   iload_3
+  isub
+  ifge LT_ELSE_2
+  iconst_1
+  goto LT_NEXT_2
+  LT_ELSE_2:
+  iconst_0
+  LT_NEXT_2:
+  ifeq WHILE_NEXT_1
+  aload_1
+  iload 6
+  iaload
+  iload 4
   isub
   ifge LT_ELSE_3
   iconst_1
@@ -173,18 +198,6 @@
   LT_ELSE_3:
   iconst_0
   LT_NEXT_3:
-  ifeq WHILE_NEXT_2
-  aload_1
-  iload 6
-  iaload
-  iload 4
-  isub
-  ifge LT_ELSE_4
-  iconst_1
-  goto LT_NEXT_4
-  LT_ELSE_4:
-  iconst_0
-  LT_NEXT_4:
   ifeq ELSE_1
   aload_1
   iload 5
@@ -211,8 +224,8 @@
   iconst_1
   iadd
   istore 6
-  goto WHILE_2
-  WHILE_NEXT_2:
+  goto WHILE_1
+  WHILE_NEXT_1:
   aload_1
   iload 5
   iaload
