@@ -13,7 +13,8 @@ public class SimpleNode implements Node {
   protected Jmm parser;
   protected String scope;
   protected static ST symbolTable;
-  protected static String className;
+  protected static String className = "";
+  protected static String extend = "";
   protected String returnType = "";
   protected String actualReturnType = "";
   protected int beginLine;

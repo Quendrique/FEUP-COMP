@@ -37,6 +37,7 @@ class ASTLessThan extends SimpleNode {
     SimpleNode lhs, rhs;
     lhs = (SimpleNode) this.jjtGetChild(0); rhs = (SimpleNode) this.jjtGetChild(1);
     lhs.scope = this.scope; rhs.scope = this.scope;
+    // if child is identifier and grandchild
     if (lhs.getReturnType() != "int" || rhs.getReturnType() != "int") {
       super.printSemanticError("Both sides of a < operation should be of type int");
     }

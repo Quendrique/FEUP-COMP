@@ -271,12 +271,14 @@ class Life {
         x = cart[0];
         y = cart[1];
 
+
         if (x < xMax) {
             downX = x + 1;
             if (this.gt(x,0))
                 upX = x - 1;
             else
                 upX = xMax;
+
         } else {
             downX = 0;
             upX = x - 1;

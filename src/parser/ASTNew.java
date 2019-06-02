@@ -19,7 +19,7 @@ class ASTNew extends SimpleNode {
   public String getReturnType() {
     //check if node has children
     if (this.jjtGetNumChildren() > 0 
-        && (((SimpleNode) this.jjtGetChild(0)).getId() == JmmTreeConstants.JJTCALL || ((SimpleNode) this.jjtGetChild(0)).getId() == JmmTreeConstants.JJTLENGTH)) {
+        && (((SimpleNode) this.jjtGetChild(0)).getId() == JmmTreeConstants.JJTCALL)) {
       SimpleNode child = (SimpleNode) this.jjtGetChild(0);
       child.scope = this.scope;
       return child.getReturnType();

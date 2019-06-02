@@ -31,11 +31,12 @@ class ASTClassDeclaration extends SimpleNode {
   }
 
   public void setExtends(String extendsIdent) {
+    SimpleNode.extend = extendsIdent;
     this.extendsIdent = extendsIdent;
   }
 
   public void dump(String prefix) {
-    System.out.println(toString(prefix) + ": " + this.name + ((this.extendsIdent != null) ? " (extends " + this.extendsIdent + ")" : ""));
+    System.out.println(toString(prefix) + ": " + this.name + (!(this.extendsIdent.equals("")) ? " (extends " + this.extendsIdent + ")" : ""));
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         SimpleNode n = (SimpleNode)children[i];
