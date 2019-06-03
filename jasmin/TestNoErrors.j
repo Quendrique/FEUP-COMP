@@ -27,7 +27,7 @@
 
 
 .method public static main([Ljava/lang/String;)V
-  .limit stack 12
+  .limit stack 10
   .limit locals 3
   iconst_0
   istore_1

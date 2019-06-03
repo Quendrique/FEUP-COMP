@@ -42,7 +42,7 @@
 
 
 .method public static main([Ljava/lang/String;)V
-  .limit stack 4
+  .limit stack 3
   .limit locals 1
   new Fac
   dup

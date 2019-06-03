@@ -58,7 +58,7 @@
 
 
 .method public estimatePi100(I)I
-  .limit stack 6
+  .limit stack 5
   .limit locals 5
   iconst_0
   istore_3
@@ -104,7 +104,7 @@
 
 
 .method public static main([Ljava/lang/String;)V
-  .limit stack 4
+  .limit stack 3
   .limit locals 3
   invokestatic ioPlus/requestNumber()I
   istore_2

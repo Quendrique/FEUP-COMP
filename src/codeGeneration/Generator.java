@@ -195,7 +195,6 @@ public class Generator {
     }
     
     if (((ASTCall) call).isStatic()) {
-      stack.addInstruction(Instructions.INVOKESTATIC, ((args != null) ? args.jjtGetNumChildren() : 0));
       if (grandparent.getId() == JmmTreeConstants.JJTASSIGN) {
         returnType = parseReturnType(SimpleNode.getSymbolTable().doesSymbolExist(((ASTAssign) grandparent).getLhs(), call.getScope()).getType());
       } else if (grandparent.getId() == JmmTreeConstants.JJTARRAYASSIGN || grandparent.getId() == JmmTreeConstants.JJTADDSUB || grandparent.getId() == JmmTreeConstants.JJTMULTDIV 
@@ -204,9 +203,10 @@ public class Generator {
       } else if (grandparent.getId() == JmmTreeConstants.JJTAND) {
         returnType = "Z";
       }
+      stack.addInstruction(Instructions.INVOKESTATIC, ((args != null) ? args.jjtGetNumChildren() : 0), returnType.equals("void"));
       appendLine("  invokestatic " + variableType + "/" + ((ASTCall) call).getSimpleName() + "(" + paramTypes + ")" + returnType);
     } else {
-      stack.addInstruction(Instructions.INVOKEVIRTUAL, ((args != null) ? args.jjtGetNumChildren() : 0));
+      stack.addInstruction(Instructions.INVOKEVIRTUAL, ((args != null) ? args.jjtGetNumChildren() : 0), returnType.equals("void"));
       appendLine("  invokevirtual " + variableType + "/" + ((ASTCall) call).getSimpleName() + "(" + paramTypes + ")" + returnType);
     }
 

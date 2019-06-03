@@ -10,7 +10,7 @@
 
 
 .method public static main([Ljava/lang/String;)V
-  .limit stack 8
+  .limit stack 6
   .limit locals 6
   iconst_5
   istore 5
@@ -66,7 +66,7 @@
 
 
 .method public quicksort([I)Z
-  .limit stack 9
+  .limit stack 8
   .limit locals 3
   iconst_0
   iconst_5

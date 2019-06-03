@@ -17,7 +17,7 @@
 
 
 .method public static main([Ljava/lang/String;)V
-  .limit stack 9
+  .limit stack 5
   .limit locals 3
   new Life
   dup
@@ -45,7 +45,7 @@
 
 
 .method public init()Z
-  .limit stack 3
+  .limit stack 2
   .limit locals 3
   iconst_1
   newarray int
@@ -515,7 +515,7 @@
 
 
 .method public update()Z
-  .limit stack 15
+  .limit stack 11
   .limit locals 6
   aload_0
   getfield Life/field [I
@@ -629,7 +629,7 @@
 
 
 .method public printField()Z
-  .limit stack 6
+  .limit stack 5
   .limit locals 3
   iconst_0
   istore_1
@@ -735,7 +735,7 @@
 
 
 .method public getNeighborCoords(I)[I
-  .limit stack 21
+  .limit stack 11
   .limit locals 10
   aload_0
   iload_1
@@ -893,7 +893,7 @@
 
 
 .method public getLiveNeighborN(I)I
-  .limit stack 7
+  .limit stack 6
   .limit locals 5
   iconst_0
   istore 4
@@ -977,7 +977,7 @@
 
 
 .method public eq(II)Z
-  .limit stack 6
+  .limit stack 5
   .limit locals 3
   aload_0
   iload_1
@@ -1033,7 +1033,7 @@
 
 
 .method public le(II)Z
-  .limit stack 6
+  .limit stack 5
   .limit locals 3
   aload_0
   iload_1
@@ -1074,7 +1074,7 @@
 
 
 .method public ge(II)Z
-  .limit stack 6
+  .limit stack 5
   .limit locals 3
   aload_0
   iload_1

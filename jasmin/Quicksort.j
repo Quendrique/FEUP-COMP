@@ -10,7 +10,7 @@
 
 
 .method public static main([Ljava/lang/String;)V
-  .limit stack 6
+  .limit stack 4
   .limit locals 4
   bipush 10
   newarray int
@@ -122,7 +122,7 @@
 
 
 .method public quicksort([III)Z
-  .limit stack 9
+  .limit stack 7
   .limit locals 5
   iload_2
   iload_3
