@@ -24,6 +24,8 @@
 
 ## Summary
 
+This project was developed for the Compilers course unit taught at FEUP; it aims to implement a Java-- (a subset of the Java language) compiler, capable of performing syntatic and semantic analysis as well as code generation.
+
 ## Syntatic analysis
 
 During syntatic analysis, the execution of the program is stopped immediately should an error be encountered, with the exception of while conditions. If an error is discovered in that context, a message containing all the necessary information to locate the error is displayed and the analysis carries on; this process repeats itself up to 10 times. If the limit is reached, then the execution is aborted.  
@@ -80,6 +82,21 @@ Finally, external calls follow a similar approach to that of static function cal
 A segmented approach to code generation was adopted, as it results in more comprehensible code as well as in a more painless debugging process. As such, the AST is recursively traversed, each node generating the corresponding (if any) jasmin code, appending it to .j file. Lower cost instructions were used in the loading process of variables with a lower index number (iload_1, iload_2, iload_3) as well as in the loading of constant values (iconst for values between 0 and 5, bipush for values up to 127) and while loops perform a minimal number of jumps, as displayed by the following example:
 
 ```
+WHILE_0:
+iload_2
+aload_1
+arraylength
+isub
+ifge LT_ELSE_0 ; i < array.length
+iconst_1
+goto LT_NEXT_0
+LT_ELSE_0:
+iconst_0
+LT_NEXT_0:
+ifeq WHILE_NEXT_0
+; (...)
+goto WHILE_0
+WHILE_NEXT_0:
 ```
 
 In addition, the instructions for comparisons between a value and 0 (ifge, ifgt, ifle, ...) were used whenever possible (in 'if' conditions, for example).
@@ -93,6 +110,8 @@ The evaluation of a function's maximum stack height starts with the attribution 
 In regards to optimizations, the use of constant propagation was implemented, taking solely into consideration assignments where the right-hand side of the operation was a simple operand; cases such as 'y = 2 * 3 + 4' were not considered. Thusly, the following Java-- code
 
 ```
+int x;
+int y;
 x = 5;
 y = x + 6;
 ```
@@ -100,19 +119,42 @@ y = x + 6;
 is translated to
 
 ```
-
+iconst_5
+istore_1
+iconst_5
+bipush 6
+iadd
+istore_2
 ```
+
+assuming the code is part of a non-static function with no arguments. Should a variable be used in a while loop or an if statement, then its value is not propagated.
 
 ## Tests
 
+A set of test files was included in order to efficiently demonstrate the compiler's error detection capabilities during syntatic and semantic analysis as well as the code generation. All of the files are present in the 'tests' folder, subsequently subdivided into the aforementioned sections. 
+
 ## Overview
+
+This project is divided in three packages: 
+
+- parser - responsible for the syntatic and semantic analysis;
+- semantic - responsible for classes dealing with the representation of the symbol table;
+- codeGeneration - responsible for the generation of .j files.
+
+The -o optimization (related to constant propagation) was implemented; the use of while templates is done by deafult;
 
 ### Pros
 
+As mentioned in previous sections, some additional features were added:
+
+- Function overloading;
+- Constant propagation;
+- Lower cost comparison instructions (ifeq, ifgt, ifge, ...);
+- Lower cost variable loading instructions (iload_1, istore_1, ...).
+
 ### Cons
 
-register allocation
-more optimizations
+More optimization measures could be have been implemented, such as register allocation, loop unfolding, constant folding, ...
 
 ## Contributions
 
