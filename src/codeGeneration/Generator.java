@@ -439,7 +439,13 @@ public class Generator {
         } else {
           lhs.setConstant(false);
         }
+
+        if (isInsideWhileOrIf(node)) {
+          lhs.setConstant(false);
+        } 
       }
+
+
 
       String type = lhs.getType();
       int index = lhs.getIndex();
@@ -625,9 +631,12 @@ public class Generator {
 
     STO variable = SimpleNode.getSymbolTable().doesSymbolExist(((ASTIdentifier) node).getIdentifier(), node.getScope());
     if (variable != null) {
-      if (variable.getConstant() && this.optimizationO) {
+      if (variable.getConstant() && this.optimizationO && !isInsideWhileOrIf(node)) {
         parseNumValue(variable.getValue(), stack);
       } else {
+        if (isInsideWhileOrIf(node)) {
+          variable.setConstant(false);
+        }
         switch(variable.getType()) {
           case "int":
           stack.addInstruction(Instructions.ILOAD, 0);
@@ -652,6 +661,9 @@ public class Generator {
         if (variable.getConstant() && this.optimizationO) {
           parseNumValue(variable.getValue(), stack);
         } else {
+          if (isInsideWhileOrIf(node)) {
+            variable.setConstant(false);
+          }
           stack.addInstruction(Instructions.ALOAD, 0);
           appendLine("  aload_0");
           stack.addInstruction(Instructions.GETFIELD, 0);
@@ -796,5 +808,15 @@ public class Generator {
     return this.root;
   }
 
+  public boolean isInsideWhileOrIf(SimpleNode node) {
+		while (node.getId() != JmmTreeConstants.JJTMETHODDECLARATION && node.getId() != JmmTreeConstants.JJTMAINDECLARATION) {
+			if (node.getId() == JmmTreeConstants.JJTIF || node.getId() == JmmTreeConstants.JJTWHILE) {
+				return true;
+      }
+      node = (SimpleNode) node.jjtGetParent();
+		}
+
+		return false;
+	}
 
 }

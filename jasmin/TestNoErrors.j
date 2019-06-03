@@ -82,7 +82,7 @@
   iconst_0
   istore_1
   WHILE_0:
-  iconst_0
+  iload_1
   bipush 6
   isub
   ifge LT_ELSE_1
@@ -92,7 +92,7 @@
   iconst_0
   LT_NEXT_1:
   ifeq WHILE_NEXT_0
-  iconst_0
+  iload_1
   iconst_1
   iadd
   istore_1

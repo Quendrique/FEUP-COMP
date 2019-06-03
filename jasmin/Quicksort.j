@@ -78,7 +78,7 @@
   iconst_0
   istore_2
   WHILE_0:
-  iconst_0
+  iload_2
   aload_1
   arraylength
   isub
@@ -90,10 +90,10 @@
   LT_NEXT_0:
   ifeq WHILE_NEXT_0
   aload_1
-  iconst_0
+  iload_2
   iaload
   invokestatic io/println(I)V
-  iconst_0
+  iload_2
   iconst_1
   iadd
   istore_2
