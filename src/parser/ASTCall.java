@@ -110,6 +110,21 @@ class ASTCall extends SimpleNode {
       this.fixed = true;
     }
 
+    // fixing call node
+    SimpleNode callParent = (SimpleNode) this.parent;
+    //SimpleNode callParent = (SimpleNode) call.parent;
+    String parentReturnType = callParent.getActualReturnType();
+    STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(this.value);
+    if (parentReturnType.equals(SimpleNode.className) || parentReturnType.equals("this")) {
+      if (functionCalled != null) {
+        this.actualReturnType = functionCalled.getReturn().getType();
+      } else if (parentReturnType.equals("this") || (parentReturnType.equals(SimpleNode.className) && SimpleNode.extend.equals(""))) {
+        super.printSemanticError("No function signature for identifier " + this.simpleName + " and specified arguments found");
+      }
+    } else if (parentReturnType.equals("int") || parentReturnType.equals("int[]") || parentReturnType.equals("boolean")  ) {
+      super.printSemanticError("Invalid call to method (can't invoke methods on primitives)");
+    }
+
     if (this.parent != null) {
 
       if (((SimpleNode) this.parent).getId() == JmmTreeConstants.JJTIDENTIFIER) {

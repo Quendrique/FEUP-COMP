@@ -31,26 +31,30 @@ public class Jmm {
     } catch (IOException e) {
         e.printStackTrace();
     }
-
+    
     Jmm myJmm = new Jmm(br);
     SimpleNode root = myJmm.Program();
+    
+    if (errorCount > 0) { // syntatic errors in while conditions
+        System.out.println("Exiting...");
+        return;
+    }
+    
     if (args.length > 1 && args[1].equals("-o")) {
         root.setOptimizationO(true);
         System.out.println("Optimization O activated");
     } 
     root.dump("");
-
     root.buildSymbolTable();
     root.checkSemantics();
     root.symbolTable.dump();
 
-    if (root.errorDetected()) {
-        System.out.println("Exiting...");
-        return;
+    if (root.errorDetected()) { // semantic errors
+            System.out.println("Exiting...");
+            return;
         } else {
-        System.out.println("Entering code Generation");
-        Generator codeGenerator = new Generator(root);
-        codeGenerator.generate();
+            Generator codeGenerator = new Generator(root);
+            codeGenerator.generate();
     }
 
  }

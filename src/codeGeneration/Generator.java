@@ -33,12 +33,12 @@ public class Generator {
 
     try {
 
-      File dir = new File("jasmin");
+      File dir = new File("../jasmin");
       if (!dir.exists()) {
         dir.mkdirs();
       }
 
-      File file = new File("jasmin/" + fileName);
+      File file = new File("../jasmin/" + fileName);
       if (!file.exists()) {
         file.createNewFile();
       }
@@ -51,7 +51,7 @@ public class Generator {
 
     this.builder = new StringBuilder();
 
-    FileWriter fw = new FileWriter("jasmin/" + fileName);
+    FileWriter fw = new FileWriter("../jasmin/" + fileName);
     
     this.out = new PrintWriter(fw);
 

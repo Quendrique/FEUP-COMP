@@ -39,6 +39,9 @@ class ASTThis extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
     this.actualReturnType = SimpleNode.className;
+    if (this.scope.equals("mainString[]")) {
+      super.printSemanticError("Cannot use 'this' in main");
+    }
   }
 
 }

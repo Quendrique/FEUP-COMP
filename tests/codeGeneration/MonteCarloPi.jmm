@@ -4,12 +4,9 @@ class MonteCarloPi {
 		int rand2;
 		boolean in_circle;
 		int squareDist;
-		MathUtils utils;
 
-		utils = new MathUtils();
-
-		rand1 = utils.random(0-100, 100);
-		rand2 = utils.random(0-100, 100);
+		rand1 = MathUtils.random(0-100, 100);
+		rand2 = MathUtils.random(0-100, 100);
 
 		squareDist = (rand1 * rand1 + rand2 * rand2) / 100;
 		if (squareDist < 100) {

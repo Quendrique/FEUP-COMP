@@ -18,6 +18,11 @@ class ASTLength extends SimpleNode {
   }
 
   @Override
+  public String getActualReturnType() {
+    return "int";
+  }
+
+  @Override
   public void checkNodeSemantic() {
     if (this.parent != null) {
       String parentReturnType;

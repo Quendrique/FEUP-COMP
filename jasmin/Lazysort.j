@@ -14,7 +14,7 @@
   .limit locals 6
   iconst_5
   istore 5
-  iconst_5
+  iload 5
   ldc 611111
   iadd
   istore_2
@@ -24,7 +24,7 @@
   iconst_0
   istore_2
   WHILE_0:
-  iconst_0
+  iload_2
   aload_1
   arraylength
   isub
@@ -36,13 +36,13 @@
   LT_NEXT_0:
   ifeq WHILE_NEXT_0
   aload_1
-  iconst_0
+  iload_2
   aload_1
   arraylength
-  iconst_0
+  iload_2
   isub
   iastore
-  iconst_0
+  iload_2
   iconst_1
   iadd
   istore_2
@@ -124,7 +124,7 @@
   iconst_0
   istore_3
   WHILE_1:
-  iconst_0
+  iload_3
   iload_2
   iconst_2
   idiv
@@ -137,12 +137,12 @@
   LT_NEXT_2:
   ifeq WHILE_NEXT_1
   aload_1
-  iconst_0
+  iload_3
   iconst_0
   bipush 10
   invokestatic MathUtils/random(II)I
   iastore
-  iconst_0
+  iload_3
   iconst_1
   iadd
   istore_3

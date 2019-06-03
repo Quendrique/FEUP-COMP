@@ -19,6 +19,8 @@ public class ASTArgs extends SimpleNode {
   @Override
   public void checkNodeSemantic() {
 
+    /*
+
     // fixing call node
     SimpleNode call = (SimpleNode) this.parent;
     SimpleNode callParent = (SimpleNode) call.parent;
@@ -27,15 +29,17 @@ public class ASTArgs extends SimpleNode {
     if (parentReturnType.equals(SimpleNode.className) || parentReturnType.equals("this")) {
       if (functionCalled != null) {
         ((SimpleNode) this.parent).actualReturnType = functionCalled.getReturn().getType();
-      } else if (parentReturnType.equals("this")) {
-        super.printSemanticError("Invalid call to method (method not found in this class)");
+      } else if (parentReturnType.equals("this") || (parentReturnType.equals(SimpleNode.className) && SimpleNode.extend.equals(""))) {
+        super.printSemanticError("No function signature for identifier " + ((ASTCall) this.parent).simpleName + " and specified arguments found");
       }
     } else if (parentReturnType.equals("int") || parentReturnType.equals("int[]") || parentReturnType.equals("boolean")  ) {
       super.printSemanticError("Invalid call to method (can't invoke methods on primitives)");
     }
 
     //end fixing call node
-    
+
+    System.out.println("astargs: parent actual return type - " + parentReturnType);
+
     if (functionCalled != null) {
       LinkedHashMap<String, STO> paramsNeeded = functionCalled.getParams();
       Node[] args = ((SimpleNode) this).children;
@@ -45,11 +49,7 @@ public class ASTArgs extends SimpleNode {
       } else {
         numArguments = ((SimpleNode) this).children.length;
       }
-      if (paramsNeeded.size() != numArguments) {
-        super.printSemanticError("No function signature for identifier " + this.value + " and specified number of arguments found");
-        return;
-      }
-  
+    
       Iterator<Map.Entry<String, STO>> it = paramsNeeded.entrySet().iterator();
       int count = 0;
       STO argument, parameter;
@@ -66,6 +66,7 @@ public class ASTArgs extends SimpleNode {
         count++;
       }
     }
+    */
   }
 
 }

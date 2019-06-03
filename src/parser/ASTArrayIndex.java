@@ -26,16 +26,28 @@ class ASTArrayIndex extends SimpleNode {
     if(!((SimpleNode) this.jjtGetChild(0)).getReturnType().equals("int")){
       super.printSemanticError("Array index must be of type int");
     }
-    if(!((SimpleNode) this.parent).getActualReturnType().equals("int[]")) {
-      super.printSemanticError("Variable must be of type int[] in order to access an array position");
-    }
+    
     if (((SimpleNode) this.parent).getId() == JmmTreeConstants.JJTIDENTIFIER) {
       STO parentSymbol = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) this.parent).getIdentifier(), ((ASTIdentifier) this.parent).getScope());
       if (parentSymbol == null) {
         parentSymbol = SimpleNode.symbolTable.doesGlobalExist(((ASTIdentifier) this.parent).getIdentifier());
       } 
+      if (!parentSymbol.getType().equals("int[]")) {
+        super.printSemanticError("Variable must be of type int[] in order to access an array position");
+      }
       if (parentSymbol != null && !parentSymbol.isInitialized()) {
         super.printSemanticError("Variable " + ((ASTIdentifier) this.parent).getIdentifier() + " not initialized");
+      }
+    } else if (((SimpleNode) this.parent).getId() == JmmTreeConstants.JJTARRAYASSIGN) {
+      STO parentSymbol = SimpleNode.symbolTable.doesSymbolExist(((ASTArrayAssign) this.parent).getIdentifier(), ((ASTArrayAssign) this.parent).getScope());
+      if (parentSymbol == null) {
+        parentSymbol = SimpleNode.symbolTable.doesGlobalExist(((ASTArrayAssign) this.parent).getIdentifier());
+      } 
+      if (!parentSymbol.getType().equals("int[]")) {
+        super.printSemanticError("Variable must be of type int[] in order to access an array position");
+      }
+      if (parentSymbol != null && !parentSymbol.isInitialized()) {
+        super.printSemanticError("Variable " + ((ASTArrayAssign) this.parent).getIdentifier() + " not initialized");
       }
     }
   }

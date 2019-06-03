@@ -29,23 +29,27 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants, JmmConstants {/*@b
 
     Jmm myJmm = new Jmm(br);
     SimpleNode root = myJmm.Program();
+
+    if (errorCount > 0) { // syntatic errors in while conditions
+        System.out.println("Exiting...");
+        return;
+    }
+
     if (args.length > 1 && args[1].equals("-o")) {
         root.setOptimizationO(true);
         System.out.println("Optimization O activated");
     }
     root.dump("");
-
     root.buildSymbolTable();
     root.checkSemantics();
     root.symbolTable.dump();
 
-    if (root.errorDetected()) {
-        System.out.println("Exiting...");
-        return;
+    if (root.errorDetected()) { // semantic errors
+            System.out.println("Exiting...");
+            return;
         } else {
-        System.out.println("Entering code Generation");
-        Generator codeGenerator = new Generator(root);
-        codeGenerator.generate();
+            Generator codeGenerator = new Generator(root);
+            codeGenerator.generate();
     }
 
  }
@@ -1419,30 +1423,6 @@ if (jjtc000) {
     finally { jj_save(10, xla); }
   }
 
-  static private boolean jj_3_7()
- {
-    if (jj_scan_token(AND)) return true;
-    if (jj_3R_19()) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_19()
- {
-    if (jj_3R_20()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_8()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
-  static private boolean jj_3_3()
- {
-    if (jj_3R_17()) return true;
-    return false;
-  }
-
   static private boolean jj_3R_26()
  {
     if (jj_3R_19()) return true;
@@ -1849,6 +1829,30 @@ if (jjtc000) {
       xsp = jj_scanpos;
       if (jj_3_9()) { jj_scanpos = xsp; break; }
     }
+    return false;
+  }
+
+  static private boolean jj_3_7()
+ {
+    if (jj_scan_token(AND)) return true;
+    if (jj_3R_19()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_19()
+ {
+    if (jj_3R_20()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3_8()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  static private boolean jj_3_3()
+ {
+    if (jj_3R_17()) return true;
     return false;
   }
 
