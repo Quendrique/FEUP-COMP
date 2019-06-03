@@ -525,7 +525,7 @@
   iconst_0
   istore_1
   WHILE_1:
-  iload_1
+  iconst_0
   aload_0
   getfield Life/field [I
   arraylength
@@ -539,11 +539,11 @@
   ifeq WHILE_NEXT_1
   aload_0
   getfield Life/field [I
-  iload_1
+  iconst_0
   iaload
   istore_2
   aload_0
-  iload_1
+  iconst_0
   invokevirtual Life/getLiveNeighborN(I)I
   istore_3
   iload_2
@@ -560,8 +560,7 @@
   ifeq ELSE_0
   aload_0
   iload_3
-  aload_0
-  getfield Life/UNDERPOP_LIM I
+  iconst_2
   invokevirtual Life/ge(II)Z
   ifne AND_0
   iconst_0
@@ -569,8 +568,7 @@
   AND_0:
   aload_0
   iload_3
-  aload_0
-  getfield Life/OVERPOP_LIM I
+  iconst_3
   invokevirtual Life/le(II)Z
   AND_NEXT_0:
   istore 4
@@ -579,16 +577,16 @@
   ixor
   ifeq ELSE_1
   aload 5
-  iload_1
+  iconst_0
   iconst_0
   iastore
   goto NEXT_1
   ELSE_1:
   aload 5
-  iload_1
+  iconst_0
   aload_0
   getfield Life/field [I
-  iload_1
+  iconst_0
   iaload
   iastore
   NEXT_1:
@@ -596,26 +594,25 @@
   ELSE_0:
   aload_0
   iload_3
-  aload_0
-  getfield Life/REPRODUCE_NUM I
+  iconst_3
   invokevirtual Life/eq(II)Z
   ifeq ELSE_2
   aload 5
-  iload_1
+  iconst_0
   iconst_1
   iastore
   goto NEXT_2
   ELSE_2:
   aload 5
-  iload_1
+  iconst_0
   aload_0
   getfield Life/field [I
-  iload_1
+  iconst_0
   iaload
   iastore
   NEXT_2:
   NEXT_0:
-  iload_1
+  iconst_0
   iconst_1
   iadd
   istore_1
@@ -639,7 +636,7 @@
   iconst_0
   istore_2
   WHILE_2:
-  iload_1
+  iconst_0
   aload_0
   getfield Life/field [I
   arraylength
@@ -652,7 +649,7 @@
   LT_NEXT_2:
   ifeq WHILE_NEXT_2
   aload_0
-  iload_2
+  iconst_0
   aload_0
   getfield Life/xMax I
   invokevirtual Life/gt(II)Z
@@ -665,14 +662,14 @@
   NEXT_3:
   aload_0
   getfield Life/field [I
-  iload_1
+  iconst_0
   iaload
   invokestatic io/print(I)V
-  iload_1
+  iconst_0
   iconst_1
   iadd
   istore_1
-  iload_2
+  iconst_0
   iconst_1
   iadd
   istore_2
@@ -858,34 +855,34 @@
   iconst_3
   aload_0
   iload 4
-  iload 7
+  iconst_0
   invokevirtual Life/trIdx(II)I
   iastore
   aload 9
   iconst_4
   aload_0
   iload_2
-  iload 7
+  iconst_0
   invokevirtual Life/trIdx(II)I
   iastore
   aload 9
   iconst_5
   aload_0
-  iload 6
-  iload 7
+  iconst_0
+  iconst_0
   invokevirtual Life/trIdx(II)I
   iastore
   aload 9
   bipush 6
   aload_0
-  iload 6
+  iconst_0
   iload_3
   invokevirtual Life/trIdx(II)I
   iastore
   aload 9
   bipush 7
   aload_0
-  iload 6
+  iconst_0
   iload 5
   invokevirtual Life/trIdx(II)I
   iastore
@@ -907,7 +904,7 @@
   iconst_0
   istore_3
   WHILE_3:
-  iload_3
+  iconst_0
   aload_2
   arraylength
   isub
@@ -922,20 +919,20 @@
   aload_0
   getfield Life/field [I
   aload_2
-  iload_3
+  iconst_0
   iaload
   iaload
   iconst_0
   invokevirtual Life/ne(II)Z
   ifeq ELSE_8
-  iload 4
+  iconst_0
   iconst_1
   iadd
   istore 4
   goto NEXT_8
   ELSE_8:
   NEXT_8:
-  iload_3
+  iconst_0
   iconst_1
   iadd
   istore_3
@@ -951,14 +948,13 @@
   .limit stack 4
   .limit locals 4
   iload_1
-  aload_0
-  getfield Life/LOOPS_PER_MS I
+  ldc 225000
   imul
   istore_3
   iconst_0
   istore_2
   WHILE_4:
-  iload_2
+  iconst_0
   iload_3
   isub
   ifge LT_ELSE_6
@@ -968,7 +964,7 @@
   iconst_0
   LT_NEXT_6:
   ifeq WHILE_NEXT_4
-  iload_2
+  iconst_0
   iconst_1
   iadd
   istore_2

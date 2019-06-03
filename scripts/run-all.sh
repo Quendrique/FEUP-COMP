@@ -6,7 +6,7 @@ mkdir -p jasmin
 cd bin
 
 for f in ../tests/*/*.jmm; 
-    do java parser/Jmm $f;
+    do java parser/Jmm $f -o;
 done
 
 cd ../jasmin

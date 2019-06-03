@@ -110,11 +110,14 @@ class ASTCall extends SimpleNode {
       this.fixed = true;
     }
 
-    // fixing call node
     SimpleNode callParent = (SimpleNode) this.parent;
-    //SimpleNode callParent = (SimpleNode) call.parent;
+    if (callParent.getId() == JmmTreeConstants.JJTNESTEDEXP) {
+      callParent = (SimpleNode) ((SimpleNode) callParent).jjtGetChild(0);
+    }
+
     String parentReturnType = callParent.getActualReturnType();
-    STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(this.value);
+    STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(this.value);    
+
     if (parentReturnType.equals(SimpleNode.className) || parentReturnType.equals("this")) {
       if (functionCalled != null) {
         this.actualReturnType = functionCalled.getReturn().getType();
@@ -127,11 +130,11 @@ class ASTCall extends SimpleNode {
 
     if (this.parent != null) {
 
-      if (((SimpleNode) this.parent).getId() == JmmTreeConstants.JJTIDENTIFIER) {
-        STO parentSymbol = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) this.parent).getIdentifier(), ((ASTIdentifier) this.parent).getScope());
+      if (callParent.getId() == JmmTreeConstants.JJTIDENTIFIER) {
+        STO parentSymbol = SimpleNode.symbolTable.doesSymbolExist(((ASTIdentifier) callParent).getIdentifier(), ((ASTIdentifier) callParent).getScope());
         if (parentSymbol != null) {
           if (!parentSymbol.isInitialized()) {
-            super.printSemanticError("Variable " + ((ASTIdentifier) this.parent).getIdentifier() + " not initialized");
+            super.printSemanticError("Variable " + ((ASTIdentifier) callParent).getIdentifier() + " not initialized");
           }
         } else {
           this.isStatic = true;

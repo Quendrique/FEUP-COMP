@@ -21,7 +21,7 @@
   iaload
   istore_3
   WHILE_0:
-  iload_2
+  iconst_0
   aload_1
   arraylength
   isub
@@ -33,7 +33,7 @@
   LT_NEXT_0:
   ifeq WHILE_NEXT_0
   aload_1
-  iload_2
+  iconst_0
   iaload
   istore 4
   iload_3
@@ -51,7 +51,7 @@
   goto NEXT_0
   ELSE_0:
   NEXT_0:
-  iload_2
+  iconst_0
   iconst_1
   iadd
   istore_2

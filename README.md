@@ -68,29 +68,42 @@ boolean b;
 
 a = MathUtils.random(0, 10);
 b = MathUtils.random(0, 10, true);
-
 ```
 Since there is no way of knowing the return type of the function random(), the compiler must assume that it returns exactly what it need for the assignment to be correct. In practice, this may not be the case (random may not be overloaded to return the values necessary values in the example above, ...); however, this was considered to be the preferable approach, as the placement of some amount of trust in the user to not perform invalid static calls extends the versatility of compiled programs by a considerable amount.
 
 ### External function calls
 
-Finally, external calls follow a similiar approach to that of static function calls, with the exception that they must be performed on an initialized instance variable of the class in question: all function calls are considered to be valid and their return types equally so.
+Finally, external calls follow a similar approach to that of static function calls, with the exception that they must be performed on an initialized instance variable of the class in question: all function calls are considered to be valid and their return types equally so.
 
 ## Code generation
 
-modular approach
-recursively traverse the tree generating code on the go
-lower cost instructions for the loading of values (iconst_, bipush, ...)
-while templates - per iteration at most one jump
+A segmented approach to code generation was adopted, as it results in more comprehensible code as well as in a more painless debugging process. As such, the AST is recursively traversed, each node generating the corresponding (if any) jasmin code, appending it to .j file. Lower cost instructions were used in the loading process of variables with a lower index number (iload_1, iload_2, iload_3) as well as in the loading of constant values (iconst for values between 0 and 5, bipush for values up to 127) and while loops perform a minimal number of jumps, as displayed by the following example:
+
+```
+```
+
+In addition, the instructions for comparisons between a value and 0 (ifge, ifgt, ifle, ...) were used whenever possible (in 'if' conditions, for example).
 
 ### Stack controller
 
-each instruction is associated with a cost in regards to stack usage
-at the end of a function the max value determined by that analysis is set as the stacks max value
+The evaluation of a function's maximum stack height starts with the attribution of costs to each possible instructions: for example, an iload instruction has a cost of 1, as it increases the stack height by that amount, where an iadd instructions has a cost of -1, given that it removes two values from the stack and places the result of the computation of top of it. During code generation, costs are added and subtracted accordingly, guaranteeing that, by the end of a function's evaluation,the maximum value registered during the course of these calculations is the minimum number of stack positions that must be reserved.
 
 ### -o optimization
 
-constant propagation
+In regards to optimizations, the use of constant propagation was implemented, taking solely into consideration assignments where the right-hand side of the operation was a simple operand; cases such as 'y = 2 * 3 + 4' were not considered. Thusly, the following Java-- code
+
+```
+x = 5;
+y = x + 6;
+```
+
+is translated to
+
+```
+
+```
+
+## Tests
 
 ## Overview
 
@@ -101,7 +114,7 @@ constant propagation
 register allocation
 more optimizations
 
-## Contributions:
+## Contributions
 
 - António Cruz (up2016?????): 25% 
 - Beatriz Mendes (up2016?????): 25%

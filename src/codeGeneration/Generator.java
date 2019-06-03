@@ -430,7 +430,7 @@ public class Generator {
             rhsSymbol = SimpleNode.getSymbolTable().doesGlobalExist(((ASTIdentifier) rhs).getIdentifier());
           }
           
-          if (rhsSymbol.getConstant()) {
+          if (rhsSymbol != null && rhsSymbol.getConstant()) {
             lhs.setConstant(true);
             lhs.setValue(rhsSymbol.getValue());
           } else {

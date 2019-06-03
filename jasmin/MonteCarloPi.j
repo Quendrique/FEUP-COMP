@@ -65,7 +65,7 @@
   iconst_0
   istore_2
   WHILE_0:
-  iload_3
+  iconst_0
   iload_1
   isub
   ifge LT_ELSE_1
@@ -78,14 +78,14 @@
   aload_0
   invokevirtual MonteCarloPi/performSingleEstimate()Z
   ifeq ELSE_1
-  iload_2
+  iconst_0
   iconst_1
   iadd
   istore_2
   goto NEXT_1
   ELSE_1:
   NEXT_1:
-  iload_3
+  iconst_0
   iconst_1
   iadd
   istore_3
