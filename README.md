@@ -160,5 +160,5 @@ More optimization measures could be have been implemented, such as register allo
 
 - António Cruz (up201603525): 25% 
 - Beatriz Mendes (up201604253): 25%
-- Dinis Moreira (up2015?????): 25%
+- Dinis Moreira (up201503092): 25%
 - Mariana Costa (up201604414): 25%
