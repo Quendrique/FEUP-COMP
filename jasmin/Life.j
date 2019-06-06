@@ -26,9 +26,9 @@
   aload_1
   invokevirtual Life/init()Z
   pop
-  WHILE_0:
   iconst_1
   ifeq WHILE_NEXT_0
+  WHILE_0:
   aload_1
   invokevirtual Life/printField()Z
   pop
@@ -37,7 +37,8 @@
   pop
   invokestatic io/read()I
   istore_2
-  goto WHILE_0
+  iconst_1
+  ifne WHILE_0
   WHILE_NEXT_0:
   return
 .end method
@@ -945,7 +946,7 @@
 
 
 .method public busyWait(I)Z
-  .limit stack 4
+  .limit stack 5
   .limit locals 4
   iload_1
   ldc 225000
@@ -953,7 +954,6 @@
   istore_3
   iconst_0
   istore_2
-  WHILE_4:
   iload_2
   iload_3
   isub
@@ -964,11 +964,21 @@
   iconst_0
   LT_NEXT_6:
   ifeq WHILE_NEXT_4
+  WHILE_4:
   iload_2
   iconst_1
   iadd
   istore_2
-  goto WHILE_4
+  iload_2
+  iload_3
+  isub
+  ifge LT_ELSE_6
+  iconst_1
+  goto LT_NEXT_6
+  LT_ELSE_6:
+  iconst_0
+  LT_NEXT_6:
+  ifne WHILE_4
   WHILE_NEXT_4:
   iconst_1
   ireturn

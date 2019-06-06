@@ -754,14 +754,27 @@ public class Generator {
 
   public void genWhile(SimpleNode node, StackController stack) {
     SimpleNode condition = (SimpleNode) node.jjtGetChild(0);
-
-    appendLine("  WHILE_" + ((ASTWhile) node).getLabelId() + ":");
-    genExpression(condition, stack);
-    appendLine("  ifeq WHILE_NEXT_" + ((ASTWhile) node).getLabelId()); 
+    boolean isTemplateViable = analyzeWhileExpression(condition);
+    
+    if (isTemplateViable) {
+      genExpression(condition, stack);
+      appendLine("  ifeq WHILE_NEXT_" + ((ASTWhile) node).getLabelId()); 
+      appendLine("  WHILE_" + ((ASTWhile) node).getLabelId() + ":");
+    } else {
+      appendLine("  WHILE_" + ((ASTWhile) node).getLabelId() + ":");
+      genExpression(condition, stack);
+      appendLine("  ifeq WHILE_NEXT_" + ((ASTWhile) node).getLabelId()); 
+    }
+    
     for(int i = 1; i < node.jjtGetNumChildren(); i++) {
       genStatement((SimpleNode) node.jjtGetChild(i), stack);
     }
-    appendLine("  goto WHILE_" + ((ASTWhile) node).getLabelId());
+    if (isTemplateViable) {
+      genExpression(condition, stack);
+      appendLine("  ifne WHILE_" + ((ASTWhile) node).getLabelId());
+    } else {
+      appendLine("  goto WHILE_" + ((ASTWhile) node).getLabelId());
+    }
     appendLine("  WHILE_NEXT_" + ((ASTWhile) node).getLabelId() + ":");
   }
 
@@ -817,6 +830,29 @@ public class Generator {
 		}
 
 		return false;
-	}
+  }
+  
+  private boolean analyzeWhileExpression(SimpleNode condition) {
+        
+    if ((condition.getId() == JmmTreeConstants.JJTBOOLEANLITERAL) || (condition.getId() == JmmTreeConstants.JJTIDENTIFIER && condition.jjtGetNumChildren() == 0)) {
+      return true;
+    }
+
+    if (condition.getId() == JmmTreeConstants.JJTAND || condition.getId() == JmmTreeConstants.JJTLESSTHAN) {
+      SimpleNode lhs = (SimpleNode) condition.jjtGetChild(0);
+      SimpleNode rhs = (SimpleNode) condition.jjtGetChild(1);
+  
+      int lhsId = lhs.getId();
+      int rhsId = rhs.getId();
+  
+      boolean lhsCheck = (lhsId == JmmTreeConstants.JJTINTEGERLITERAL || lhsId == JmmTreeConstants.JJTBOOLEANLITERAL || (lhsId == JmmTreeConstants.JJTIDENTIFIER && lhs.jjtGetNumChildren() == 0));
+      boolean rhsCheck = (rhsId == JmmTreeConstants.JJTINTEGERLITERAL || rhsId == JmmTreeConstants.JJTBOOLEANLITERAL || (rhsId == JmmTreeConstants.JJTIDENTIFIER && rhs.jjtGetNumChildren() == 0));
+  
+      return lhsCheck && rhsCheck;
+    }
+
+    return false;
+
+  }
 
 }

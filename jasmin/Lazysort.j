@@ -148,7 +148,6 @@
   istore_3
   goto WHILE_1
   WHILE_NEXT_1:
-  WHILE_2:
   iload_3
   iload_2
   isub
@@ -159,6 +158,7 @@
   iconst_0
   LT_NEXT_3:
   ifeq WHILE_NEXT_2
+  WHILE_2:
   aload_1
   iload_3
   iconst_0
@@ -171,7 +171,16 @@
   iconst_1
   iadd
   istore_3
-  goto WHILE_2
+  iload_3
+  iload_2
+  isub
+  ifge LT_ELSE_3
+  iconst_1
+  goto LT_NEXT_3
+  LT_ELSE_3:
+  iconst_0
+  LT_NEXT_3:
+  ifne WHILE_2
   WHILE_NEXT_2:
   iconst_1
   ireturn

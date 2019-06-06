@@ -58,13 +58,12 @@
 
 
 .method public estimatePi100(I)I
-  .limit stack 5
+  .limit stack 7
   .limit locals 5
   iconst_0
   istore_3
   iconst_0
   istore_2
-  WHILE_0:
   iload_3
   iload_1
   isub
@@ -75,6 +74,7 @@
   iconst_0
   LT_NEXT_1:
   ifeq WHILE_NEXT_0
+  WHILE_0:
   aload_0
   invokevirtual MonteCarloPi/performSingleEstimate()Z
   ifeq ELSE_1
@@ -89,7 +89,16 @@
   iconst_1
   iadd
   istore_3
-  goto WHILE_0
+  iload_3
+  iload_1
+  isub
+  ifge LT_ELSE_1
+  iconst_1
+  goto LT_NEXT_1
+  LT_ELSE_1:
+  iconst_0
+  LT_NEXT_1:
+  ifne WHILE_0
   WHILE_NEXT_0:
   sipush 400
   iload_2

@@ -166,7 +166,7 @@
 
 
 .method public partition([III)I
-  .limit stack 8
+  .limit stack 10
   .limit locals 8
   aload_1
   iload_3
@@ -176,7 +176,6 @@
   istore 5
   iload_2
   istore 6
-  WHILE_1:
   iload 6
   iload_3
   isub
@@ -187,6 +186,7 @@
   iconst_0
   LT_NEXT_2:
   ifeq WHILE_NEXT_1
+  WHILE_1:
   aload_1
   iload 6
   iaload
@@ -224,7 +224,16 @@
   iconst_1
   iadd
   istore 6
-  goto WHILE_1
+  iload 6
+  iload_3
+  isub
+  ifge LT_ELSE_2
+  iconst_1
+  goto LT_NEXT_2
+  LT_ELSE_2:
+  iconst_0
+  LT_NEXT_2:
+  ifne WHILE_1
   WHILE_NEXT_1:
   aload_1
   iload 5

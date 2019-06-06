@@ -58,7 +58,7 @@ The original strategy adopted to implement symbol tables - a primary mapping of 
 
 ### Polymorphism
 
-Although polymorphism does not impose a substantial number of challenges in regards to semantic analysis, some measures were taken in order to account for the limitations of this compiler. As such, whenever a class extends another, function calls to objects of the class in question which do not have a corresponding definition are nonetheless assumed to be valid, as said definitions can be (albeit not necessarily) present in the ascending class.
+Although polymorphism did not impose a substantial number of challenges in regards to semantic analysis, some measures were taken in order to account for the limitations of this compiler. As such, whenever a class extends another, function calls to objects of the class in question which do not have a corresponding definition are nonetheless assumed to be valid, as said definitions can be (albeit not necessarily) present in the ascending class.
 
 ### Static calls
 
@@ -79,27 +79,45 @@ Finally, external calls follow a similar approach to that of static function cal
 
 ## Code generation
 
-A segmented approach to code generation was adopted, as it results in more comprehensible code as well as in a more painless debugging process. As such, the AST is recursively traversed, each node generating the corresponding (if any) jasmin code, appending it to .j file. Lower cost instructions were used in the loading process of variables with a lower index number (iload_1, iload_2, iload_3) as well as in the loading of constant values (iconst for values between 0 and 5, bipush for values up to 127) and while loops perform a minimal number of jumps, as displayed by the following example:
+A segmented approach to code generation was adopted, as it results in more comprehensible code as well as in a more painless debugging process. As such, the AST is recursively traversed, each node generating the corresponding (if any) jasmin code, appending it to .j file. Lower cost instructions were used in the loading process of variables with a lower index number (iload_1, iload_2, iload_3) as well as in the loading of constant values (iconst for values between 0 and 5, bipush for values up to 127, ...). In addition, the instructions for comparisons between a value and 0 (ifge, ifgt, ifle, ...) were used whenever possible (in 'if' conditions, for example). The application of while templates is discussed thusly
+
+### While templates
+
+In order to determine if the benefits of use of while templates outweight the costs, a simple analysis function was implemented. Should the 'while' condition be considered simple (either constituted by a single variable or constant or a logic operation in which both the right and left-hand sides are simple variables or constants), then the following structure is adopted;
 
 ```
-WHILE_0:
-iload_2
-aload_1
-arraylength
-isub
-ifge LT_ELSE_0 ; i < array.length
+; while(true)
 iconst_1
-goto LT_NEXT_0
-LT_ELSE_0:
-iconst_0
-LT_NEXT_0:
 ifeq WHILE_NEXT_0
-; (...)
-goto WHILE_0
+WHILE_0:
+;(...)
+iconst_1
+ifne WHILE_0
 WHILE_NEXT_0:
 ```
 
-In addition, the instructions for comparisons between a value and 0 (ifge, ifgt, ifle, ...) were used whenever possible (in 'if' conditions, for example).
+While the 'while' expression is evaluated twice, the use of costly 'goto' instructions is avoided. On the other hand, if the analysis fails, the template for the loop is slightly altered:
+
+```
+; while(i < field.length)
+WHILE_2:
+iload_1
+aload_0
+getfield Life/field [I
+arraylength
+isub
+ifge LT_ELSE_2
+iconst_1
+goto LT_NEXT_2
+LT_ELSE_2:
+iconst_0
+LT_NEXT_2:
+ifeq WHILE_NEXT_2
+;(...)
+goto WHILE_2
+WHILE_NEXT_2:
+```
+
 
 ### Stack controller
 
@@ -141,7 +159,7 @@ This project is divided in three packages:
 - semantic - responsible for classes dealing with the representation of the symbol table;
 - codeGeneration - responsible for the generation of .j files.
 
-The -o optimization (related to constant propagation) was implemented; the use of while templates is done by deafult;
+The -o optimization (related to constant propagation) was implemented; the use of while templates is done by default;
 
 ### Pros
 
@@ -149,7 +167,7 @@ As mentioned in previous sections, some additional features were added:
 
 - Function overloading;
 - Constant propagation;
-- Lower cost comparison instructions (ifeq, ifgt, ifge, ...);
+- Lower cost comparison instructions (ifeq, ifgt, ifge, ...); 
 - Lower cost variable loading instructions (iload_1, istore_1, ...).
 
 ### Cons
