@@ -79,7 +79,7 @@ class TestExamples {
     i + 1; // works
     2+1; // works
     i+i; // works
-    i = i + p; // todo
+    i = i + p; // works
 
     b_main = true && false; // works - correct
     b_main = 1 < 1; // works - correct

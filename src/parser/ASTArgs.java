@@ -16,58 +16,5 @@ public class ASTArgs extends SimpleNode {
     super(p, id);
   }
 
-  @Override
-  public void checkNodeSemantic() {
-
-    /*
-
-    // fixing call node
-    SimpleNode call = (SimpleNode) this.parent;
-    SimpleNode callParent = (SimpleNode) call.parent;
-    String parentReturnType = callParent.getActualReturnType();
-    STFunction functionCalled = SimpleNode.symbolTable.doesFunctionExist(((ASTCall) this.parent).value);
-    if (parentReturnType.equals(SimpleNode.className) || parentReturnType.equals("this")) {
-      if (functionCalled != null) {
-        ((SimpleNode) this.parent).actualReturnType = functionCalled.getReturn().getType();
-      } else if (parentReturnType.equals("this") || (parentReturnType.equals(SimpleNode.className) && SimpleNode.extend.equals(""))) {
-        super.printSemanticError("No function signature for identifier " + ((ASTCall) this.parent).simpleName + " and specified arguments found");
-      }
-    } else if (parentReturnType.equals("int") || parentReturnType.equals("int[]") || parentReturnType.equals("boolean")  ) {
-      super.printSemanticError("Invalid call to method (can't invoke methods on primitives)");
-    }
-
-    //end fixing call node
-
-    System.out.println("astargs: parent actual return type - " + parentReturnType);
-
-    if (functionCalled != null) {
-      LinkedHashMap<String, STO> paramsNeeded = functionCalled.getParams();
-      Node[] args = ((SimpleNode) this).children;
-      int numArguments;
-      if (args == null) {
-        numArguments = 0;
-      } else {
-        numArguments = ((SimpleNode) this).children.length;
-      }
-    
-      Iterator<Map.Entry<String, STO>> it = paramsNeeded.entrySet().iterator();
-      int count = 0;
-      STO argument, parameter;
-      String argIdentifier;
-      
-      while (it.hasNext() && count < ((SimpleNode) this).children.length) {
-        //System.out.println(((SimpleNode) this.children[0]).children.length);
-        Map.Entry<String, STO> symbol = it.next();
-        ((SimpleNode) this.children[count]).scope = this.scope;
-        if (!symbol.getValue().getType().equals(((SimpleNode) this.children[count]).getReturnType())) {
-          super.printSemanticError("No function signature for identifier " + this.value + " and specified arguments found");
-          return;
-        }
-        count++;
-      }
-    }
-    */
-  }
-
 }
 /* JavaCC - OriginalChecksum=5d9de5a6ebbff5cf5c8cda2f19272e53 (do not edit this line) */

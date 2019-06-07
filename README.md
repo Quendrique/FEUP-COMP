@@ -96,7 +96,7 @@ ifne WHILE_0
 WHILE_NEXT_0:
 ```
 
-While the 'while' expression is evaluated twice, the use of costly 'goto' instructions is avoided. On the other hand, if the analysis fails, the template for the loop is slightly altered:
+While the 'while' expression is evaluated twice, the use of 'goto' instructions is avoided. On the other hand, if the analysis fails, the loop template is slightly altered:
 
 ```
 ; while(i < field.length)

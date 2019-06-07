@@ -23,7 +23,6 @@ class ASTThis extends SimpleNode {
 
   @Override
   public String getReturnType() {
-    //check if node has children
     if (this.actualReturnType.equals("this")) {
       this.actualReturnType = SimpleNode.className;
     }
